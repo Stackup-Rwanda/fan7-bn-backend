@@ -1,0 +1,36 @@
+{
+  "name": "fan7-bn-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/register": "^7.8.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0"
+  },
+  "scripts": {
+    "test": "nyc mocha --require @babel/polyfill --require @babel/register --exit ./src/test/index.test.js",
+    "start": "babel-node ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stackup-Rwanda/fan7-bn-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stackup-Rwanda/fan7-bn-backend/issues"
+  },
+  "homepage": "https://github.com/Stackup-Rwanda/fan7-bn-backend#readme"
+}
