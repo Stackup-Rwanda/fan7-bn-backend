@@ -2,9 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 dotenv.config();
+import { serve, setup } from 'swagger-ui-express';
+import swagger from './swagger.json';
 
 const app = express();
 
+app.use('/docs', serve, setup(swagger));
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 200,
