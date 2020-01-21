@@ -1,9 +1,10 @@
 {
   "name": "fan7-bn-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A web application intend to make travel and accommodation easy and convenient.",
+  "main": "./src/server.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
@@ -19,11 +20,14 @@
     "nyc": "^15.0.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
-    "eslint-plugin-import": "^2.20.0"
+    "eslint-plugin-import": "^2.20.0",
+    "nodemon": "^1.19.4"
   },
   "scripts": {
     "test": "nyc mocha --require @babel/polyfill --require @babel/register --exit ./src/test/index.test.js",
-    "start": "babel-node ./src/server.js"
+    "start": "babel-node ./src/server.js",
+    "dev": "node_modules/.bin/nodemon ./src/server.js --exec babel-node --",
+    "stop-win": "Taskkill /IM node.exe /F"
   },
   "repository": {
     "type": "git",
