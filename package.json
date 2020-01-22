@@ -17,16 +17,18 @@
     "@babel/register": "^7.8.3",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^7.0.0",
-    "nyc": "^15.0.0",
+    "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.20.0",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
     "nodemon": "^1.19.4"
   },
   "scripts": {
     "test": "nyc mocha --require @babel/polyfill --require @babel/register --exit ./src/test/index.test.js",
     "start": "babel-node ./src/server.js",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dev": "node_modules/.bin/nodemon ./src/server.js --exec babel-node --",
     "stop-win": "Taskkill /IM node.exe /F"
   },
