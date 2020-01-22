@@ -36,7 +36,8 @@
     "start": "babel-node ./src/server.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dev": "node_modules/.bin/nodemon ./src/server.js --exec babel-node --",
-    "stop-win": "Taskkill /IM node.exe /F"
+    "stop-win": "Taskkill /IM node.exe /F",
+    "db:connect": "babel-node ./src/database/config"
   },
   "repository": {
     "type": "git",
