@@ -1,6 +1,7 @@
 
-# Barefoot Nomad
 
+# Barefoot Nomad
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 [![Build Status](https://travis-ci.org/Stackup-Rwanda/fan7-bn-backend.svg?branch=develop)](https://travis-ci.org/Stackup-Rwanda/fan7-bn-backend)
 
 # General Overview
@@ -85,3 +86,4 @@ ISC
 ## Acknowledgement
 
 - Andela
+
