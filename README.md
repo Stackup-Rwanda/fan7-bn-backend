@@ -7,6 +7,10 @@
 # General Overview
 A web application intend to make travel and accommodation easy and convenient.
 
+#### Database migration
+
+- To connect to database, modify config.js file in /src/config and include your DB parameters or add DATABASE_URL env.
+- Run the command 'node_modules/.bin/sequelize db:migrate' to migrate the dummy user table.
 
 # Github 
 
@@ -86,5 +90,4 @@ ISC
 ## Acknowledgement
 
 - Andela
-
 
