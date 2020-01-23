@@ -3,7 +3,7 @@
 
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 [![Build Status](https://travis-ci.org/Stackup-Rwanda/fan7-bn-backend.svg?branch=develop)](https://travis-ci.org/Stackup-Rwanda/fan7-bn-backend)
-
+[![Coverage Status](https://coveralls.io/repos/github/Stackup-Rwanda/fan7-bn-backend/badge.svg?branch=develop)](https://coveralls.io/github/Stackup-Rwanda/fan7-bn-backend?branch=develop)
 # General Overview
 A web application intend to make travel and accommodation easy and convenient.
 
