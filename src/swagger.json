@@ -33,9 +33,50 @@
         ],
         "parameters": [
           {
-            "name": "Body",
+            "name": "Email",
             "in": "body",
             "required": true,
+            "type": "string",
+            "description": "The Email must be a valid email",
+            "schema": {
+              "$ref": "#/definitions/SignupRequest"
+            }
+          },
+          {
+            "name": "userName",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SignupRequest"
+            }
+          },
+          {
+            "name": "firstName",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SignupRequest"
+            }
+          },
+          {
+            "name": "lastName",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SignupRequest"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "type": "string",
             "description": "",
             "schema": {
               "$ref": "#/definitions/SignupRequest"
@@ -44,7 +85,7 @@
         ],
         "responses": {
           "201": {
-            "description": "",
+            "description": "on success It should respond with a jwt token or 404 if the email exist already",
             "headers": {}
           }
         }

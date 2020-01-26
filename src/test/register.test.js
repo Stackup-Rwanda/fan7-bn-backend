@@ -2,7 +2,6 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../server';
 
-
 chai.use(chaiHttp);
 const { request } = chai;
 
