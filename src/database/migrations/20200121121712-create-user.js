@@ -15,6 +15,22 @@ export default {
       allowNull: false,
       type: Sequelize.STRING
     },
+    first_name: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    last_name: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    user_name: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
+    role: {
+      allowNull: false,
+      type: Sequelize.STRING
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

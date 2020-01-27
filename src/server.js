@@ -1,6 +1,8 @@
-import app from './app'
+import app from './app';
+import createAdministator from './controllers/createAdministrator';
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
-export default server;
+createAdministator();
+
+export default app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

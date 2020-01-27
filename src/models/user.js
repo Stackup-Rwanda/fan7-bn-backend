@@ -1,41 +1,41 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    email: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your email address'
-      },
-      unique: {
-        args: true,
-        msg: 'Email already exists'
-      },
-
-      validate: {
-        isEmail: {
+  const User = sequelize.define(
+    'User',
+    {
+      email: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your email address'
+        },
+        unique: {
           args: true,
-          msg: 'Please enter a valid email address'
-        },
+          msg: 'Email already exists'
+        }
       },
+      first_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      user_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter a password'
-      },
-      validate: {
-        isNotShort: (value) => {
-          if (value.length < 8) {
-            throw new Error('Password should be at least 8 characters');
-          }
-        },
-      },
-    }
-  }, {});
+    {}
+  );
 
-  User.associate = () => {
-
-  };
   return User;
 };
