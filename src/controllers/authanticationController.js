@@ -45,6 +45,7 @@ export default class AuthanticationController {
       );
       const newUser = {
         id: user.id,
+        email: user.email,
         role: user.role
       };
       const token = jwt.sign(newUser, process.env.KEY);
