@@ -11,7 +11,7 @@ const users = process.env.USERS ? JSON.parse(process.env.USERS) : [];
 const createAdministator = () => {
   sequelize
     .sync({
-      force: false
+      force: false,
     }).then(async () => {
       await Promise.all(
         users.map(async (user) => {
@@ -30,7 +30,7 @@ const createAdministator = () => {
               role: user.role
             });
           }
-        })
+        }),
       );
     });
 };
