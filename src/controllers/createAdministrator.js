@@ -31,8 +31,7 @@ const createAdministator = () => {
             });
           }
         })
-      );
-    });
+      );});
 };
 
 export default createAdministator;
