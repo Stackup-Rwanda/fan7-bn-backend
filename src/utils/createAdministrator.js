@@ -5,7 +5,7 @@ import { sequelize, User } from '../models';
 
 dotenv.config();
 
-const users = JSON.parse(process.env.USERS) || [];
+const users = process.env.USERS ? JSON.parse(process.env.USERS) : [];
 
 const createAdministator = () => {
   sequelize
