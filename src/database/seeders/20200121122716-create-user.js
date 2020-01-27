@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface) => queryInterface.bulkInsert('User', [{
+  up: queryInterface => queryInterface.bulkInsert('Users', [{
     email: 'fantastic7@gmail.com',
     user_name: 'great',
     first_name: 'Fantastic',
@@ -8,5 +8,5 @@ export default {
     role: 'super-administrator'
   }], {}),
 
-  down: (queryInterface) => queryInterface.bulkDelete('User', null, {})
+  down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

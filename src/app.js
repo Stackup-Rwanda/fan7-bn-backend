@@ -12,7 +12,7 @@ app.use(morgan('combined'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
-app.use('/docs', serve, setup(swagger));
+app.use('/api/docs', serve, setup(swagger));
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 200,

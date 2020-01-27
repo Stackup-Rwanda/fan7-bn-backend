@@ -1,10 +1,13 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { User } from '../models';
-
+import models from '../models';
 import hashPassword from '../utils/hash';
+import Response from '../utils/response';
+import DbErrorHandler from '../utils/dbErrorHandler';
 
 dotenv.config();
+
+const { User } = models;
 
 export default class AuthanticationController {
   /**
@@ -20,7 +23,6 @@ export default class AuthanticationController {
         lastName,
         userName,
         password,
-        role,
         email
       } = req.body;
       const user = await User.create(
@@ -29,8 +31,7 @@ export default class AuthanticationController {
           first_name: firstName,
           last_name: lastName,
           email,
-          password: await hashPassword(password),
-          role
+          password: await hashPassword(password)
         },
         {
           fields: [
@@ -48,24 +49,19 @@ export default class AuthanticationController {
         email: user.email
       };
       const token = jwt.sign(newUser, process.env.KEY);
-      res.status(201).json({
-        status: 201,
-        data: {
-          token
-        }
-      });
+      const data = {
+        user: {
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          userName: user.user_name,
+        },
+        token
+      };
+      const response = new Response(res, 201, data);
+      response.sendSuccessResponse();
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        res.status(400).json({
-          status: 400,
-          error: 'Email exist already'
-        });
-      } else {
-        res.status(500).json({
-          status: 500,
-          error
-        });
-      }
+      DbErrorHandler.handleSignupError(res, error);
     }
   }
 }
