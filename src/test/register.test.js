@@ -21,7 +21,7 @@ it('Should return a token', (done) => {
       if (err) {
         return done(err);
       }
-      expect(res.status).to.eql(201);
+      expect(res).to.have.status(201);
       expect(res.body).to.be.an('object');
       expect(res.body).to.have.a.property('data');
       return done();
