@@ -1,5 +1,5 @@
 import app from './app';
-import createAdministator from './utils/createAdministrator';
+import createAdministator from './controllers/createAdministrator';
 
 const PORT = process.env.PORT || 5000;
 

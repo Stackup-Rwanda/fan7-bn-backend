@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import dotenv from 'dotenv';
+import hashPassword from '../utils/hash';
 
 import { sequelize, User } from '../models';
 
@@ -20,7 +21,14 @@ const createAdministator = () => {
             }
           });
           if (!exist) {
-            await User.create(user);
+            await User.create({
+              user_name: user.user_name,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+              password: await hashPassword(user.password),
+              role: user.role
+            });
           }
         })
       );
