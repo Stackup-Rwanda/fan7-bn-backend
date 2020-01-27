@@ -1,6 +1,6 @@
 import authentication from './routes/authentication';
 
-export default app => {
+export default (app) => {
   app.use('/auth', authentication);
 
   app.use((req, res) => {
