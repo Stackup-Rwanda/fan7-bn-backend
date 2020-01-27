@@ -30,7 +30,7 @@ const createAdministator = () => {
               role: user.role
             });
           }
-        }),);
+        }), );
     });
 };
 
