@@ -64,10 +64,10 @@ describe('Barefoot Nomad Login Testing suite', () => {
         done(error);
       });
   });
-  it('all users should not be able to login when when all inserted password is incorrect', (done) => {
+  it('all users should not be able to login when when inserted password is incorrect', (done) => {
     router()
       .post('/auth/login')
-      .send(impDB[2])
+      .send(impDB[5])
       .end((error, response) => {
         expect(response).to.have.status([404]);
         expect(response.body.status).to.be.equal(404);
@@ -78,7 +78,7 @@ describe('Barefoot Nomad Login Testing suite', () => {
         done(error);
       });
   });
-  it('all users should not be able to login when when all inserted data are correct', (done) => {
+  it('all users should be successful able to login when when all inserted data are correct', (done) => {
     router()
       .post('/auth/login')
       .send(impDB[3])

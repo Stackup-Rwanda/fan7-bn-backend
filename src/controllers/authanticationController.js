@@ -1,9 +1,10 @@
+/* eslint-disable import/named */
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import User from '../models';
+import { User } from '../models';
 import Validator from '../middleware/loginValidation';
 
-import hashPassword from '../utils/hash';
+import { hashPassword, decryptPassword } from '../utils/hash';
 
 dotenv.config();
 
@@ -90,19 +91,19 @@ export default class AuthanticationController {
         if (!userExists) {
           res.status(404).json({ status: 404, error: 'Email or password does not exists' });
         }
-        const decryptPassword = await hashPassword.decryptPassword(password, userExists.password);
-        if (!decryptPassword) {
-          res.status(404).json({ status: 404, error: 'password does not exists' });
+        const decryptedPassword = await decryptPassword(password, userExists.password);
+        if (!decryptedPassword) {
+          res.status(404).json({ status: 404, error: `${userExists.email}! this password does not exists` });
         }
         const newUser = {
           id: userExists.id,
           email: userExists.email
         };
         const token = jwt.sign(newUser, process.env.KEY);
-        res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.created}`, data: { token } });
+        res.status(200).json({ status: 200, message: ` Hey ${userExists.email}! you are  signed in Successfully on ${Validator.created}`, data: { token } });
       }
     } catch (err) {
-      res.status(500).json({ message: 'internal server error' });
+      res.status(500).json({ error: 'internal server error', err });
     }
   }
 }
