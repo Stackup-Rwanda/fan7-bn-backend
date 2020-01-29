@@ -1,7 +1,7 @@
 import authentication from './routes/authentication';
 
 export default (app) => {
-  app.use('/auth', authentication);
+  app.use('/api/auth', authentication);
 
   app.use((req, res) => {
     const err = new Error('Page not found');

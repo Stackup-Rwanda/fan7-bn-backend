@@ -2,7 +2,9 @@ import Promise from 'bluebird';
 import dotenv from 'dotenv';
 import hashPassword from '../utils/hash';
 
-import { sequelize, User } from '../models';
+import models from '../models';
+
+const { sequelize, User } = models;
 
 dotenv.config();
 
@@ -31,7 +33,8 @@ const createAdministator = () => {
             });
           }
         })
-      );});
+      );
+    });
 };
 
 export default createAdministator;

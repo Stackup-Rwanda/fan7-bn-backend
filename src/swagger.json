@@ -7,7 +7,7 @@
     "contact": {}
   },
   "host": "localhost:5000",
-  "basePath": "/api/v1",
+  "basePath": "/api/",
   "schemes": [
     "https",
     "http"
@@ -175,6 +175,35 @@
         "responses": {
           "200": {
             "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "User can logout to Barefoot Nomad",
+        "summary": "Logout",
+        "tags": [
+          "User"
+        ],
+        "operationId": "Logout",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "on success It should respond that the user is logged in",
             "headers": {}
           }
         }

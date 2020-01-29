@@ -7,7 +7,7 @@ const { request } = chai;
 
 it('Should return a token', (done) => {
   request(server)
-    .post('/auth/signup')
+    .post('/api/auth/signup')
     .set('Accept', 'application/json')
     .send({
       firstName: 'bihire',
@@ -30,7 +30,7 @@ it('Should return a token', (done) => {
 
 it('Should return a error email exist already', (done) => {
   request(server)
-    .post('/auth/signup')
+    .post('/api/auth/signup')
     .set('Accept', 'application/json')
     .send({
       firstName: 'bihire',
