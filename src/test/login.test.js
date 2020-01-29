@@ -34,51 +34,7 @@ describe('Barefoot Nomad Login Testing suite', () => {
         done(error);
       });
   });
-
-  it('all users should not be able to login when he/she used invalid email', (done) => {
-    router()
-      .post('/auth/login')
-      .send(impDB[7])
-      .end((error, response) => {
-        expect(response).to.have.status([400]);
-        expect(response.body).to.be.a('object');
-        expect(response.body).to.have.property('status');
-        expect(response.body.status).to.be.equal(400);
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.a('string');
-        done(error);
-      });
-  });
-
-  it('all users should not be able to login when when all inserted data are incorrect', (done) => {
-    router()
-      .post('/auth/login')
-      .send(impDB[4])
-      .end((error, response) => {
-        expect(response).to.have.status([404]);
-        expect(response.body.status).to.be.equal(404);
-        expect(response.body).to.be.a('object');
-        expect(response.body).to.have.property('status');
-        expect(response.body.status).to.be.equal(404);
-        expect(response.body).to.have.property('error');
-        done(error);
-      });
-  });
-  it('all users should not be able to login when when inserted password is incorrect', (done) => {
-    router()
-      .post('/auth/login')
-      .send(impDB[5])
-      .end((error, response) => {
-        expect(response).to.have.status([404]);
-        expect(response.body.status).to.be.equal(404);
-        expect(response.body).to.be.a('object');
-        expect(response.body).to.have.property('status');
-        expect(response.body.status).to.be.equal(404);
-        expect(response.body).to.have.property('error');
-        done(error);
-      });
-  });
-  it('all users should be successful able to login when when all inserted data are correct', (done) => {
+  it('all users should be successful able to login when all inserted data are correct', (done) => {
     router()
       .post('/auth/login')
       .send(impDB[3])

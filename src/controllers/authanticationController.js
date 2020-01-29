@@ -87,11 +87,11 @@ export default class AuthanticationController {
           }
         });
         if (!userExists) {
-          res.status(404).json({ status: 404, error: 'Email or password does not exists' });
+          res.status(404).json({ status: 404, message: 'Email or password does not exists' });
         }
         const decryptedPassword = await decryptPassword(password, userExists.password);
         if (!decryptedPassword) {
-          res.status(404).json({ status: 404, error: `${userExists.email}! this password does not exists` });
+          res.status(404).json({ status: 404, message: `${userExists.email}! this password does not exists` });
         }
         const newUser = {
           id: userExists.id,
