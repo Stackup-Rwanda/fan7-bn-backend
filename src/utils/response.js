@@ -52,3 +52,12 @@ class Response {
   }
 }
 export default Response;
+export const onError = (res, code, error) => res.status(code).json({
+  status: code,
+  error,
+});
+export const onSuccess = (res, code, message, data) => res.status(code).json({
+  status: code,
+  message,
+  data
+});
