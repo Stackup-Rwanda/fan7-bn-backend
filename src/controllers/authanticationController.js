@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { User } from '../models';
@@ -78,7 +77,6 @@ export default class AuthanticationController {
       const inValidate = Validator.schemaSignIn(req.body);
       if (inValidate.error) {
         const mess = inValidate.error.details[0].message;
-        // eslint-disable-next-line no-useless-escape
         const messUser = mess.replace(/\"/g, '');
         res.status(400).send({ status: 400, message: messUser });
       }
