@@ -12,7 +12,7 @@ export default {
       type: Sequelize.STRING
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     first_name: {
@@ -25,11 +25,13 @@ export default {
     },
     user_name: {
       allowNull: false,
+      unique: true,
       type: Sequelize.STRING
     },
     role: {
-      allowNull: false,
-      type: Sequelize.STRING
+      allowNull: true,
+      type: Sequelize.STRING,
+      defaultValue: 'requester'
     },
     createdAt: {
       allowNull: false,

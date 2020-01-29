@@ -17,8 +17,7 @@ before((done) => {
       firstName: 'Mutesi',
       lastName: 'Sharon',
       userName: 'Tesi',
-      password: 'fantastic7',
-      role: 'superadmin',
+      password: 'Fantastic7',
       email: 'tesi1@admin.com'
     })
     .end((err, res) => {
