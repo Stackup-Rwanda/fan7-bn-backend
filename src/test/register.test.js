@@ -10,12 +10,12 @@ it('Should return a token', (done) => {
     .post('/auth/signup')
     .set('Accept', 'application/json')
     .send({
-      firstName: 'bihire',
-      lastName: 'boris',
-      userName: 'bobo',
-      password: 'bobo',
+      firstName: 'Emmy',
+      lastName: 'Karangwa',
+      userName: 'Kemmy',
+      password: 'kemmy123',
       role: 'superadmin',
-      email: 'mhja@admin.com'
+      email: 'kemmy@admin.com'
     })
     .end((err, res) => {
       if (err) {
