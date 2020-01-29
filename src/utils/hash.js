@@ -12,4 +12,4 @@ const decryptPassword = async (dataTodecrypt, dataBaseHash) => {
   const deHashedPassword = await bcryptjs.compare(dataTodecrypt, dataBaseHash);
   return deHashedPassword;
 };
-export default { hashPassword, decryptPassword }
+export default { hashPassword, decryptPassword };

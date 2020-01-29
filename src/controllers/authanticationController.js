@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { User } from '../models';
-import Validator from '../middleware/loginValidation'
+import User from '../models';
+import Validator from '../middleware/loginValidation';
 
 import hashPassword from '../utils/hash';
 
@@ -69,13 +69,15 @@ export default class AuthanticationController {
       }
     }
   }
-  // Login 
+  // Login
+
   static async Login(req, res) {
-    try{
-      const {email, password} = req.body;
+    try {
+      const { email, password } = req.body;
       const inValidate = Validator.schemaSignIn(req.body);
       if (inValidate.error) {
         const mess = inValidate.error.details[0].message;
+        // eslint-disable-next-line no-useless-escape
         const messUser = mess.replace(/\"/g, '');
         res.status(400).send({ status: 400, message: messUser });
       }
@@ -85,11 +87,11 @@ export default class AuthanticationController {
             email
           }
         });
-        if(!userExists){
+        if (!userExists) {
           res.status(404).json({ status: 404, error: 'Email or password does not exists' });
         }
         const decryptPassword = await hashPassword.decryptPassword(password, userExists.password);
-        if(!decryptPassword){
+        if (!decryptPassword) {
           res.status(404).json({ status: 404, error: 'password does not exists' });
         }
         const newUser = {
@@ -97,14 +99,10 @@ export default class AuthanticationController {
           email: userExists.email
         };
         const token = jwt.sign(newUser, process.env.KEY);
-        res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.created}`, data: { token }
-        });
+        res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.created}`, data: { token } });
       }
-     
-    }catch(err){
-
+    } catch (err) {
+      res.status(500).json({ message: 'internal server error' });
     }
-
   }
-
 }

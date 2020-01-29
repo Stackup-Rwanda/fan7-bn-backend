@@ -38,7 +38,7 @@
     "nyc": "^15.0.0"
   },
   "scripts": {
-    "test": "nyc mocha --require @babel/polyfill --require @babel/register --exit ./src/test/**.js",
+    "test": "nyc mocha --require @babel/polyfill --require @babel/register --exit ./src/test/login.test.js",
     "start": "nodemon --exec babel-node ./src/server.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dev": "node_modules/.bin/nodemon ./src/server.js --exec babel-node --",
