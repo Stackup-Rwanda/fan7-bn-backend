@@ -12,7 +12,7 @@ export default {
       type: Sequelize.STRING
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     first_name: {
@@ -25,21 +25,25 @@ export default {
     },
     user_name: {
       allowNull: false,
+      unique: true,
       type: Sequelize.STRING
     },
     role: {
-      allowNull: false,
-      type: Sequelize.STRING
+      allowNull: true,
+      type: Sequelize.STRING,
+      defaultValue: 'requester'
     },
     createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
     },
     updatedAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
     }
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('Users')
+  down: queryInterface => queryInterface.dropTable('Users')
 };

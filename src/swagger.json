@@ -87,6 +87,18 @@
           "201": {
             "description": "on success It should respond with a jwt token or 404 if the email exist already",
             "headers": {}
+          },
+          "409": {
+            "description": "email already exists",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid parameters",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         }
       }
@@ -881,6 +893,17 @@
       "required": [
         "comment"
       ]
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "error": {
+          "type": "string"
+        }
+      }
     }
   },
   "tags": [
