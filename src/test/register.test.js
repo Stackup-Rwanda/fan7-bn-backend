@@ -15,7 +15,7 @@ it('Should return a token', (done) => {
       userName: 'Kemmy',
       password: 'kemmy123',
       role: 'superadmin',
-      email: 'kemmy@admin.com'
+      email: 'kemmyx@admin.com'
     })
     .end((err, res) => {
       if (err) {
