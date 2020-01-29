@@ -4,57 +4,15 @@ export default (sequelize, DataTypes) => {
     {
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: {
-          args: true,
-          msg: 'Email already exists'
-        },
-        validate: {
-          notNull: {
-            msg: 'Please enter your email address'
-          },
-          isEmail: {
-            msg: 'Email address must be valid'
-          },
-          notEmpty: {
-            args: true,
-            msg: 'Email is not allowed to be empty'
-          }
-        }
+        allowNull: true,
       },
       first_name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: 'Please enter your First Name'
-          },
-          len: {
-            args: 3,
-            msg: 'First Name must be atleast 3 characters in length'
-          },
-          notEmpty: {
-            args: true,
-            msg: 'First Name is not allowed to be empty'
-          }
-        }
+        allowNull: true
       },
       last_name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: 'Please enter your Last Name'
-          },
-          len: {
-            args: 3,
-            msg: 'Last Name must be atleast 3 characters in length'
-          },
-          notEmpty: {
-            args: true,
-            msg: 'Last Name is not allowed to be empty'
-          }
-        }
+        allowNull: true
       },
       user_name: {
         type: DataTypes.STRING,
@@ -76,17 +34,15 @@ export default (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          len: {
-            args: 8,
-            msg: 'Password must be atleast 8 characters in length'
-          },
-          notEmpty: {
-            args: true,
-            msg: 'Password is not allowed to be empty'
-          }
-        }
+        allowNull: true
+      },
+      social_id: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      provider: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {}

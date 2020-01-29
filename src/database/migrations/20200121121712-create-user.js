@@ -7,7 +7,7 @@ export default {
       type: Sequelize.INTEGER
     },
     email: {
-      allowNull: false,
+      allowNull: true,
       unique: true,
       type: Sequelize.STRING
     },
@@ -16,11 +16,11 @@ export default {
       type: Sequelize.STRING
     },
     first_name: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     last_name: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING
     },
     user_name: {
@@ -39,10 +39,17 @@ export default {
       defaultValue: Sequelize.fn('NOW')
     },
     updatedAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.fn('NOW')
-    }
+      allowNull: true,
+      type: Sequelize.DATE
+    },
+    social_id: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    provider: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
   }),
 
   down: queryInterface => queryInterface.dropTable('Users')
