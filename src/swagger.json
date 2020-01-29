@@ -146,15 +146,6 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
         "responses": {
           "200": {
             "description": "",
@@ -174,15 +165,6 @@
         "deprecated": false,
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
         ],
         "responses": {
           "200": {

@@ -1,5 +1,5 @@
 export default {
-  up: queryInterface => queryInterface.bulkInsert('Users', [{
+  up: (queryInterface) => queryInterface.bulkInsert('Users', [{
     email: 'fantastic7@gmail.com',
     user_name: 'great',
     first_name: 'Fantastic',
