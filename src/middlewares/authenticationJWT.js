@@ -17,7 +17,11 @@ export default (req, res, next) => {
       next();
     });
   } else {
+<<<<<<< HEAD
     return res.status(401).json({
+=======
+    res.status(401).json({
+>>>>>>> ft(server): assign role
       status: 401,
       error: 'please provide token'
     });
