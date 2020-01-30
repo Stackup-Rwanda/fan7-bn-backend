@@ -165,37 +165,6 @@
         }
       }
     },
-    "/auth/assignRole": {
-      "patch": {
-        "description": "A super-administrator should be able to assign roles to users",
-        "summary": "Assign roles",
-        "tags": [
-          "User"
-        ],
-        "operationId": "assignRoles",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/SigninRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
     "/auth/google": {
       "get": {
         "description": "Sign in to Barefoot application via Google",

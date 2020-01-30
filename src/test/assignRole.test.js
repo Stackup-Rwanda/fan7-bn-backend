@@ -5,11 +5,7 @@ import server from '../server';
 chai.use(chaiHttp);
 const { request } = chai;
 
-<<<<<<< HEAD
 it('Should return error of not super admin', (done) => {
-=======
-it('Should return object with new role', (done) => {
->>>>>>> ft(server): assign role
   request(server)
     .patch('/api/auth/assignRole')
     .set('Accept', 'application/json')
@@ -55,11 +51,7 @@ it('Should return object with new role', (done) => {
     });
 });
 
-<<<<<<< HEAD
 it('Should return error of super-admin not exist', done => {
-=======
-it('Should return error of not', done => {
->>>>>>> ft(server): assign role
   request(server)
     .patch('/api/auth/assignRole')
     .set('Accept', 'application/json')
