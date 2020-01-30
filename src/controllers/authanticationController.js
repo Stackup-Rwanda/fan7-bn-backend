@@ -64,7 +64,6 @@ export default class AuthanticationController {
       const response = new Response(res, 201, data);
       return response.sendSuccessResponse();
     } catch (error) {
-<<<<<<< HEAD
       return res.status(500).json({ error: 'internal server error' });
     }
   }
@@ -100,9 +99,6 @@ export default class AuthanticationController {
       return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
     } catch (err) {
       return res.status(500).json({ error: 'internal server error', err });
-=======
-      return DbErrorHandler.handleSignupError(res, error);
->>>>>>> add return to all my functions
     }
   }
 
@@ -165,99 +161,6 @@ export default class AuthanticationController {
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
-    }
-  }
-
-  /**
-   * @description This helps a super administrator to change users role
-   * @param  {object} req - The request object
-   * @param  {object} res - The response object
-   * @returns  {object} The response object
-   */
-  static async assignRole(req, res) {
-    const { email, role } = req.value;
-    try {
-      const user = await User.update(
-        {
-          role
-        },
-        {
-          where: {
-            email
-          },
-          returning: true
-        }
-      );
-      if (user[0] === 0) {
-        const response = new Response(res, 404, 'User not found');
-        response.sendErrorMessage();
-      }
-      const response = new Response(res, 200, user[1][0]);
-      response.sendSuccessResponse();
-    } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
-    }
-  }
-
-  /**
-   * @description This helps a super administrator to change users role
-   * @param  {object} req - The request object
-   * @param  {object} res - The response object
-   * @returns  {object} The response object
-   */
-  static async assignRole(req, res) {
-    const { email, role } = req.value;
-    try {
-      const user = await User.update(
-        {
-          role
-        },
-        {
-          where: {
-            email
-          },
-          returning: true
-        }
-      );
-      if (user[0] === 0) {
-        const response = new Response(res, 404, 'User not found');
-        response.sendErrorMessage();
-      }
-      const response = new Response(res, 200, user[1][0]);
-      response.sendSuccessResponse();
-    } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
-    }
-  }
-
-  /**
-   * @description This helps a super administrator to change users role
-   * @param  {object} req - The request object
-   * @param  {object} res - The response object
-   * @returns  {object} The response object
-   */
-  static async assignRole(req, res) {
-    const { email, role } = req.value;
-    try {
-      const user = await User.update(
-        {
-          role
-        },
-        {
-          where: {
-            email
-          },
-          returning: true
-        }
-      );
-      if (user[0] === 0) {
-        const response = new Response(res, 404, 'User not found');
-        response.sendErrorMessage();
-      }
-      const response = new Response(res, 200, user[1][0]);
-      response.sendSuccessResponse();
-    } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
     }
   }
 }
