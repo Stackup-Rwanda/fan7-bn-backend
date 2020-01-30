@@ -15,5 +15,4 @@ router.get('/testlogout', AuthMiddleware.verifyToken, AuthanticationController.l
 router.post('/forget', emailValidate.forget, resetController.forgetPassword);
 router.patch('/assignRole', authentiactionJWT, AuthMiddleware.userRole, AuthanticationController.assignRole);
 
-
 export default router;
