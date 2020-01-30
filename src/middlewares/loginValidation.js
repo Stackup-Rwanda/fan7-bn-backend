@@ -14,9 +14,9 @@ class Validator {
         .email()
         .required(),
       password: Joi.string()
-        .min(6)
+        .min(8)
         .max(64)
-        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
         .required(),
     };
     return Joi.validate(dataToValidate, inSchema);

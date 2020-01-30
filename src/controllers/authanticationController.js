@@ -64,7 +64,7 @@ export default class AuthanticationController {
       const response = new Response(res, 201, data);
       response.sendSuccessResponse();
     } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
+      return res.status(500).json({ error: 'internal server error' });
     }
   }
   // Login
@@ -89,7 +89,7 @@ export default class AuthanticationController {
       }
       const decryptedPassword = await decryptPassword(password, userExists.password);
       if (!decryptedPassword) {
-        return res.status(404).json({ status: 404, message: `${userExists.email}! this password does not exists` });
+        return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
       }
       const newUser = {
         id: userExists.id,

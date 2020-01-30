@@ -65,7 +65,10 @@ describe('Barefoot Nomad Login Testing suite', () => {
   it('all users should be successful able to login when all inserted data are correct', (done) => {
     router()
       .post('/api/auth/login')
-      .send(impDB[3])
+      .send({
+        email: 'fantastic7@gmail.com',
+        password: 'Kemmy123'
+      })
       .end((error, response) => {
         expect(response).to.have.status([200]);
         expect(response.body.status).to.be.equal(200);
