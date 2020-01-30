@@ -13,5 +13,4 @@ router.get('/logout', AuthanticationController.logout);
 router.get('/testlogout', AuthMiddleware.verifyToken, AuthanticationController.loggedOut);
 router.patch('/assignRole', authentiactionJWT, AuthMiddleware.userRole, AuthanticationController.assignRole);
 
-
 export default router;
