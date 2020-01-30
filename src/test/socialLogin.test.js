@@ -46,9 +46,9 @@ it('Catch errors while google redirect', async () => {
     json() {},
     redirect() {}
   };
-  await auth.googleTokenChecker(err, req, res, next);
   sinon.stub(res, 'status').returnsThis();
   sinon.stub(res, 'redirect').returnsThis();
+  await auth.googleTokenChecker(err, req, res, next);
 });
 
 it('Catch errors while facebook redirect to the App', async () => {
@@ -60,9 +60,9 @@ it('Catch errors while facebook redirect to the App', async () => {
     json() {},
     redirect() {}
   };
-  await auth.facebookTokenChecker(err, req, res, next);
   sinon.stub(res, 'status').returnsThis();
   sinon.stub(res, 'redirect').returnsThis();
+  await auth.facebookTokenChecker(err, req, res, next);
 });
 
 it('Send error response on failure', async () => {

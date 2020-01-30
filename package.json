@@ -47,7 +47,7 @@
   },
   "scripts": {
     "pre-test": "cross-env NODE_ENV=test npm run undo:db && cross-env NODE_ENV=test npm run migrate:db && cross-env NODE_ENV=test npm run seed:db",
-    "test": "npm run pre-test && cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --require @babel/polyfill --require @babel/register --exit ./src/test/index.test.js",
+    "test": "npm run pre-test && cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout=5000 --require @babel/polyfill --require @babel/register --exit ./src/test/index.test.js",
     "start": "babel-node ./src/server.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dev": "node_modules/.bin/nodemon ./src/server.js --exec babel-node --",
