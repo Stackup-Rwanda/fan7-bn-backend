@@ -4,7 +4,7 @@ export default {
     user_name: 'great',
     first_name: 'Fantastic',
     last_name: 'Bro',
-    password: '$2a$10$0Eyb0ffngluRWMPKntqT0.gok2DxiAcJxfBFObpN8/pMG5Tm/pmom',
+    password: '$2a$10$F49hLnKL.PPvN/sc205VmO2onEU7sZYpCqe2Cc4UACGArz2455.R2',
     role: 'super-administrator'
   }], {}),
 
