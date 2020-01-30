@@ -74,6 +74,39 @@ class UserSchema {
 
     return schema.validate(data);
   }
+
+  /**
+  * @static
+  * @param {obj} data
+  * @returns {obj} returns schema object
+ */
+  static assignRole(data) {
+    const schema = Joi.object({
+
+      email: Joi.string()
+        .email()
+        .required()
+        .messages({
+          'string.base': 'email must be a string',
+          'string.email': 'email must be a valid email',
+          'any.required': 'email is required',
+          'string.empty': 'email is not allowed to be empty'
+        }),
+      role: Joi
+        .string()
+        .trim()
+        .valid(
+          'travel-administrator',
+          'travel-team-member',
+          'manager',
+          'requester',
+          'super-administrator'
+        )
+        .required()
+    });
+
+    return schema.validate(data);
+  }
 }
 
 export default UserSchema;
