@@ -1,6 +1,6 @@
-import Model from '../models';
+import model from '../models';
 
-const { User } = Model;
+const { User } = model;
 
 /**
  * @description UserRepository contains user repository

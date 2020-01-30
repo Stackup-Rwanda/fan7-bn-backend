@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import Validator from '../middlewares/loginValidation';
 import hash from '../utils/hash';
 import models from '../models';
+import redisClient from '../database/redis.database';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
 
@@ -99,5 +100,37 @@ export default class AuthanticationController {
     } catch (err) {
       return res.status(500).json({ error: 'internal server error', err });
     }
+  }
+=======
+
+  /**
+   * @description contoller function that logs a user out
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param {object} next - middleware object
+   * @returns {object} user - Logged in user
+   */
+  static async logout(req, res) {
+    // const { email } = req.user;
+    try {
+      const token = req.headers.token.split(' ')[1] || req.params.token;
+      redisClient.set('token', token);
+      return res.status(200).json({
+        status: 200,
+        message: 'You have logged out'
+      });
+    } catch (error) {
+      res.status(403).json({ status: 403, error: 'provide token!' });
+    }
+  }
+
+  /**
+ *
+ * @param { obj } req
+ * @param { obj } res
+ * @returns { * } null
+ */
+  static async loggedOut(req, res) {
+    res.status(200).json({ status: 200, message: 'Still Loggedin' });
   }
 }
