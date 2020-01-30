@@ -45,6 +45,21 @@ class UserRepository {
       throw new Error(error);
     }
   }
+
+  /**
+     *
+     * @param {BigInt} id
+     * @returns {obj} record is object if id found or null if not
+     */
+  async findById(id) {
+    try {
+      const record = await this.db.findOne({ where: { id } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UserRepository();
