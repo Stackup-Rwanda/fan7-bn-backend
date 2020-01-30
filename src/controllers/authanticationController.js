@@ -101,7 +101,6 @@ export default class AuthanticationController {
       return res.status(500).json({ error: 'internal server error', err });
     }
   }
-=======
 
   /**
    * @description contoller function that logs a user out
