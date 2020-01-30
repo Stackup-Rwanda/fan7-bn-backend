@@ -9,7 +9,7 @@ describe('User reset password test', () => {
   it('should be able to send email if account exists', done => {
     chai.request(server)
       .post('/api/auth/forget')
-      .send({ email: 'mhj@admin.com' })
+      .send({ email: 'kemmy@admin.com' })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('message', 'Link to reset password is sent to your email');

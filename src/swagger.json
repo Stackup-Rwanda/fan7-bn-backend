@@ -103,6 +103,37 @@
         }
       }
     },
+    "/auth/confirmation/:emailToken": {
+      "post": {
+        "description": "User can verify his/her account after signUp",
+        "summary": "Account Verification",
+        "tags": [
+          "User"
+        ],
+        "operationId": "Account Verification",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [ 
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Confirm-Email-Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "on success It should respond with a message or 404 if the email is not found or 409 if the account is already verified",
+            "headers": {}
+          }
+        }
+      }
+    },
     "/auth/signin": {
       "post": {
         "description": "User can signin to his/her account",
@@ -642,6 +673,21 @@
         "lastname",
         "email",
         "password"
+      ]
+    },
+    "Confirm-Email-Request": {
+      "title": "Confirm-Email-Request",
+      "example": {
+        "emailToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZWx2aXNydWdhbWJhQGdtYWlsLmNvbSIsImlhdCI6MTU4MDM3MzU5MX0.Xmsx9U7kkOEljPvZM1rEQbSRkB4XqNQHzz1SIyZeHqA"
+      },
+      "type": "object",
+      "properties": {
+        "emailToken": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "emailToken"
       ]
     },
     "SigninRequest": {
