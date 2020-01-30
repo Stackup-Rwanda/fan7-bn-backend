@@ -36,6 +36,42 @@ class AuthMiddleware {
       return response.sendErrorMessage();
     }
   }
+
+  /**
+   * @description This helps validate new role info
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @param  {object} next - forwards request to the next middleware function
+   * @returns  {object} The response object
+   */
+  static async userRole(req, res, next) {
+    const { id } = req.token;
+    const { email, role } = req.body;
+    const user = { email, role };
+    const { error, value } = UserSchema.assignRole(user);
+
+    if (error) {
+      const response = new Response(res, 422, error.details[0].message);
+      response.sendErrorMessage();
+    } else {
+      const superAdmin = await AuthUtils.superAdminExists(id);
+
+      if (!superAdmin) {
+        const response = new Response(res, 401, 'Your credintials are invalid');
+        return response.sendErrorMessage();
+      }
+      if (superAdmin.role !== 'super-administrator') {
+        const response = new Response(
+          res,
+          405,
+          'You have no rights over this endpoint'
+        );
+        response.sendErrorMessage();
+      }
+      req.value = value;
+      next();
+    }
+  }
 }
 
 export default AuthMiddleware;
