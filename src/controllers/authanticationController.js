@@ -62,8 +62,9 @@ export default class AuthanticationController {
         token
       };
       const response = new Response(res, 201, data);
-      response.sendSuccessResponse();
+      return response.sendSuccessResponse();
     } catch (error) {
+<<<<<<< HEAD
       return res.status(500).json({ error: 'internal server error' });
     }
   }
@@ -99,6 +100,9 @@ export default class AuthanticationController {
       return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
     } catch (err) {
       return res.status(500).json({ error: 'internal server error', err });
+=======
+      return DbErrorHandler.handleSignupError(res, error);
+>>>>>>> add return to all my functions
     }
   }
 
@@ -119,7 +123,7 @@ export default class AuthanticationController {
         message: 'You have logged out'
       });
     } catch (error) {
-      res.status(403).json({ status: 403, error: 'provide token!' });
+      return res.status(403).json({ status: 403, error: 'provide token!' });
     }
   }
 
@@ -130,7 +134,7 @@ export default class AuthanticationController {
  * @returns { * } null
  */
   static async loggedOut(req, res) {
-    res.status(200).json({ status: 200, message: 'Still Loggedin' });
+    return res.status(200).json({ status: 200, message: 'Still Loggedin' });
   }
 
   /**
@@ -155,12 +159,12 @@ export default class AuthanticationController {
       );
       if (user[0] === 0) {
         const response = new Response(res, 404, 'User not found');
-        response.sendErrorMessage();
+        return response.sendErrorMessage();
       }
       const response = new Response(res, 200, user[1][0]);
-      response.sendSuccessResponse();
+      return response.sendSuccessResponse();
     } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
+      return DbErrorHandler.handleSignupError(res, error);
     }
   }
 

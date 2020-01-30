@@ -97,7 +97,7 @@ class AuthMiddleware {
           405,
           'You have no rights over this endpoint'
         );
-        response.sendErrorMessage();
+        return response.sendErrorMessage();
       }
       req.value = value;
       next();

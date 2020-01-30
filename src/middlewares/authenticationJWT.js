@@ -17,7 +17,7 @@ export default (req, res, next) => {
       next();
     });
   } else {
-    res.status(401).json({
+    return res.status(401).json({
       status: 401,
       error: 'please provide token'
     });
