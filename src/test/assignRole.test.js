@@ -38,7 +38,7 @@ it('Should return object with new role', (done) => {
     )
     .send({
       role: 'super-administrator',
-      email: 'bobo@gmail.com'
+      email: 'tesi1@admin.com'
     })
     .end((err, res) => {
       if (err) {
