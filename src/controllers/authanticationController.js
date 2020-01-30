@@ -198,4 +198,35 @@ export default class AuthanticationController {
       DbErrorHandler.handleSignupError(res, error);
     }
   }
+
+  /**
+   * @description This helps a super administrator to change users role
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async assignRole(req, res) {
+    const { email, role } = req.value;
+    try {
+      const user = await User.update(
+        {
+          role
+        },
+        {
+          where: {
+            email
+          },
+          returning: true
+        }
+      );
+      if (user[0] === 0) {
+        const response = new Response(res, 404, 'User not found');
+        response.sendErrorMessage();
+      }
+      const response = new Response(res, 200, user[1][0]);
+      response.sendSuccessResponse();
+    } catch (error) {
+      DbErrorHandler.handleSignupError(res, error);
+    }
+  }
 }
