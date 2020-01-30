@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import Validator from '../middleware/loginValidation';
-import { hashPassword, decryptPassword } from '../utils/hash';
+import Validator from '../middlewares/loginValidation';
+import hash from '../utils/hash';
 import models from '../models';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
@@ -9,6 +9,7 @@ import DbErrorHandler from '../utils/dbErrorHandler';
 dotenv.config();
 
 const { User } = models;
+const { hashPassword, decryptPassword } = hash;
 
 export default class AuthanticationController {
   /**
@@ -68,36 +69,35 @@ export default class AuthanticationController {
   // Login
 
   static async Login(req, res) {
+    let validatorMessage;
     try {
       const { email, password } = req.body;
-      const inValidate = Validator.schemaSignIn(req.body);
-      if (inValidate.error) {
-        const mess = inValidate.error.details[0].message;
-        const messUser = mess.replace(/\"/g, '');
-        res.status(400).send({ status: 400, message: messUser });
+      const Validate = Validator.schemaSignIn(req.body);
+      if (Validate.error) {
+        validatorMessage = Validate.error.details[0].message;
+        validatorMessage = validatorMessage.replace(/"/g, '');
+        return res.status(400).send({ status: 400, message: validatorMessage });
       }
-      if (!inValidate.error) {
-        const userExists = await User.findOne({
-          where: {
-            email
-          }
-        });
-        if (!userExists) {
-          res.status(404).json({ status: 404, message: 'Email or password does not exists' });
+      const userExists = await User.findOne({
+        where: {
+          email
         }
-        const decryptedPassword = await decryptPassword(password, userExists.password);
-        if (!decryptedPassword) {
-          res.status(404).json({ status: 404, message: `${userExists.email}! this password does not exists` });
-        }
-        const newUser = {
-          id: userExists.id,
-          email: userExists.email
-        };
-        const token = jwt.sign(newUser, process.env.KEY);
-        res.status(200).json({ status: 200, message: ` Hey ${userExists.email}! you are  signed in Successfully on ${Validator.created}`, data: { token } });
+      });
+      if (!userExists) {
+        return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
       }
+      const decryptedPassword = await decryptPassword(password, userExists.password);
+      if (!decryptedPassword) {
+        return res.status(404).json({ status: 404, message: `${userExists.email}! this password does not exists` });
+      }
+      const newUser = {
+        id: userExists.id,
+        email: userExists.email
+      };
+      const token = jwt.sign(newUser, process.env.KEY);
+      return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
     } catch (err) {
-      res.status(500).json({ error: 'internal server error', err });
+      return res.status(500).json({ error: 'internal server error', err });
     }
   }
 }

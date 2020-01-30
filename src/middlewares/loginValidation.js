@@ -3,13 +3,21 @@ import Joi from 'joi';
 
 class Validator {
   constructor() {
-    this.created = new Date().toString();
+    this.createdDate = new Date().toString();
   }
 
   schemaSignIn(dataToValidate) {
     const inSchema = {
-      email: Joi.string().email().required(),
-      password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required().trim(),
+      email: Joi.string()
+        .min(3)
+        .max(32)
+        .email()
+        .required(),
+      password: Joi.string()
+        .min(6)
+        .max(64)
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .required(),
     };
     return Joi.validate(dataToValidate, inSchema);
   }
