@@ -5,4 +5,11 @@ const hashPassword = async (password) => {
   const hashed = await bcryptjs.hash(password, salt);
   return hashed;
 };
-export default hashPassword;
+
+// decrypting passwiord
+
+const decryptPassword = async (dataTodecrypt, dataBaseHash) => {
+  const deHashedPassword = await bcryptjs.compare(dataTodecrypt, dataBaseHash);
+  return deHashedPassword;
+};
+export default { hashPassword, decryptPassword };

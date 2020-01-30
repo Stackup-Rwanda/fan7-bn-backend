@@ -1,6 +1,7 @@
+/* eslint-disable import/named */
 import Promise from 'bluebird';
 import dotenv from 'dotenv';
-import hashPassword from '../utils/hash';
+import { hashPassword } from '../utils/hash';
 
 import models from '../models';
 

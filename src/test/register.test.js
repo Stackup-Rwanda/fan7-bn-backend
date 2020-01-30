@@ -10,11 +10,11 @@ it('Should return a token', (done) => {
     .post('/api/auth/signup')
     .set('Accept', 'application/json')
     .send({
-      firstName: 'bihire',
-      lastName: 'boris',
-      userName: 'bobo',
-      password: 'Bobo12345',
-      email: 'mhj@admin.com'
+      firstName: 'Emmy',
+      lastName: 'Karangwa',
+      userName: 'Kemmy',
+      password: 'Kemmy123',
+      email: 'kemmy@admin.com'
     })
     .end((err, res) => {
       if (err) {
@@ -35,8 +35,8 @@ it('Should return a error email exist already', (done) => {
       firstName: 'bihire',
       lastName: 'boris',
       userName: 'bobo',
-      password: 'Bobo12345',
-      email: 'mhj@admin.com'
+      password: 'Bobo123445',
+      email: 'kemmy@admin.com'
     })
     .end((err, res) => {
       if (err) {

@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import Validator from '../middlewares/loginValidation';
+import hash from '../utils/hash';
 import models from '../models';
-import hashPassword from '../utils/hash';
 import redisClient from '../database/redis.database';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
@@ -9,6 +10,7 @@ import DbErrorHandler from '../utils/dbErrorHandler';
 dotenv.config();
 
 const { User } = models;
+const { hashPassword, decryptPassword } = hash;
 
 export default class AuthanticationController {
   /**
@@ -62,7 +64,41 @@ export default class AuthanticationController {
       const response = new Response(res, 201, data);
       response.sendSuccessResponse();
     } catch (error) {
-      DbErrorHandler.handleSignupError(res, error);
+      return res.status(500).json({ error: 'internal server error' });
+    }
+  }
+  // Login
+
+  static async Login(req, res) {
+    let validatorMessage;
+    try {
+      const { email, password } = req.body;
+      const Validate = Validator.schemaSignIn(req.body);
+      if (Validate.error) {
+        validatorMessage = Validate.error.details[0].message;
+        validatorMessage = validatorMessage.replace(/"/g, '');
+        return res.status(400).send({ status: 400, message: validatorMessage });
+      }
+      const userExists = await User.findOne({
+        where: {
+          email
+        }
+      });
+      if (!userExists) {
+        return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
+      }
+      const decryptedPassword = await decryptPassword(password, userExists.password);
+      if (!decryptedPassword) {
+        return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
+      }
+      const newUser = {
+        id: userExists.id,
+        email: userExists.email
+      };
+      const token = jwt.sign(newUser, process.env.KEY);
+      return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
+    } catch (err) {
+      return res.status(500).json({ error: 'internal server error', err });
     }
   }
 
