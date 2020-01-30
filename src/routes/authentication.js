@@ -5,6 +5,8 @@ import AuthMiddleware from '../middlewares/auth.middleware';
 
 import authentiactionJWT from '../middlewares/authenticationJWT';
 
+import authentiactionJWT from '../middlewares/authenticationJWT';
+
 const router = express.Router();
 router.post('/signup', AuthMiddleware.signup, AuthanticationController.register);
 router.get('/logout', AuthanticationController.logout);
