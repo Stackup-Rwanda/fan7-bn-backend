@@ -6,8 +6,6 @@ import emailValidate from '../middleware/emailValidation';
 
 import authentiactionJWT from '../middlewares/authenticationJWT';
 
-import authentiactionJWT from '../middlewares/authenticationJWT';
-
 const router = express.Router();
 
 router.post('/login', AuthanticationController.Login);
