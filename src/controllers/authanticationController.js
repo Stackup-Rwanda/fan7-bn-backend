@@ -6,6 +6,7 @@ import models from '../models';
 import redisClient from '../database/redis.database';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
+import SendMailer from '../services/send.email';
 
 dotenv.config();
 
@@ -61,10 +62,13 @@ export default class AuthanticationController {
         },
         token
       };
+      const emailView = SendMailer.confirm(token, firstName);
+      SendMailer.sendEmail(email, 'Account Verification', emailView);
+
       const response = new Response(res, 201, data);
       response.sendSuccessResponse();
     } catch (error) {
-      return res.status(500).json({ error: 'internal server error' });
+      DbErrorHandler.handleSignupError(res, error);
     }
   }
   // Login

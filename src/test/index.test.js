@@ -5,6 +5,7 @@ import logout from './logout.test';
 import reset from './reset.test';
 import dbErrorHandler from './dbErrorHandler.test';
 import profile from './profile.test';
+import verification from './email.verification.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -14,4 +15,5 @@ describe('API test', () => {
   describe('reset test', reset);
   describe('DbErrorHandler Test', dbErrorHandler);
   describe('Profile page Test', profile);
+  describe('Email Verification test', verification);
 });
