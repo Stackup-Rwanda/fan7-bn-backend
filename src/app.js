@@ -11,6 +11,7 @@ const app = express();
 app.use(morgan('combined'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+app.use(express.static(`${__dirname}/`));
 
 app.use('/api/docs', serve, setup(swagger));
 app.get('/', (req, res) => {

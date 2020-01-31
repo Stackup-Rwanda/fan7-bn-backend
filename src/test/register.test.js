@@ -14,7 +14,7 @@ it('Should return a token', (done) => {
       lastName: 'Karangwa',
       userName: 'Kemmy',
       password: 'Kemmy123',
-      email: 'kemmy@admin.com'
+      email: 'mhj@admin.com'
     })
     .end((err, res) => {
       if (err) {
@@ -36,7 +36,7 @@ it('Should return a error email exist already', (done) => {
       lastName: 'boris',
       userName: 'bobo',
       password: 'Bobo123445',
-      email: 'kemmy@admin.com'
+      email: 'mhj@admin.com'
     })
     .end((err, res) => {
       if (err) {

@@ -36,7 +36,7 @@ class UserSchema {
         }),
 
       email: Joi.string()
-        .email()
+        .email({ minDomainSegments: 2 })
         .required()
         .messages({
           'string.base': 'email must be a string',
@@ -72,6 +72,91 @@ class UserSchema {
         }),
     });
 
+    return schema.validate(data);
+  }
+
+  /**
+   * @static
+   * @param {obj} data
+   * @returns {obj} returns schema object
+  */
+  static profile(data) {
+    const schema = Joi.object().keys({
+      email: Joi.string().email({ minDomainSegments: 2 }),
+      firstName: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'firstName must be a string',
+          'string.min': 'firstName length must be at least {{#limit}} characters long',
+          'string.max': 'firstName length must be less than or equal to {{#limit}} characters long',
+        }),
+      lastName: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'lastName must be a string',
+          'string.min': 'lastName length must be at least {{#limit}} characters long',
+          'string.max': 'lastName length must be less than or equal to {{#limit}} characters long',
+        }),
+      userName: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'userName must be a string',
+          'string.min': 'userName length must be at least {{#limit}} characters long',
+          'string.max': 'userName length must be less than or equal to {{#limit}} characters long',
+        }),
+      phone: Joi.string().min(10).max(20)
+        .messages({
+          'string.base': 'phone must be a string',
+          'string.min': 'phone length must be at least {{#limit}} characters long',
+          'string.max': 'phone length must be less than or equal to {{#limit}} characters long',
+        }),
+      gender: Joi.string().regex(/^(Male|Female|MALE|FEMALE|male|female)$/)
+        .messages({
+          'string.base': 'gender must be a string',
+          'string.pattern.base': 'gender must be Male|Female|MALE|FEMALE|male|female',
+        }),
+      dob: Joi.date()
+        .messages({
+          'date.base': 'dob must be a date',
+        }),
+      address: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'address must be a string',
+          'string.min': 'address length must be at least {{#limit}} characters long',
+          'string.max': 'address length must be less than or equal to {{#limit}} characters long',
+        }),
+      country: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'country must be a string',
+          'string.min': 'country length must be at least {{#limit}} characters long',
+          'string.max': 'country length must be less than or equal to {{#limit}} characters long',
+        }),
+      prefered_language: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'prefered_language must be a string',
+          'string.min': 'prefered_language length must be at least {{#limit}} characters long',
+          'string.max': 'prefered_language length must be less than or equal to {{#limit}} characters long',
+        }),
+      prefered_currency: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'prefered_currency must be a string',
+          'string.min': 'prefered_currency length must be at least {{#limit}} characters long',
+          'string.max': 'prefered_currency length must be less than or equal to {{#limit}} characters long',
+        }),
+      company: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'company must be a string',
+          'string.min': 'company length must be at least {{#limit}} characters long',
+          'string.max': 'company length must be less than or equal to {{#limit}} characters long',
+        }),
+      department: Joi.string().min(3).max(30)
+        .messages({
+          'string.base': 'department must be a string',
+          'string.min': 'department length must be at least {{#limit}} characters long',
+          'string.max': 'department length must be less than or equal to {{#limit}} characters long',
+        }),
+      line_manager: Joi.string()
+        .messages({
+          'string.base': 'line_manager must be a string',
+        }),
+    });
     return schema.validate(data);
   }
 }

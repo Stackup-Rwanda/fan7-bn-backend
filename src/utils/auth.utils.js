@@ -25,6 +25,16 @@ class AuthUtils {
     const isEmailExists = await UserRepository.findByEmail(email);
     return !!isEmailExists;
   }
+
+  /**
+    *
+    * @param {string} email
+    * @returns {boolean} isEmailExists is true if email exists
+    */
+  static async isVerified({ id }) {
+    const { isVerified } = await UserRepository.findByUserId(id);
+    return isVerified;
+  }
 }
 
 export default AuthUtils;
