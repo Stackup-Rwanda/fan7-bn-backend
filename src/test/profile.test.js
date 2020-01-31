@@ -146,7 +146,7 @@ it('Should not update user profile if image format is invalid', (done) => {
     .set('token', `Bearer ${token2}`)
     .field('email', 'tesi1@gmail.com')
     .field('userName', 'Sharon1')
-    .attach('image', 'src/test/assets/invalid.pdf', 'invalid.pdf')
+    .attach('image', 'src/test/assets/invalid.PDF', 'invalid.PDF')
     .end((err, res) => {
       if (err) {
         return done(err);
