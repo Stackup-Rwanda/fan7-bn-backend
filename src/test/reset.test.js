@@ -37,4 +37,44 @@ describe('User reset password test', () => {
         done();
       });
   });
+  it('should be able to reset password', done => {
+    chai.request(server)
+      .patch('/api/auth/reset/fantastic7@gmail.com/Bobo12345')
+      .send({ password: 'Bobobola123', confirmPassword: 'Bobobola123' })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('message', 'Password is updated successfully');
+        done();
+      });
+  });
+  it('should not be able to reset password if password do not match', done => {
+    chai.request(server)
+      .patch('/api/auth/reset/mhj@admin.com/Bobo12345')
+      .send({ password: 'Bobobola123', confirmPassword: 'Bobobola123456' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error', 'Password does not match');
+        done();
+      });
+  });
+  it('should not be able to reset password if user does not exist', done => {
+    chai.request(server)
+      .patch('/api/auth/reset/niyialexp@gmail.com/Bobo12345')
+      .send({ password: 'Bobobola123', confirmPassword: 'Bobobola123' })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.have.property('error', 'User with that email is not found');
+        done();
+      });
+  });
+  it('should not be able to reset password if there are validation errors', done => {
+    chai.request(server)
+      .patch('/api/auth/reset/mhj@admin.com/Bobo12345')
+      .send({ password: 'Bobobola123' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        done();
+      });
+  });
 });
