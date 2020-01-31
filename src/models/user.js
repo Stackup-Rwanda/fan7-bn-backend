@@ -76,7 +76,7 @@ export default (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
           len: {
             args: 8,
@@ -87,6 +87,11 @@ export default (sequelize, DataTypes) => {
             msg: 'Password is not allowed to be empty'
           }
         }
+      },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
       }
     },
     {}

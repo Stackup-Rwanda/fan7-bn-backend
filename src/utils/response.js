@@ -3,15 +3,15 @@
  */
 class Response {
   /**
-   *
-   * @description constructor initializes res, code, message
-   * Response constructor
-   * @constructor
-   *
-   * @param {obj} res
-   * @param {number} code
-   * @param {*} message string or object
-   */
+     *
+     * @description constructor initializes res, code, message
+     * Response constructor
+     * @constructor
+     *
+     * @param {obj} res
+     * @param {number} code
+     * @param {*} message string or object
+     */
   constructor(res, code, message) {
     this.res = res;
     this.code = code;
@@ -19,9 +19,9 @@ class Response {
   }
 
   /**
-   * @description Send Error Response
-   * @returns {*} null
-   */
+     * @description Send Error Response
+     * @returns {*} null
+     */
   sendErrorMessage() {
     this.res.status(this.code).json({
       status: this.code,
@@ -30,9 +30,9 @@ class Response {
   }
 
   /**
-   * @description Send Success Response
-   * @returns {*} null
-   */
+     * @description Send Success Response
+     * @returns {*} null
+     */
   sendSuccessMessage() {
     this.res.status(this.code).json({
       status: this.code,
@@ -41,9 +41,9 @@ class Response {
   }
 
   /**
-   * @description Send Success Response
-   * @returns {*} null
-   */
+     * @description Send Success Response
+     * @returns {*} null
+     */
   sendSuccessResponse() {
     this.res.status(this.code).json({
       status: this.code,
@@ -51,5 +51,4 @@ class Response {
     });
   }
 }
-
 export default Response;
