@@ -31,4 +31,14 @@ router.get('/facebook',
 router.get('/facebook/callback',
   passport.authenticate('facebook', { session: false }), emailAuth.facebookTokenChecker, social.socialLogin);
 
+router.get('/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'] }));
+router.get('/google/callback',
+  passport.authenticate('google', { session: false }), emailAuth.googleTokenChecker, social.socialLogin);
+
+router.get('/facebook',
+  passport.authenticate('facebook'));
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { session: false }), emailAuth.facebookTokenChecker, social.socialLogin);
+
 export default router;
