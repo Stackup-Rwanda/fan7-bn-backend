@@ -48,7 +48,7 @@ class UserProfile {
         profileData.image_url = imageUrl;
       }
 
-      await UserRepository.update(userData, profileData);
+      await UserRepository.update({ id: userData.id }, profileData);
 
       response = new Response(res, 200, profileData);
       return response.sendSuccessResponse();

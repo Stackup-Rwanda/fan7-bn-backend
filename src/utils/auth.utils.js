@@ -35,6 +35,16 @@ class AuthUtils {
     const { isVerified } = await UserRepository.findByUserId(id);
     return isVerified;
   }
+
+  /**
+  *
+  * @param {number} id
+  * @returns {boolean} check if super Administrator exists
+  */
+  static async superAdminExists(id) {
+    const superAdminExists = await UserRepository.findById(id);
+    return superAdminExists;
+  }
 }
 
 export default AuthUtils;

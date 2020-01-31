@@ -63,15 +63,15 @@ class UserRepository {
 
   /**
    *
-   * @param {integer} id
+   * @param {object} userField
    *
    * @param {object} changes to update for user
    *
    * @returns {object} updated user
    */
-  async update({ id }, changes) {
+  async update(userField, changes) {
     try {
-      return await this.db.update(changes, { returning: true, where: { id } });
+      return await this.db.update(changes, { returning: true, where: userField });
     } catch (e) {
       throw new Error(e);
     }
@@ -90,6 +90,21 @@ class UserRepository {
       return await this.db.update(changes, { returning: true, where: { email } });
     } catch (e) {
       throw new Error(e);
+    }
+  }
+
+  /**
+     *
+     * @param {integer} id
+     * @returns {obj} record is object if id found or null if not
+     */
+  async findById(id) {
+    try {
+      const record = await this.db.findOne({ where: { id } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

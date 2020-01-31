@@ -1,5 +1,5 @@
 import express from 'express';
-import AuthanticationController from '../controllers/authanticationController';
+import AuthanticationController from '../controllers/authenticationController';
 import AuthMiddleware from '../middlewares/auth.middleware';
 import resetController from '../controllers/resetController';
 import confirmController from '../controllers/confirm.email';
@@ -14,5 +14,6 @@ router.get('/testlogout', AuthMiddleware.verifyToken, AuthanticationController.l
 router.post('/forget', emailValidate.forget, resetController.forgetPassword);
 router.post('/confirmation/:emailToken', confirmController.verifyingUsers);
 router.patch('/reset/:email/:password', emailValidate.reset, resetController.resetPassword);
+router.patch('/assignRole', AuthMiddleware.verifyToken, AuthMiddleware.userRole, AuthanticationController.assignRole);
 
 export default router;

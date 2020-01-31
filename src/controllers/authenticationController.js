@@ -7,6 +7,7 @@ import redisClient from '../database/redis.database';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import SendMailer from '../services/send.email';
+import UserRepository from '../repositories/userRepository';
 
 dotenv.config();
 
@@ -135,5 +136,34 @@ export default class AuthanticationController {
  */
   static async loggedOut(req, res) {
     res.status(200).json({ status: 200, message: 'Still Loggedin' });
+  }
+
+  /**
+   * @description This helps a super administrator to change users role
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async assignRole(req, res) {
+    const { email, role } = req.value;
+    try {
+      const user = await UserRepository.update({ email }, { role });
+
+      if (user[0] === 0) {
+        const response = new Response(res, 404, 'User not found');
+        return response.sendErrorMessage();
+      }
+      const newUser = {
+        firstName: user[1][0].first_name,
+        lastName: user[1][0].last_name,
+        email: user[1][0].email,
+        userName: user[1][0].user_name,
+        role: user[1][0].role
+      };
+      const response = new Response(res, 200, { user: newUser });
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
+    }
   }
 }
