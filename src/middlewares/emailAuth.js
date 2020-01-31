@@ -8,7 +8,7 @@ class EmailAuthentication {
   * @returns  {object} The response object
   */
   googleTokenChecker(err, req, res, next) {
-    if (err.name === 'TokenError') {
+    if (err) {
       res.redirect('/api/auth/google');
     }
     next();

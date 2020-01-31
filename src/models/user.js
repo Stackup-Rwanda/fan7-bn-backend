@@ -75,23 +75,6 @@ export default (sequelize, DataTypes) => {
       provider: {
         type: DataTypes.STRING,
         allowNull: true
-      },
-      company: {
-        allowNull: true,
-        type: DataTypes.STRING
-      },
-      department: {
-        allowNull: true,
-        type: DataTypes.STRING
-      },
-      line_manager: {
-        allowNull: true,
-        type: DataTypes.STRING
-      },
-      isVerified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
       }
     },
     {}
