@@ -32,6 +32,7 @@ class AuthMiddleware {
           return res.status(401).json({ status: 401, error: 'Please login required' });
         }
 
+        req.userData = payload;
         next();
       });
     } catch (ex) {
@@ -49,7 +50,7 @@ class AuthMiddleware {
     const userData = trimmer(req.body);
     const { error } = UserSchema.signup(userData);
     try {
-      const isEmailExists = await AuthUtils.emailExists(req.body);
+      const isEmailExists = await AuthUtils.emailExists(userData);
 
       if (isEmailExists) {
         const response = new Response(res, 409, 'Email already used');

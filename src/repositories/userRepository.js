@@ -45,6 +45,53 @@ class UserRepository {
       throw new Error(error);
     }
   }
+
+  /**
+     *
+     * @param {integer} id
+     * @returns {obj} record is object if user found or null if not
+     */
+  async findByUserId(id) {
+    try {
+      const record = await this.db.findOne({ where: { id } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {integer} id
+   *
+   * @param {object} changes to update for user
+   *
+   * @returns {object} updated user
+   */
+  async update({ id }, changes) {
+    try {
+      return await this.db.update(changes, { returning: true, where: { id } });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  /**
+   *
+   * @param {string} email
+   *
+   * @param {object} changes to update for user
+   *
+   * @returns {object} updated user
+   */
+  async verify(email, changes) {
+    try {
+      return await this.db.update(changes, { returning: true, where: { email } });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }
 
 export default new UserRepository();

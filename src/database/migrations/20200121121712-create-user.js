@@ -25,7 +25,6 @@ export default {
     },
     user_name: {
       allowNull: false,
-      unique: true,
       type: Sequelize.STRING
     },
     role: {
@@ -33,10 +32,54 @@ export default {
       type: Sequelize.STRING,
       defaultValue: 'requester'
     },
+    gender: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    dob: {
+      allowNull: true,
+      type: Sequelize.DATE
+    },
+    phone: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    address: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    country: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    prefered_language: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    prefered_currency: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    image_url: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    company: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    department: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
+    line_manager: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
     isVerified: {
-      allowNull: false,
       type: Sequelize.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,

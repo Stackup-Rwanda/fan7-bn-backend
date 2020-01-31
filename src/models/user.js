@@ -88,6 +88,50 @@ export default (sequelize, DataTypes) => {
           }
         }
       },
+      gender: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      dob: {
+        allowNull: true,
+        type: DataTypes.DATE
+      },
+      phone: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      address: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      country: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      prefered_language: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      prefered_currency: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      image_url: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      company: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      department: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
+      line_manager: {
+        allowNull: true,
+        type: DataTypes.STRING
+      },
       isVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
