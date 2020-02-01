@@ -25,8 +25,10 @@ router.get(
   '/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'] })
 );
-router.get('/google/callback',
-  passport.authenticate('google', { session: false }), emailAuth.googleTokenChecker, social.socialLogin);
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }), emailAuth.googleTokenChecker, social.socialLogin
+);
 
 router.get(
   '/facebook',
