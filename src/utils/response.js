@@ -11,11 +11,13 @@ class Response {
      * @param {obj} res
      * @param {number} code
      * @param {*} message string or object
+     * @param {*} data
      */
-  constructor(res, code, message) {
+  constructor(res, code, message, data = {}) {
     this.res = res;
     this.code = code;
     this.message = message;
+    this.data = data;
   }
 
   /**
@@ -47,7 +49,8 @@ class Response {
   sendSuccessResponse() {
     this.res.status(this.code).json({
       status: this.code,
-      data: this.message,
+      message: this.message,
+      data: this.data,
     });
   }
 }
