@@ -12,8 +12,6 @@ before('Signup', (done) => {
     .post('/api/auth/signup')
     .set('Accept', 'application/json')
     .send({
-      firstName: 'skemc',
-      lastName: 'kare',
       userName: 'eric',
       password: 'Ericeric1',
       email: 'eric.mico6@gmail.com'

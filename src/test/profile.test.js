@@ -10,8 +10,6 @@ const { request } = chai;
 let token2;
 const token3 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzaGFyb250QGdtYWlsLmNvbSIsImlhdCI6MTU4MDQzNTg0Mn0.BtetkRu57cq4svbTNbGhOEGvuBmdTi5dwsxHuqKevg4';
 const user = {
-  firstName: 'Mutesi',
-  lastName: 'Sharon',
   userName: 'Tesi',
   password: 'Fantastic7',
   email: 'tesi@gmail.com'

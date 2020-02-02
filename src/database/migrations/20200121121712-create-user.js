@@ -81,15 +81,6 @@ export default {
       defaultValue: false,
       allowNull: false
     },
-    createdAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.fn('NOW')
-    },
-    updatedAt: {
-      allowNull: true,
-      type: Sequelize.DATE
-    },
     social_id: {
       allowNull: true,
       type: Sequelize.STRING
@@ -97,6 +88,16 @@ export default {
     provider: {
       allowNull: true,
       type: Sequelize.STRING
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    },
+    updatedAt: {
+      allowNull: true,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
     },
   }),
 

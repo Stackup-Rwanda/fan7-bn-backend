@@ -11,30 +11,6 @@ class UserSchema {
   */
   static signup(data) {
     const schema = Joi.object({
-      firstName: Joi.string()
-        .min(3)
-        .max(30)
-        .required()
-        .messages({
-          'string.base': 'firstName must be a string',
-          'string.min': 'firstName length must be at least {{#limit}} characters long',
-          'string.max': 'firstName length must be less than or equal to {{#limit}} characters long',
-          'any.required': 'firstName is required',
-          'string.empty': 'firstName is not allowed to be empty'
-        }),
-
-      lastName: Joi.string()
-        .min(3)
-        .max(30)
-        .required()
-        .messages({
-          'string.base': 'lastName must be a string',
-          'string.min': 'lastName length must be at least {{#limit}} characters long',
-          'string.max': 'lastName length must be less than or equal to {{#limit}} characters long',
-          'any.required': 'lastName is required',
-          'string.empty': 'lastName is not allowed to be empty'
-        }),
-
       email: Joi.string()
         .email({ minDomainSegments: 2 })
         .required()

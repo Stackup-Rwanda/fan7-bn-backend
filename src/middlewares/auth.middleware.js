@@ -64,7 +64,7 @@ class AuthMiddleware {
 
       return next();
     } catch (err) {
-      const response = new Response(res, 500, err);
+      const response = new Response(res, 500, 'Internal Server Error');
       return response.sendErrorMessage();
     }
   }
