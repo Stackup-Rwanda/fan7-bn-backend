@@ -66,7 +66,7 @@ export default class AuthanticationController {
       const emailView = SendMailer.confirm(token, firstName);
       SendMailer.sendEmail(email, 'Account Verification', emailView);
 
-      const response = new Response(res, 201, data);
+      const response = new Response(res, 201, 'sucessfully registered', data);
       response.sendSuccessResponse();
     } catch (error) {
       DbErrorHandler.handleSignupError(res, error);
