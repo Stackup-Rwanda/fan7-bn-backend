@@ -56,8 +56,6 @@ export default class AuthanticationController {
       const token = jwt.sign(newUser, process.env.KEY);
       const data = {
         user: {
-          firstName: user.first_name,
-          lastName: user.last_name,
           email: user.email,
           userName: user.user_name,
         },
@@ -160,7 +158,7 @@ export default class AuthanticationController {
         userName: user[1][0].user_name,
         role: user[1][0].role
       };
-      const response = new Response(res, 200, { user: newUser });
+      const response = new Response(res, 200, 'User role updated successfully', { user: newUser });
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
