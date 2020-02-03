@@ -84,9 +84,19 @@ export default class AuthanticationController {
         validatorMessage = validatorMessage.replace(/"/g, '');
         return res.status(400).send({ status: 400, message: validatorMessage });
       }
+      const notVerified = await User.findOne({
+        where: {
+          email,
+          isVerified: false
+        }
+      });
+      if (notVerified) {
+        return res.status(404).json({ status: 404, message: 'Account not verified' });
+      }
       const userExists = await User.findOne({
         where: {
-          email
+          email,
+          isVerified: true
         }
       });
       if (!userExists) {
