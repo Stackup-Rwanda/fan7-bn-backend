@@ -12,7 +12,7 @@ const token3 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzaGF
 const user = {
   userName: 'Tesi',
   password: 'Fantastic7',
-  email: 'tesi@gmail.com'
+  email: 'sharonuase@yahoo.com'
 };
 
 before((done) => {
@@ -66,7 +66,7 @@ it('Should not update user profile on 500 error', (done) => {
     })
   };
   const smpl = {
-    userData: { email: 'test@gmail.com' },
+    userData: { id: 1, email: 'test@gmail.com' },
     profileData: { password: 1 }
   };
   UserProfile.updateUser(smpl, res).then(data => {
@@ -80,7 +80,6 @@ it('Should update user profile', (done) => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('email', 'tesi@gmail.com')
     .field('firstName', 'Sharon')
     .field('lastName', 'Sharon')
     .field('userName', 'Sharon')
@@ -107,7 +106,6 @@ it('Should not update user profile if his/her account is not verified', (done) =
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token3}`)
-    .field('email', 'tesi1@gmail.com')
     .field('userName', 'Sharon1')
     .end((err, res) => {
       if (err) {
@@ -120,29 +118,11 @@ it('Should not update user profile if his/her account is not verified', (done) =
     });
 });
 
-it('Should not update user profile if email is not provided', (done) => {
-  request(server)
-    .patch('/api/profile')
-    .set('Accept', 'application/json')
-    .set('token', `Bearer ${token2}`)
-    .field('userName', 'Sharon1')
-    .end((err, res) => {
-      if (err) {
-        return done(err);
-      }
-      expect(res).to.have.status(500);
-      expect(res.body).to.be.an('object');
-      expect(res.body).to.have.a.property('error');
-      return done();
-    });
-});
-
 it('Should not update user profile if image format is invalid', (done) => {
   request(server)
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('email', 'tesi1@gmail.com')
     .field('userName', 'Sharon1')
     .attach('image', 'src/test/assets/invalid.pdf', 'invalid.pdf')
     .end((err, res) => {
@@ -161,7 +141,6 @@ it('Should update user profile if image format is valid', () => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('email', 'tesi1@gmail.com')
     .field('userName', 'Sharon1')
     .attach('image', 'src/test/assets/image.png', 'image.png')
     .then((res) => {
@@ -179,7 +158,6 @@ it('Should not update user profile for more than one image', () => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('email', 'tesi1@gmail.com')
     .field('userName', 'Sharon1')
     .attach('image', 'src/test/assets/image.png', 'image.png')
     .attach('image', 'src/test/assets/image.png', 'image.png')

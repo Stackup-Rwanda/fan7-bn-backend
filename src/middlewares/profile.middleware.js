@@ -21,13 +21,7 @@ class ProfileMiddleware {
     const profileData = trimmer(req.body);
     const { error } = UserSchema.profile(profileData);
     try {
-      const isEmailExists = await AuthUtils.emailExists(profileData);
       const verified = await AuthUtils.isVerified(userData);
-
-      if (isEmailExists && userData.email !== profileData.email) {
-        const response = new Response(res, 409, 'Email already used');
-        return response.sendErrorMessage();
-      }
 
       if (!verified) {
         const response = new Response(res, 400, 'Your account is not yet verified');

@@ -61,7 +61,7 @@ export default class AuthanticationController {
         },
         token
       };
-      const emailView = SendMailer.confirm(token, firstName);
+      const emailView = SendMailer.confirm(token, userName);
       SendMailer.sendEmail(email, 'Account Verification', emailView);
 
       const response = new Response(res, 201, 'User sucessfully registered', data);
@@ -108,6 +108,7 @@ export default class AuthanticationController {
         id: userExists.id,
         email: userExists.email
       };
+
       const token = jwt.sign(newUser, process.env.KEY);
       return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
     } catch (err) {
@@ -162,8 +163,6 @@ export default class AuthanticationController {
         return response.sendErrorMessage();
       }
       const newUser = {
-        firstName: user[1][0].first_name,
-        lastName: user[1][0].last_name,
         email: user[1][0].email,
         userName: user[1][0].user_name,
         role: user[1][0].role
