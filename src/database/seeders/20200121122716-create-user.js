@@ -5,7 +5,8 @@ export default {
     first_name: 'Fantastic',
     last_name: 'Bro',
     password: '$2a$10$F49hLnKL.PPvN/sc205VmO2onEU7sZYpCqe2Cc4UACGArz2455.R2',
-    role: 'super-administrator'
+    role: 'super-administrator',
+    isVerified: true
   }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})

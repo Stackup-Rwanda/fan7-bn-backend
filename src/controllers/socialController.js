@@ -35,7 +35,8 @@ export default class SocialController {
           social_id: profile.id,
           provider: profile.provider,
           role: 'requester',
-        }, { fields: ['user_name', 'social_id', 'provider', 'role'] });
+          isVerified: true
+        }, { fields: ['user_name', 'social_id', 'provider', 'role', 'isVerified'] });
       }
       const [{ value }] = profile.emails;
       const { familyName, givenName } = profile.name;
@@ -47,7 +48,8 @@ export default class SocialController {
         social_id: profile.id,
         provider: profile.provider,
         role: 'requester',
-      }, { fields: ['user_name', 'first_name', 'last_name', 'email', 'social_id', 'provider', 'role'] });
+        isVerified: true
+      }, { fields: ['user_name', 'first_name', 'last_name', 'email', 'social_id', 'provider', 'role', 'isVerified'] });
       return userData;
     } catch (ex) {
       throw new Error(ex);
