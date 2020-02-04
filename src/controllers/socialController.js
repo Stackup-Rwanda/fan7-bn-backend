@@ -64,16 +64,28 @@ export default class SocialController {
    */
   static async socialLogin(req, res) {
     try {
-      const payload = {
-        id: req.user.id,
-        username: req.user.displayName,
-        provider: req.user.provider
-      };
-      const token = jwt.sign(payload, process.env.KEY);
       const user = await SocialController.findSocialUser(req.user);
-      if (user) return onSuccess(res, 200, `${user.user_name}, You are successful logged in`, token);
+      if (user) {
+        const payload1 = {
+          id: user.dataValues.id,
+          social_id: req.user.id,
+          username: req.user.displayName,
+          provider: req.user.provider
+        };
+        const token1 = jwt.sign(payload1, process.env.KEY);
+        return onSuccess(res, 200, `${user.user_name}, You are successful logged in`, token1);
+      }
       const { dataValues } = await SocialController.socialCreate(req.user);
-      if (dataValues) return onSuccess(res, 200, `${dataValues.user_name}, You are successful logged in`, token);
+      if (dataValues) {
+        const payload2 = {
+          id: dataValues.id,
+          social_id: req.user.id,
+          username: req.user.displayName,
+          provider: req.user.provider
+        };
+        const token2 = jwt.sign(payload2, process.env.KEY);
+        return onSuccess(res, 200, `${dataValues.user_name}, You are successful logged in`, token2);
+      }
     } catch (ex) {
       return onError(res, 500, 'Internal Server Error');
     }

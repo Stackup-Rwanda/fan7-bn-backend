@@ -66,8 +66,8 @@ describe('Barefoot Nomad Login Testing suite', () => {
     router()
       .post('/api/auth/login')
       .send({
-        email: 'fantastic7@gmail.com',
-        password: 'Kemmy123'
+        email: 'eric.mico6@gmail.com',
+        password: 'Ericeric1'
       })
       .end((error, response) => {
         expect(response).to.have.status([200]);

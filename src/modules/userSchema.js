@@ -58,7 +58,6 @@ class UserSchema {
   */
   static profile(data) {
     const schema = Joi.object().keys({
-      email: Joi.string().email({ minDomainSegments: 2 }),
       firstName: Joi.string().min(3).max(30)
         .messages({
           'string.base': 'firstName must be a string',

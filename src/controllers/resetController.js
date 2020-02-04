@@ -1,7 +1,7 @@
+import jwt from 'jsonwebtoken';
 import notifications from '../services/notifications';
 import hash from '../utils/hash';
 import models from '../models';
-
 
 const { User } = models;
 class resetController {
@@ -23,10 +23,14 @@ class resetController {
         error: 'Looks like there is no account associated with your Email',
       });
     }
-    const hashPsw = exist.password;
-    const url = `http://localhost:5000/auth/reset/${exist.email}/${hashPsw}`;
-    const message = `You requested a password reset, click on this link ${url} to reset password.`;
-    notifications.sendEmail(exist, message);
+    const payload = {
+      id: exist.id,
+      email: exist.email,
+    };
+    const token = jwt.sign(payload, process.env.KEY);
+    const url = `${req.headers.host}/api/auth/reset/${exist.email}/${token}`;
+
+    notifications.sendEmail(exist, url);
     return res.status(200).json({
       status: 200,
       message: 'Link to reset password is sent to your email',

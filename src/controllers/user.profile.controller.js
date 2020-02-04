@@ -11,17 +11,21 @@ class UserProfile {
        */
   static async getUser({ userData }, res) {
     let response;
-    const { email } = userData;
+    const { id } = userData;
 
     try {
-      const search = await UserRepository.findByEmail(email);
+      const search = await UserRepository.findByUserId(id);
+      if (!search) {
+        response = new Response(res, 404, 'User not found');
+        return response.sendErrorMessage();
+      }
       const { dataValues } = search;
       const { password, ...user } = dataValues;
 
-      response = new Response(res, 200, user);
+      response = new Response(res, 200, 'User profile data', user);
       return response.sendSuccessResponse();
     } catch (error) {
-      response = new Response(res, 500, 'Internal Server Error');
+      response = new Response(res, 500, `Internal Server Error: ${error}`);
       return response.sendErrorMessage();
     }
   }
@@ -50,7 +54,7 @@ class UserProfile {
 
       await UserRepository.update({ id: userData.id }, profileData);
 
-      response = new Response(res, 200, profileData);
+      response = new Response(res, 200, 'User profile data', profileData);
       return response.sendSuccessResponse();
     } catch (error) {
       response = new Response(res, 500, 'Internal Serevr Error');
