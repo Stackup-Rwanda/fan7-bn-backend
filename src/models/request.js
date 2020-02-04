@@ -70,6 +70,17 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Pending',
+        validate: {
+          isIn: {
+            args: [['Pending', 'Approved', 'Rejected']],
+            msg: 'Invalid Status, uses Pending, Approved or Rejected only'
+          }
+        }
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -86,7 +97,9 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'accommodation_id',
       onDelete: 'CASCADE'
     });
+
     Request.belongsTo(models.User, { foreignKey: 'user_id' });
   };
+
   return Request;
 };
