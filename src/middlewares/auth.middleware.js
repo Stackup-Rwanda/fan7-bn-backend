@@ -104,6 +104,31 @@ class AuthMiddleware {
       next();
     }
   }
+
+  static async autoFill(req, res, next) {
+    const { dataValues } = await userRepository.findByUserId(req.userData.id);
+    const data = await userRepository.findRequestByUserId(dataValues.id);
+    if (!data) return next();
+    if (dataValues.rememberMe !== false) {
+      const {
+        passportName, passportNumber, gender, role, dob
+      } = data.dataValues;
+      req.body = {
+        ...req.body, passportName, passportNumber, gender, role, dob
+
+      };
+      return next();
+    }
+    next();
+  }
+
+  static async rememberMe(req, res) {
+    const check = req.body.rememberMe;
+    if (check === true) await userRepository.update({ id: req.userData.id }, { rememberMe: true });
+    if (check === false) {
+      await userRepository.update({ id: req.userData.id }, { rememberMe: false });
+    }
+  }
 }
 
 export default AuthMiddleware;
