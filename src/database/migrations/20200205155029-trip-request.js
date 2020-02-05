@@ -30,30 +30,30 @@ export default {
       allowNull: true,
       type: Sequelize.DATE
     },
-    origin: {
+    from: {
       allowNull: false,
       type: Sequelize.STRING,
     },
-    destination: {
+    to: {
       allowNull: false,
       type: Sequelize.STRING
     },
-    travelDate: {
+    travelTime: {
       allowNull: false,
-      type: Sequelize.DATE,
+      type: Sequelize.STRING,
     },
     reason: {
       allowNull: false,
       type: Sequelize.STRING
     },
-    accommodation_id: {
+    accomodation: {
       allowNull: false,
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     isApproved: {
-      allowNull: false,
-      type: Sequelize.STRING,
-      defaultValue: 'pending'
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     },
     createdAt: {
       allowNull: false,

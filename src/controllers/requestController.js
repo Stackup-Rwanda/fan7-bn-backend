@@ -1,14 +1,14 @@
 /* eslint-disable class-methods-use-this */
 import model from '../models';
 import { onError, onSuccess } from '../utils/response';
-import requestSchema from '../modules/requestSchema';
+import UserSchema from '../modules/userSchema';
 
 const { Request } = model;
 
 class TripRequestInfo {
   async oneWay(req, res, next) {
     try {
-      const { error } = requestSchema.destinationSchema(req.body);
+      const { error } = UserSchema.tripRequest(req.body);
       if (error) {
         const errMsg = error.details[0].message.split('"').join('');
         return onError(res, 400, errMsg);
@@ -20,14 +20,14 @@ class TripRequestInfo {
         gender: req.body.gender,
         role: req.body.role,
         dob: req.body.dob,
-        origin: req.body.origin,
-        destination: req.body.destination,
-        travelDate: req.body.travelDate,
+        from: req.body.from,
+        to: req.body.to,
+        travelTime: req.body.travelTime,
         reason: req.body.reason,
-        accommodation_id: req.body.accommodation_id
+        accomodation: req.body.accommodation
       };
-      await Request.create(info);
-      onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
+      const { dataValues } = await Request.create(info);
+      if (dataValues) onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
       return next();
     } catch (ex) {
       onError(res, 500, 'Internal Server Error');
