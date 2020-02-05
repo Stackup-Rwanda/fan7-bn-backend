@@ -89,6 +89,11 @@ export default {
       allowNull: true,
       type: Sequelize.STRING
     },
+    rememberMe: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
