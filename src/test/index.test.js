@@ -8,6 +8,7 @@ import profile from './profile.test';
 import verification from './email.verification.test';
 import assignRole from './assignRole.test';
 import socialLogin from './socialLogin.test';
+import notification from './notification.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -20,4 +21,5 @@ describe('API test', () => {
   describe('Email Verification test', verification);
   describe('Register test', assignRole);
   describe('Social Login test', socialLogin);
+  describe('Notification test', notification);
 });
