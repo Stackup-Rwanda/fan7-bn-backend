@@ -8,12 +8,13 @@ dotenv.config();
 class SendMailer {
   /**
        * Send a user an email verificatoin link
+       * @param {object} req a request object
        * @param {String} token a userName of the user registered
        * @param {String} userName a userName of the user registered
        * @returns {Object} An email template containing the message of the user
        */
-  static confirm(token, userName) {
-    const url = `http:localhost:5000/api/auth/confirmation/${token}`;
+  static confirm(req, token, userName) {
+    const url = `${req.headers.host}/api/auth/confirmation/${token}`;
     const emailViewer = `<!DOCTYPE html>
 <html lang="en">
 
