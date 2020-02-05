@@ -26,8 +26,8 @@ class TripRequestInfo {
         reason: req.body.reason,
         accomodation: req.body.accommodation
       };
-      const { dataValues } = await Request.create(info);
-      if (dataValues) onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
+      await Request.create(info);
+      onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
       return next();
     } catch (ex) {
       onError(res, 500, 'Internal Server Error');
