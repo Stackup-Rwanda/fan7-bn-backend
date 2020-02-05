@@ -56,7 +56,7 @@ it('User should be able to verify his account', (done) => {
     });
 });
 
-it('User should can not verify his account twice', (done) => {
+it('User can not verify his account twice', (done) => {
   request(server)
     .post(`/api/auth/confirmation/${token1}`)
     .set('Accept', 'application/json')
