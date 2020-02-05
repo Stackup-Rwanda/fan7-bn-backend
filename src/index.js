@@ -1,9 +1,12 @@
 import authentication from './routes/authentication';
 import profile from './routes/profile.route';
+import notification from './routes/notification.route';
+
 
 export default (app) => {
   app.use('/api/auth', authentication);
   app.use('/api/profile', profile);
+  app.use('/api/notifications', notification);
 
   app.use((req, res, next) => {
     const err = new Error('Page not found');
