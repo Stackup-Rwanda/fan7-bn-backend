@@ -92,6 +92,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false
+      },
+      rememberMe: {
+        allowNull: true,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {}
