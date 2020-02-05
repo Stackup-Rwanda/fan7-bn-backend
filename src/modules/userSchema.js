@@ -157,7 +157,7 @@ class UserSchema {
         .trim()
         .valid(
           'travel-administrator',
-          'travel-team-member',
+          'host-supplier',
           'manager',
           'requester',
           'super-administrator'

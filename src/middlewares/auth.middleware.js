@@ -86,16 +86,12 @@ class AuthMiddleware {
       const response = new Response(res, 422, error.details[0].message);
       response.sendErrorMessage();
     } else {
-      const superAdmin = await AuthUtils.superAdminExists(id);
+      const loggedInUser = await AuthUtils.superAdminExists(id);
 
-      if (!superAdmin) {
-        const response = new Response(res, 401, 'Your credintials are invalid');
-        return response.sendErrorMessage();
-      }
-      if (superAdmin.role !== 'super-administrator') {
+      if (loggedInUser.role !== 'super-administrator') {
         const response = new Response(
           res,
-          405,
+          403,
           'You have no rights over this endpoint'
         );
         return response.sendErrorMessage();

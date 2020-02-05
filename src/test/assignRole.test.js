@@ -21,7 +21,7 @@ it('Should return error of not super admin', (done) => {
       if (err) {
         return done(err);
       }
-      expect(res).to.have.status(405);
+      expect(res).to.have.status(403);
       expect(res.body).to.be.an('object');
       expect(res.body).to.have.a.property('error');
       return done();
