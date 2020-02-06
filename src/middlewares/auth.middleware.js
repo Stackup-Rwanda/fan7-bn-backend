@@ -86,7 +86,7 @@ class AuthMiddleware {
       const response = new Response(res, 422, error.details[0].message);
       response.sendErrorMessage();
     } else {
-      const loggedInUser = await AuthUtils.superAdminExists(id);
+      const loggedInUser = await AuthUtils.loggedInUser(id);
 
       if (loggedInUser.role !== 'super-administrator') {
         const response = new Response(
