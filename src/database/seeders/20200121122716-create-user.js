@@ -11,6 +11,15 @@ export default {
     role: 'super-administrator',
     password: await hashPassword('Kemmy123'),
     isVerified: true
+  },
+  {
+    email: 'fantastic6@gmail.com',
+    user_name: 'greatt',
+    first_name: 'Fantastic',
+    last_name: 'Bro',
+    role: 'manager',
+    password: await hashPassword('Kemmy123'),
+    isVerified: true
   }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})

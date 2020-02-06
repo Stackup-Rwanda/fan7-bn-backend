@@ -97,5 +97,11 @@ export default (sequelize, DataTypes) => {
     {}
   );
 
+  User.associate = (models) => {
+    User.hasMany(models.Comment, {
+      foreignKey: 'user_id', as: 'comments'
+    });
+  };
+
   return User;
 };

@@ -5,6 +5,7 @@ import validator from '../utils/validator';
 import redisClient from '../database/redis.database';
 import AuthUtils from '../utils/auth.utils';
 import userRepository from '../repositories/userRepository';
+import CommentService from '../repositories/commentRepository';
 
 const { trimmer } = validator;
 
@@ -103,6 +104,41 @@ class AuthMiddleware {
       req.value = value;
       next();
     }
+  }
+
+  /**
+   *
+   * @param {string} req data
+   * @param {string} res data
+   * @param {string } next data
+   * @returns {dtring } obj
+   */
+  static async isCommentOwner(req, res, next) {
+    const { id } = req.params;
+    const comment = CommentService.getCommentById(id);
+    const user = userRepository.findByUserId(req.userData);
+    if (user.id !== comment.user_id) {
+      const response = new Response(res, 401, 'YOu are not allowed to perform any task');
+      return response.sendErrorMessage();
+    }
+    next();
+  }
+
+  /**
+   *
+   * @param {string} req data
+   * @param {string} res data
+   * @param {string } next data
+   * @returns {dtring } obj
+   */
+  static async getUserID(req, res, next) {
+    const { id } = req.userData;
+    const comment = userRepository.findByUserId({ id: req.userData.id });
+    if (comment !== id) {
+      const response = new Response(res, 401, 'YOu are not allowed to perform any task');
+      return response.sendErrorMessage();
+    }
+    next();
   }
 }
 
