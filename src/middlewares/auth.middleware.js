@@ -87,16 +87,12 @@ class AuthMiddleware {
       const response = new Response(res, 422, error.details[0].message);
       response.sendErrorMessage();
     } else {
-      const superAdmin = await AuthUtils.superAdminExists(id);
+      const loggedInUser = await AuthUtils.loggedInUser(id);
 
-      if (!superAdmin) {
-        const response = new Response(res, 401, 'Your credintials are invalid');
-        return response.sendErrorMessage();
-      }
-      if (superAdmin.role !== 'super-administrator') {
+      if (loggedInUser.role !== 'super-administrator') {
         const response = new Response(
           res,
-          405,
+          403,
           'You have no rights over this endpoint'
         );
         return response.sendErrorMessage();
@@ -105,6 +101,7 @@ class AuthMiddleware {
       next();
     }
   }
+
 
   /**
    *
@@ -121,9 +118,24 @@ class AuthMiddleware {
       const response = new Response(res, 401, 'YOu are not allowed to perform any task');
       return response.sendErrorMessage();
     }
+    return next();
+  }
+  static async autoFill(req, res, next) {
+    const { dataValues } = await userRepository.findByUserId(req.userData.id);
+    const data = await userRepository.findRequestByUserId(dataValues.id);
+    if (!data) return next();
+    if (dataValues.rememberMe !== false) {
+      const {
+        passportName, passportNumber, gender, role, dob
+      } = data.dataValues;
+      req.body = {
+        ...req.body, passportName, passportNumber, gender, role, dob
+
+      };
+      return next();
+    }
     next();
   }
-
   /**
    *
    * @param {string} req data
@@ -139,6 +151,13 @@ class AuthMiddleware {
       return response.sendErrorMessage();
     }
     next();
+  }
+  static async rememberMe(req) {
+    const check = req.body.rememberMe;
+    if (check === true) userRepository.update({ id: req.userData.id }, { rememberMe: true });
+    if (check === false) {
+      return userRepository.update({ id: req.userData.id }, { rememberMe: false });
+    }
   }
 }
 

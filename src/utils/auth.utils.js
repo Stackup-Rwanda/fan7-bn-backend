@@ -41,9 +41,9 @@ class AuthUtils {
   * @param {number} id
   * @returns {boolean} check if super Administrator exists
   */
-  static async superAdminExists(id) {
-    const superAdminExists = await UserRepository.findById(id);
-    return superAdminExists;
+  static async loggedInUser(id) {
+    const loggedInUser = await UserRepository.findById(id);
+    return loggedInUser;
   }
 }
 

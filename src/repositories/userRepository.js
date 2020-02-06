@@ -1,6 +1,6 @@
 import model from '../models';
 
-const { User } = model;
+const { User, Request } = model;
 
 /**
  * @description UserRepository contains user repository
@@ -14,6 +14,7 @@ class UserRepository {
    */
   constructor() {
     this.db = User;
+    this.Request = Request;
   }
 
   /**
@@ -103,6 +104,20 @@ class UserRepository {
       const record = await this.db.findOne({ where: { id } });
 
       return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+     *
+     * @param {integer} userId
+     * @returns {obj} Return Request found
+     */
+  async findRequestByUserId(userId) {
+    try {
+      const request = await this.Request.findOne({ where: { user_id: userId }, order: [['id', 'DESC']] });
+      return request;
     } catch (error) {
       throw new Error(error);
     }

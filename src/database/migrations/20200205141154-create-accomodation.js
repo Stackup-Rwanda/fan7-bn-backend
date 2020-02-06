@@ -1,28 +1,22 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Requests', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Accommodation', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    user_id: {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    location: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    capacity: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-      onDelete: 'CASCADE',
-      references: {
-        model: 'Users',
-        key: 'id',
-        as: 'user_id',
-      },
-    },
-    status: {
-      type: Sequelize.STRING,
-      defaultValue: 'Pending'
-    },
-    passportName: {
-      type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     },
     createdAt: {
       allowNull: false,
@@ -35,5 +29,6 @@ export default {
       defaultValue: Sequelize.fn('NOW')
     }
   }),
-  down: queryInterface => queryInterface.dropTable('Requests')
+
+  down: queryInterface => queryInterface.dropTable('Accommodation')
 };

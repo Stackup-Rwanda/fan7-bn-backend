@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Requests', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Notifications', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -18,11 +18,7 @@ export default {
     },
     status: {
       type: Sequelize.STRING,
-      defaultValue: 'Pending'
-    },
-    passportName: {
-      type: Sequelize.STRING,
-      allowNull: true
+      defaultValue: 'unread',
     },
     createdAt: {
       allowNull: false,
@@ -35,5 +31,5 @@ export default {
       defaultValue: Sequelize.fn('NOW')
     }
   }),
-  down: queryInterface => queryInterface.dropTable('Requests')
+  down: queryInterface => queryInterface.dropTable('Notifications')
 };

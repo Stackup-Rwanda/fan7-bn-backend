@@ -9,15 +9,39 @@ export default {
     first_name: 'Fantastic',
     last_name: 'Bro',
     role: 'super-administrator',
+    rememberMe: true,
     password: await hashPassword('Kemmy123'),
     isVerified: true
   },
   {
     email: 'fantastic6@gmail.com',
-    user_name: 'greatt',
+    user_name: 'great',
+    first_name: 'Fantastic',
+    last_name: 'Bro',
+    role: 'requester',
+    rememberMe: true,
+    password: await hashPassword('Kemmy123'),
+    line_manager: 'fantastic4@gmail.com',
+    isVerified: true
+  },
+  {
+    email: 'fantastic5@gmail.com',
+    user_name: 'great',
+    first_name: 'Fantastic',
+    last_name: 'Bro',
+    role: 'requester',
+    rememberMe: true,
+    password: await hashPassword('Kemmy123'),
+    line_manager: 'fantastic4@gmail.com',
+    isVerified: true
+  },
+  {
+    email: 'fantastic4@gmail.com',
+    user_name: 'great',
     first_name: 'Fantastic',
     last_name: 'Bro',
     role: 'manager',
+    rememberMe: true,
     password: await hashPassword('Kemmy123'),
     isVerified: true
   }], {}),

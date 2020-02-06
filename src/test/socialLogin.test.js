@@ -17,7 +17,7 @@ it('User should be redirected to facebook', (done) => {
       if (err) {
         done(err);
       }
-      expect(res.redirects[0]).to.contain('https://www.facebook.com/v3.2/dialog/oauth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fapi%2Fauth%2Ffacebook%2Fcallback&client_id=3274146169280654');
+      expect(res.redirects[0]).to.contain('https://www.facebook.com/');
       done();
     });
 });
@@ -29,7 +29,7 @@ it('User should be redirected to google', (done) => {
       if (err) {
         done(err);
       }
-      expect(res.redirects[0]).to.contain('https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fapi%2Fauth%2Fgoogle%2Fcallback&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&client_id=598281568439-8hdbb10onlijn5uc9k0bngi2ucg37cop.apps.googleusercontent.com');
+      expect(res.redirects[0]).to.contain('https://accounts.google.com/');
       done();
     });
 });

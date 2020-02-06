@@ -56,7 +56,7 @@ class CommentController {
   static async deleteComment(req, res, next) {
     try {
       const { id } = req.params;
-      const commentFound = CommentService.getCommentById(id);
+      const commentFound = await CommentService.getCommentById(id);
       if (!commentFound) {
         const response = new Response(res, 404, 'Comment not found');
         return response.sendErrorMessage();
