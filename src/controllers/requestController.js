@@ -1,12 +1,15 @@
-import model from '../models';
+import dotenv from 'dotenv';
+import models from '../models';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import Response, { onError, onSuccess } from '../utils/response';
 import RequestService from '../services/request.service';
 import AuthUtils from '../utils/auth.utils';
 import RequestRepository from '../repositories/requestRepository';
+import RequestServices from '../services/trip.services';
 
+dotenv.config();
 
-const { Request, User } = model;
+const { Request, User } = models;
 
 class RequestController {
   /**
@@ -248,6 +251,45 @@ class RequestController {
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
+    }
+  }
+
+  /** Function to search in the trip requests table according to what the user is typing
+   * @param {object} req the request sent to the server
+   * @param {object} res the response returned
+   * @param {object} keyword to be searched for
+   * @returns {object} found data
+   */
+  static async search(req, res) {
+    const { keyword } = req.query;
+    let response;
+    try {
+      const result = await RequestServices.search(keyword);
+      if (result.length === 0) {
+        response = new Response(res, 404, `Ooops. Nothing was found for ${keyword}`);
+        return response.sendErrorMessage();
+      }
+      const [{
+        // eslint-disable-next-line no-shadow
+        User, origin, destination, status, travel_date: travelDate, return_date: returnDate
+      }] = result;
+
+      // eslint-disable-next-line camelcase
+      const { first_name, last_name } = User.dataValues;
+      const data = {
+        first_name,
+        last_name,
+        origin,
+        destination,
+        travelDate,
+        returnDate,
+        status,
+      };
+      response = new Response(res, 200, `The results for ${keyword}`, data);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      response = new Response(res, 500, `Internal Server Error: ${error}`);
+      return response.sendErrorMessage();
     }
   }
 }
