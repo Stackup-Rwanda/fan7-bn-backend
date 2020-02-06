@@ -6,10 +6,6 @@ export default {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    userId: {
-      allowNull: false,
-      type: Sequelize.INTEGER
-    },
     passportName: {
       type: Sequelize.STRING,
       allowNull: false
@@ -20,35 +16,41 @@ export default {
     },
     gender: {
       type: Sequelize.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: Sequelize.STRING,
       allowNull: false
     },
     dob: {
       allowNull: true,
       type: Sequelize.DATE
     },
-    from: {
-      allowNull: false,
+    origin: {
       type: Sequelize.STRING,
+      allowNull: false
     },
-    to: {
-      allowNull: false,
-      type: Sequelize.STRING
-    },
-    travelTime: {
-      allowNull: false,
+    destination: {
       type: Sequelize.STRING,
+      allowNull: false
+    },
+    travel_date: {
+      type: Sequelize.DATE,
+      allowNull: false
+    },
+    accommodation_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     },
     reason: {
+      type: Sequelize.STRING,
       allowNull: false,
-      type: Sequelize.STRING
-    },
-    accomodation: {
-      allowNull: false,
-      type: Sequelize.STRING
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'reason is not allowed to be empty'
+        }
+      }
     },
     isApproved: {
       allowNull: true,
@@ -62,8 +64,9 @@ export default {
     },
     updatedAt: {
       allowNull: true,
-      type: Sequelize.DATE
-    },
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    }
   }),
 
   down: queryInterface => queryInterface.dropTable('Requests')

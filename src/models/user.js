@@ -102,6 +102,13 @@ export default (sequelize, DataTypes) => {
     {}
   );
   User.associate = models => {
+    User.hasMany(models.Request, {
+      foreignKey: 'user_id',
+      as: 'user_id',
+      onDelete: 'CASCADE'
+    });
+  };
+  User.associate = models => {
     User.hasMany(models.Notification, { foreignKey: 'user_id', as: 'notifications' });
   };
   return User;

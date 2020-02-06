@@ -116,7 +116,7 @@ class UserRepository {
      */
   async findRequestByUserId(userId) {
     try {
-      const request = await this.Request.findOne({ where: { userId }, order: [['id', 'DESC']] });
+      const request = await this.Request.findOne({ where: { user_id: userId }, order: [['id', 'DESC']] });
       return request;
     } catch (error) {
       throw new Error(error);
