@@ -1,13 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import model from '../models';
 import { onError, onSuccess } from '../utils/response';
-import UserSchema from '../modules/userSchema';
-// import requestSchema from '../modules/requestSchema';
 
 const { Request } = model;
 
-class TripRequestInfo {
-  async oneWay(req, res, next) {
+class RequestController {
+  async create(req, res, next) {
     try {
       const { userData } = req;
       const {
@@ -41,4 +39,4 @@ class TripRequestInfo {
     }
   }
 }
-export default new TripRequestInfo();
+export default new RequestController();

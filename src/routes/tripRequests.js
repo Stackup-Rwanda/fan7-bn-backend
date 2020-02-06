@@ -11,14 +11,3 @@ router.post('/one_way', AuthMiddleware.verifyToken, AuthMiddleware.autoFill, req
   tripValues.accommodationExist, requestController.oneWay, AuthMiddleware.rememberMe);
 
 export default router;
-
-
-// router.post(
-//   '/one_way',
-//   AuthMiddleware.verifyToken,
-//   requestValidation.oneway,
-//   tripValues.locationExist,
-//   tripValues.accommodationExist,
-//   requestController.createRequest
-// );
-// export default router;

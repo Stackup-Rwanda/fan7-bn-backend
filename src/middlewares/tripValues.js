@@ -27,19 +27,23 @@ export default class TripValues {
       return response.sendErrorMessage();
     }
 
-    if (allCities.filter(obj => obj.name === checkOrigin.city).length === 0) {
+    if (allCities.filter(obj => obj.name === checkOrigin.city)
+      .length === 0) {
       const response = new Response(res, 422, 'please provide a valid city name on origin');
       return response.sendErrorMessage();
     }
-    if (allCities.find(obj => obj.name === checkOrigin.city).country !== getCode(checkOrigin.country)) {
+    if (allCities.find(obj => obj.name === checkOrigin.city)
+      .country !== getCode(checkOrigin.country)) {
       const response = new Response(res, 422, 'the city provided doesn not belong to that country');
       return response.sendErrorMessage();
     }
-    if (allCities.filter(obj => obj.name === checkDestination.city).length === 0) {
+    if (allCities.filter(obj => obj.name === checkDestination.city)
+      .length === 0) {
       const response = new Response(res, 422, 'please provide a valid city name on destination');
       return response.sendErrorMessage();
     }
-    if (allCities.find(obj => obj.name === checkDestination.city).country !== getCode(checkDestination.country)) {
+    if (allCities.find(obj => obj.name === checkDestination.city)
+      .country !== getCode(checkDestination.country)) {
       const response = new Response(res, 422, 'the city provided doesn not belong to that country');
       return response.sendErrorMessage();
     }

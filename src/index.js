@@ -2,7 +2,7 @@ import authentication from './routes/authentication';
 import profile from './routes/profile.route';
 import notification from './routes/notification.route';
 
-import requests from './routes/tripRequests';
+import requests from './routes/requests';
 
 export default (app) => {
   app.use('/api/auth', authentication);

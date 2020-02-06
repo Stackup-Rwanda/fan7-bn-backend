@@ -2,7 +2,6 @@ import 'dotenv';
 import Response from '../utils/response';
 import requestShema from '../modules/requestSchema';
 import AuthUtils from '../utils/auth.utils';
-// import userRepository from '../repositories/userRepository';
 
 /**
  * @description Middleware used to validate data related to requests
@@ -46,7 +45,7 @@ class AuthMiddleware {
         response.sendErrorMessage();
       } else {
         const { userData } = req;
-        const { dataValues } = await AuthUtils.superAdminExists(userData.id);
+        const { dataValues } = await AuthUtils.loggedInUser(userData.id);
         if (dataValues.role !== 'requester' || dataValues.isVerified === false) {
           const response = new Response(
             res,
