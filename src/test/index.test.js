@@ -12,6 +12,7 @@ import notification from './notification.test';
 import autoFill from './autoFill.test';
 import onewayRequest from './onewayRequest.test';
 import returnTripRequest from './returnTripRequest.test';
+import approveRequest from './request.avail.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -28,4 +29,5 @@ describe('API test', () => {
   describe('Remember user information', autoFill);
   describe('one_way Request  test', onewayRequest);
   describe('returnTripRequest Request  test', returnTripRequest);
+  describe('Approve request test', approveRequest);
 });

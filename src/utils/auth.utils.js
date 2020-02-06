@@ -45,6 +45,48 @@ class AuthUtils {
     const loggedInUser = await UserRepository.findById(id);
     return loggedInUser;
   }
+
+  /**
+    *
+    * @param {obj} userData
+    * @returns {boolean} isManager is true if user is a manager
+    */
+  static async isManager({ id }) {
+    try {
+      const isManager = await UserRepository.findByIdAndRole(id, 'manager');
+      return !!isManager;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+    *
+    * @param {obj} userData
+    * @returns {boolean} isManager is true if user is a manager
+    */
+  static async isSuperAdmin({ id }) {
+    try {
+      const isSuperAdmin = await UserRepository.findByIdAndRole(id, 'super-administrator');
+      return !!isSuperAdmin;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+    *
+    * @param {obj} userData
+    * @returns {boolean} isManager is true if user is a manager
+    */
+  static async isRequester({ id }) {
+    try {
+      const isRequester = await UserRepository.findByIdAndRole(id, 'requester');
+      return !!isRequester;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthUtils;

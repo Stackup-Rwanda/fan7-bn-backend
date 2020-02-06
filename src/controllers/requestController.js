@@ -1,9 +1,12 @@
+import model from '../models';
+import DbErrorHandler from '../utils/dbErrorHandler';
+import Response, { onError, onSuccess } from '../utils/response';
+import RequestService from '../services/request.service';
+import AuthUtils from '../utils/auth.utils';
+import RequestRepository from '../repositories/requestRepository';
 
-/* eslint-disable class-methods-use-this */
-import models from '../models';
-import { onError, onSuccess } from '../utils/response';
 
-const { Request, User } = models;
+const { Request, User } = model;
 
 class RequestController {
   /**
@@ -89,6 +92,162 @@ class RequestController {
       return next();
     } catch (ex) {
       onError(res, 500, 'Internal Server Error');
+    }
+  }
+
+  /**
+   * @description This helps to find all requests
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getAll(req, res) {
+    let requests;
+    let response;
+    try {
+      const { userData } = req;
+
+      const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
+      const isManager = await AuthUtils.isManager(userData);
+      const isRequester = await AuthUtils.isRequester(userData);
+
+      if (isSuperAdmin) requests = await RequestService.retrieveAllRequests();
+
+      if (isManager) {
+        const directReportIds = await RequestService.retrieveDirectReports(userData);
+        if (directReportIds.length === 0) {
+          response = new Response(res, 404, 'No direct report found for you');
+          return response.sendErrorMessage();
+        }
+
+        requests = await RequestService.retrieveManagerRequests(directReportIds);
+      }
+
+      // eslint-disable-next-line max-len
+      if (isRequester) requests = await RequestService.retrieveAllRequests({ user_id: userData.id });
+
+      if (requests.length === 0) {
+        response = new Response(res, 404, 'No requests found');
+        return response.sendErrorMessage();
+      }
+      response = new Response(res, 200, 'All requests', requests);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
+    }
+  }
+
+  /**
+   * @description This helps to find all pending requests
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getByStatus(req, res) {
+    let requests;
+    let response;
+    try {
+      const { userData } = req;
+      const { value } = req.params;
+      const status = value.charAt(0).toUpperCase() + value.slice(1);
+
+      const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
+      const isManager = await AuthUtils.isManager(userData);
+      const isRequester = await AuthUtils.isRequester(userData);
+
+      if (isSuperAdmin) requests = await RequestService.retrieveAllRequests({ status });
+
+      if (isManager) {
+        const directReportIds = await RequestService.retrieveDirectReports(userData);
+        if (directReportIds.length === 0) {
+          response = new Response(res, 404, 'No direct report found for you');
+          return response.sendErrorMessage();
+        }
+
+        requests = await RequestService.retrieveManagerRequests(directReportIds, { status });
+      }
+
+      // eslint-disable-next-line max-len
+      if (isRequester) requests = await RequestService.retrieveAllRequests({ user_id: userData.id, status });
+
+      if (requests.length === 0) {
+        response = new Response(res, 404, 'No requests found');
+        return response.sendErrorMessage();
+      }
+      response = new Response(res, 200, `All ${status} requests`, requests);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
+    }
+  }
+
+  /**
+   * @description This helps to find request by id
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getOne(req, res) {
+    let request;
+    let response;
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { userData } = req;
+
+      const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
+      const isManager = await AuthUtils.isManager(userData);
+      const isRequester = await AuthUtils.isRequester(userData);
+
+      if (isSuperAdmin) request = await RequestService.retrieveOneRequest({ id });
+
+      if (isManager) {
+        const directReportIds = await RequestService.retrieveDirectReports(userData);
+        if (directReportIds.length === 0) {
+          response = new Response(res, 404, 'No direct report found for you');
+          return response.sendErrorMessage();
+        }
+
+        request = await RequestService.retrieveManagerRequest(directReportIds, id);
+      }
+
+      // eslint-disable-next-line max-len
+      if (isRequester) request = await RequestService.retrieveOneRequest({ user_id: userData.id, id });
+
+      if (!request) {
+        response = new Response(res, 404, 'No requests found');
+        return response.sendErrorMessage();
+      }
+      response = new Response(res, 200, 'All requests', request);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
+    }
+  }
+
+  /**
+   * @description This helps a manager to approve request created by his direct report
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async approve(req, res) {
+    try {
+      const { userData } = req;
+      const id = parseInt(req.params.id, 10);
+      let response;
+      const directReportIds = await RequestService.retrieveDirectReports(userData);
+      const { user_id: userId } = await RequestRepository.findById(id);
+
+      if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
+        response = new Response(res, 404, 'No request found');
+        return response.sendErrorMessage();
+      }
+
+      const request = await RequestService.approveRequest(id);
+      response = new Response(res, 200, 'Request is sucessfully approved', request[1]);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
     }
   }
 }

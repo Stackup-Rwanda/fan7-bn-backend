@@ -28,7 +28,7 @@ export default class DbErrorHandler {
         response.sendErrorMessage();
         break;
       default:
-        response = new Response(res, 500, error);
+        response = new Response(res, 500, error.message || 'Internal server error');
         response.sendErrorMessage();
     }
   }
