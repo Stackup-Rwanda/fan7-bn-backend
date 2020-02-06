@@ -25,16 +25,6 @@ export default class requestSchema {
           'string.empty': 'passportName is not allowed to be empty'
         }),
       gender: Joi.string().trim().required().valid('Male', 'Female'),
-      role: Joi.string()
-        .trim()
-        .valid(
-          'travel-administrator',
-          'travel-team-member',
-          'manager',
-          'requester',
-          'super-administrator'
-        )
-        .required(),
       dob: Joi.date()
         .messages({
           'date.base': 'dob must be a date',
@@ -73,7 +63,7 @@ export default class requestSchema {
           'any.required': 'reason is required',
           'string.pattern.base': 'reason must be at least 3 characters long letter'
         }),
-      accommodation_id: Joi.number()
+      accommodationId: Joi.number()
         .integer()
         .required(),
       rememberMe: Joi.optional()

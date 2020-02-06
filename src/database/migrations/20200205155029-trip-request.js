@@ -6,10 +6,6 @@ export default {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    userId: {
-      allowNull: false,
-      type: Sequelize.INTEGER
-    },
     passportName: {
       type: Sequelize.STRING,
       allowNull: false
@@ -20,10 +16,6 @@ export default {
     },
     gender: {
       type: Sequelize.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: Sequelize.STRING,
       allowNull: false
     },
     dob: {
@@ -31,29 +23,39 @@ export default {
       type: Sequelize.DATE
     },
     origin: {
-      allowNull: false,
       type: Sequelize.STRING,
+      allowNull: false
     },
     destination: {
-      allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
-    travelDate: {
-      allowNull: false,
+    travel_date: {
       type: Sequelize.DATE,
-    },
-    reason: {
-      allowNull: false,
-      type: Sequelize.STRING
+      allowNull: false
     },
     accommodation_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    reason: {
+      type: Sequelize.STRING,
       allowNull: false,
-      type: Sequelize.INTEGER
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'reason is not allowed to be empty'
+        }
+      }
     },
     isApproved: {
-      allowNull: false,
-      type: Sequelize.STRING,
-      defaultValue: 'pending'
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     },
     createdAt: {
       allowNull: false,
@@ -62,8 +64,9 @@ export default {
     },
     updatedAt: {
       allowNull: true,
-      type: Sequelize.DATE
-    },
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    }
   }),
 
   down: queryInterface => queryInterface.dropTable('Requests')

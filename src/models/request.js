@@ -8,7 +8,7 @@ export default (sequelize, DataTypes) => {
         autoIncrement: true,
         type: DataTypes.INTEGER
       },
-      userId: {
+      user_id: {
         allowNull: false,
         type: DataTypes.INTEGER
       },
@@ -24,38 +24,36 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      role: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
       dob: {
         allowNull: true,
         type: DataTypes.DATE
       },
       origin: {
-        allowNull: false,
         type: DataTypes.STRING,
+        allowNull: false,
       },
       destination: {
-        allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
-      travelDate: {
-        allowNull: false,
+      travel_date: {
         type: DataTypes.DATE,
+        allowNull: true
       },
       reason: {
+        type: DataTypes.STRING,
         allowNull: false,
-        type: DataTypes.STRING
-      },
-      accommodation_id: {
-        allowNull: true,
-        type: DataTypes.NUMBER
+        validate: {
+          notEmpty: {
+            args: true,
+            msg: 'reason is not allowed to be empty'
+          }
+        }
       },
       isApproved: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        defaultValue: 'pending'
+        allowNull: true,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
@@ -69,5 +67,11 @@ export default (sequelize, DataTypes) => {
     {}
   );
 
+  Request.associate = models => {
+    Request.belongsTo(models.Accommodation, {
+      foreignKey: 'accommodation_id',
+      onDelete: 'CASCADE'
+    });
+  };
   return Request;
 };

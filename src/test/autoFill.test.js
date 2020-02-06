@@ -1,28 +1,30 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../server';
-import cont from '../controllers/requestController';
 
 require('../services/0auth');
 
 chai.use(chaiHttp);
 const { request } = chai;
 
-it('Registered user should be able to request a trip', (done) => {
+it('To request a trip', (done) => {
   request(server)
     .post('/api/requests/one_way')
-    .set({ token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJuYW1lQGV4YW1wbGUuY29tIiwiaWF0IjoxNTgwODkyNDM5fQ.xGAHCjyRKSGcsVHqiLGASfwGxmQHsNYRL_GY3uS34Ks' })
+    .set({
+      token:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtdWhpcmVib3JpQHlhaG9vLmZyIiwiaWF0IjoxNTgwOTU2ODgyfQ.Z75OGHWY7AePt0HnbrYSR48GBMHJs8IFyuwBYGAfKps'
+    })
     .send({
-      passportName: 'Boris Bihire',
-      passportNumber: '198700650',
-      gender: 'Female',
-      role: 'requester',
-      dob: '12/Nov/1673',
-      origin: 'Kigali, Rwanda',
-      destination: 'Nairobi, Kenya',
-      travelDate: '2020-02-29',
-      reason: 'lifeisshortjust chill',
-      accommodation_id: 3,
+      origin: 'rwanda, kigali',
+      destination: 'burundi, bujumbura',
+      travelDate: '2020-10-01',
+      reason: 'business',
+      accommodationId: 2,
+      user_id: 1,
+      dob: '2020-10-23',
+      passportName: 'bihire jules boris',
+      passportNumber: 232450,
+      gender: 'Male',
       rememberMe: true
     })
     .end((error, response) => {
@@ -33,30 +35,21 @@ it('Registered user should be able to request a trip', (done) => {
     });
 });
 
-it('User should not request if there is server error', () => {
-  const res = {
-    status() {},
-    json() {}
-  };
-  const next = () => {};
-  const req = {
-    reasonable: 'lifeisshortjust chill',
-  };
-  cont.oneWay(req, res, next);
-});
 
-
-it('If he checked remember checkbox, App should be able to get his profile automatically  ', (done) => {
+it('Should fill others', (done) => {
   request(server)
     .post('/api/requests/one_way')
-    .set({ token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJuYW1lQGV4YW1wbGUuY29tIiwiaWF0IjoxNTgwODkyNDM5fQ.xGAHCjyRKSGcsVHqiLGASfwGxmQHsNYRL_GY3uS34Ks' })
+    .set({
+      token:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtdWhpcmVib3JpQHlhaG9vLmZyIiwiaWF0IjoxNTgwOTU2ODgyfQ.Z75OGHWY7AePt0HnbrYSR48GBMHJs8IFyuwBYGAfKps'
+    })
     .send({
-      origin: 'Kigali, Rwanda',
-      destination: 'Nairobi, Kenya',
-      travelDate: '2020-02-29',
-      reason: 'lifeisshortjust chill',
-      accommodation_id: 3,
-      rememberMe: false
+      origin: 'rwanda, kigali',
+      destination: 'burundi, bujumbura',
+      travelDate: '2020-10-01',
+      reason: 'business',
+      accommodationId: 2,
+      rememberMe: true
     })
     .end((error, response) => {
       expect(response).to.have.status(201);
@@ -72,9 +65,9 @@ it('You can\'t request trip when you don\'t provide full information ', (done) =
     .set({ token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJuYW1lQGV4YW1wbGUuY29tIiwiaWF0IjoxNTgwODkyNDM5fQ.xGAHCjyRKSGcsVHqiLGASfwGxmQHsNYRL_GY3uS34Ks' })
     .send({ origin: 'Kigali, Rwanda' })
     .end((error, response) => {
-      expect(response).to.have.status(400);
+      expect(response).to.have.status(422);
       expect(response.body).to.be.a('object');
-      expect(response.body.status).to.be.equal(400);
+      expect(response.body.status).to.be.equal(422);
       done(error);
     });
 });

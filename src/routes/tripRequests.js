@@ -6,15 +6,8 @@ import tripValues from '../middlewares/tripValues';
 
 const router = express.Router();
 
-router.post(
-  '/one_way',
-  AuthMiddleware.verifyToken,
-  AuthMiddleware.autoFill,
-  requestValidation.oneway,
+router.post('/one_way', AuthMiddleware.verifyToken, AuthMiddleware.autoFill, requestValidation.oneway,
   tripValues.locationExist,
-  tripValues.accommodationExist,
-  requestController.create,
-  AuthMiddleware.rememberMe
-);
+  tripValues.accommodationExist, requestController.oneWay, AuthMiddleware.rememberMe);
 
 export default router;
