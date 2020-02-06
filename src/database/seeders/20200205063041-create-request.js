@@ -37,7 +37,8 @@ export default {
     reason: 'life is short, just chill',
     accommodation_id: 1,
     status: 'Pending'
-  }, {
+  },
+  {
     user_id: 6,
     passportName: 'Boris Bihire',
     passportNumber: 198700,

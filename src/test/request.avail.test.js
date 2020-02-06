@@ -126,7 +126,7 @@ describe('Requester', () => {
 
   it('Should not approve request if his not manager', (done) => {
     request(server)
-      .patch('/api/requests/2/approve')
+      .patch('/api/requests/3/approve')
       .set('Accept', 'application/json')
       .set('token', `Bearer ${token2}`)
       .end((err, res) => {
@@ -158,7 +158,7 @@ describe('Requester', () => {
 
   it('Should not return other users requests', (done) => {
     request(server)
-      .get('/api/requests/3')
+      .get('/api/requests/2')
       .set('Accept', 'application/json')
       .set('token', `Bearer ${token2}`)
       .end((err, res) => {

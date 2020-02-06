@@ -28,6 +28,10 @@ export default (sequelize, DataTypes) => {
           as: 'accommodation_id'
         }
       },
+      accommodation_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER
+      },
       passportName: {
         type: DataTypes.STRING,
         allowNull: true
