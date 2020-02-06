@@ -9,6 +9,7 @@ import verification from './email.verification.test';
 import assignRole from './assignRole.test';
 import socialLogin from './socialLogin.test';
 import notification from './notification.test';
+import autoFill from './autoFill.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -22,4 +23,5 @@ describe('API test', () => {
   describe('Register test', assignRole);
   describe('Social Login test', socialLogin);
   describe('Notification test', notification);
+  describe('Remember user information', autoFill);
 });
