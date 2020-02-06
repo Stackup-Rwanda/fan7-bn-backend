@@ -1,6 +1,5 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import sinon from 'sinon';
 import server from '../server';
 import cont from '../controllers/requestController';
 

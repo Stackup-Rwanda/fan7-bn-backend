@@ -32,30 +32,30 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.DATE
       },
-      from: {
+      origin: {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      to: {
+      destination: {
         allowNull: false,
         type: DataTypes.STRING
       },
-      travelTime: {
+      travelDate: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       reason: {
         allowNull: false,
         type: DataTypes.STRING
       },
-      accomodation: {
+      accommodation_id: {
         allowNull: true,
-        type: DataTypes.STRING
+        type: DataTypes.NUMBER
       },
       isApproved: {
-        allowNull: true,
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+        allowNull: false,
+        type: DataTypes.STRING,
+        defaultValue: 'pending'
       },
       createdAt: {
         allowNull: false,
