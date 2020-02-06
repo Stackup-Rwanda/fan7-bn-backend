@@ -17,4 +17,18 @@ router.post(
   AuthMiddleware.rememberMe
 );
 
+
+router.post(
+  '/return_trip',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.autoFill,
+  requestValidation.oneway,
+  requestValidation.returnTrip,
+  tripValues.locationExist,
+  tripValues.accommodationExist,
+  requestController.create,
+  AuthMiddleware.rememberMe
+);
+
+
 export default router;

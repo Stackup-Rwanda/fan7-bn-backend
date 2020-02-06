@@ -70,4 +70,24 @@ export default class requestSchema {
     });
     return schema.validate(data);
   }
+
+  /**
+   * @static
+   * @param {obj} data
+   * @returns {obj} returns schema object
+  */
+  static returnDateSchema(data) {
+    const schema = Joi.object({
+      returnDate: Joi
+        .date()
+        .iso()
+        .min(data.travelDate)
+        .required()
+        .messages({
+          'date.base': 'return date must have format of yyyy-mm-dd',
+          'date.min': 'return date must have format of yyyy-mm-dd and not earlier than the travel date',
+        })
+    });
+    return schema.validate({ returnDate: data.returnDate });
+  }
 }

@@ -34,6 +34,10 @@ export default {
       type: Sequelize.DATE,
       allowNull: false
     },
+    return_date: {
+      type: Sequelize.DATE,
+      allowNull: true
+    },
     accommodation_id: {
       type: Sequelize.INTEGER,
       allowNull: false

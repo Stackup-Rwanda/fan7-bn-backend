@@ -22,7 +22,7 @@ export default (sequelize, DataTypes) => {
       },
       gender: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       dob: {
         allowNull: true,
@@ -30,13 +30,17 @@ export default (sequelize, DataTypes) => {
       },
       origin: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       destination: {
         type: DataTypes.STRING,
         allowNull: false
       },
       travel_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      return_date: {
         type: DataTypes.DATE,
         allowNull: true
       },
@@ -57,12 +61,12 @@ export default (sequelize, DataTypes) => {
       },
       createdAt: {
         allowNull: false,
-        type: DataTypes.DATE,
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: true,
         type: DataTypes.DATE
-      },
+      }
     },
     {}
   );
