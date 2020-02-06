@@ -42,6 +42,9 @@ export default {
       type: Sequelize.INTEGER,
       allowNull: false
     },
+    status: {
+      type: Sequelize.STRING
+    },
     reason: {
       type: Sequelize.STRING,
       allowNull: false,
