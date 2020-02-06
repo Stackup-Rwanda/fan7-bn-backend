@@ -125,7 +125,9 @@ class AuthMiddleware {
   static async rememberMe(req, res) {
     const check = req.body.rememberMe;
     if (check === true) await userRepository.update({ id: req.userData.id }, { rememberMe: true });
-    if (check === false) await userRepository.update({ id: req.userData.id }, { rememberMe: false });
+    if (check === false) {
+      await userRepository.update({ id: req.userData.id }, { rememberMe: false });
+    }
   }
 }
 
