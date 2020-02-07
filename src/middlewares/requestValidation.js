@@ -41,12 +41,18 @@ class AuthMiddleware {
     const { error, value } = requestShema.destinationSchema(request);
     try {
       if (error) {
-        const response = new Response(res, 422, error.details[0].message.split('"').join(''));
+        const response = new Response(
+          res,
+          422,
+          error.details[0].message.split('"').join('')
+        );
         response.sendErrorMessage();
       } else {
         const { userData } = req;
         const { dataValues } = await AuthUtils.loggedInUser(userData.id);
-        if (dataValues.role !== 'requester' || dataValues.isVerified === false) {
+        if (
+          dataValues.role !== 'requester' || dataValues.isVerified === false
+        ) {
           const response = new Response(
             res,
             403,
@@ -57,6 +63,35 @@ class AuthMiddleware {
         req.value = value;
         next();
       }
+    } catch (err) {
+      const response = new Response(res, 500, 'Internal Server Error');
+      return response.sendErrorMessage();
+    }
+  }
+
+  /**
+   * @param {req} req object
+   * @param {res} res object
+   * @param {next} next forwards request to the next middleware function
+   * @returns {obj} returns a response object
+   */
+  static async returnTrip(req, res, next) {
+    const { returnDate } = req.body;
+    const request = {
+      travelDate: req.value.travelDate,
+      returnDate
+    };
+    const { error } = requestShema.returnDateSchema(request);
+    try {
+      if (error) {
+        const response = new Response(
+          res,
+          422,
+          error.details[0].message.split('"').join('')
+        );
+        return response.sendErrorMessage();
+      }
+      next();
     } catch (err) {
       const response = new Response(res, 500, 'Internal Server Error');
       return response.sendErrorMessage();

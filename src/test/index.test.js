@@ -11,6 +11,7 @@ import socialLogin from './socialLogin.test';
 import notification from './notification.test';
 import autoFill from './autoFill.test';
 import onewayRequest from './onewayRequest.test';
+import returnTripRequest from './returnTripRequest.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -26,4 +27,5 @@ describe('API test', () => {
   describe('Notification test', notification);
   describe('Remember user information', autoFill);
   describe('one_way Request  test', onewayRequest);
+  describe('returnTripRequest Request  test', returnTripRequest);
 });
