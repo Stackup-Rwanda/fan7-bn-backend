@@ -3,30 +3,36 @@ export default (sequelize, DataTypes) => {
     'Request',
     {
       id: {
-        allowNull: false,
+        allowNull: true,
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.INTEGER
       },
       user_id: {
-        allowNull: false,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'user_id',
+        },
       },
       accommodation_id: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER
       },
       passportName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       passportNumber: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       gender: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       dob: {
         allowNull: true,
@@ -34,15 +40,15 @@ export default (sequelize, DataTypes) => {
       },
       origin: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       destination: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       travel_date: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
       },
       return_date: {
         type: DataTypes.DATE,
@@ -50,7 +56,7 @@ export default (sequelize, DataTypes) => {
       },
       reason: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: {
             args: true,
@@ -61,7 +67,7 @@ export default (sequelize, DataTypes) => {
       isApproved: {
         allowNull: true,
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: true
       },
       status: {
         type: DataTypes.STRING,
@@ -75,7 +81,7 @@ export default (sequelize, DataTypes) => {
         }
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATE
       },
       updatedAt: {

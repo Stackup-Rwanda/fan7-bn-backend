@@ -15,8 +15,7 @@ describe('Barefoot Nomad Login Testing suite', () => {
         expect(response.body).to.be.a('object');
         expect(response.body).to.have.property('status');
         expect(response.body.status).to.be.equal(400);
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.a('string');
+        expect(response.body).to.have.property('error');
         done(error);
       });
   });
@@ -29,8 +28,7 @@ describe('Barefoot Nomad Login Testing suite', () => {
         expect(response.body).to.be.a('object');
         expect(response.body).to.have.property('status');
         expect(response.body.status).to.be.equal(400);
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.a('string');
+        expect(response.body).to.have.property('error');
         done(error);
       });
   });

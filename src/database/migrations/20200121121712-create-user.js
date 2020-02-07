@@ -95,7 +95,7 @@ export default {
       defaultValue: false
     },
     createdAt: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.DATE,
       defaultValue: Sequelize.fn('NOW')
     },

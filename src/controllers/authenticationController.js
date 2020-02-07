@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import Validator from '../middlewares/loginValidation';
 import hash from '../utils/hash';
 import models from '../models';
 import redisClient from '../database/redis.database';
@@ -71,48 +70,37 @@ export default class AuthanticationController {
       DbErrorHandler.handleSignupError(res, error);
     }
   }
-  // Login
 
+  /**
+   * @description This helps an existing user to login
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
   static async Login(req, res) {
-    let validatorMessage;
     try {
       const { email, password } = req.body;
-      const Validate = Validator.schemaSignIn(req.body);
-      if (Validate.error) {
-        validatorMessage = Validate.error.details[0].message;
-        validatorMessage = validatorMessage.replace(/"/g, '');
-        return res.status(400).send({ status: 400, message: validatorMessage });
-      }
-      const notVerified = await User.findOne({
+      const user = await User.findOne({
         where: {
-          email,
-          isVerified: false
+          email
         }
       });
-      if (notVerified) {
-        return res.status(404).json({ status: 404, message: 'Account is yet not verified' });
-      }
-      const userExists = await User.findOne({
-        where: {
-          email,
-          isVerified: true
-        }
-      });
-      if (!userExists) {
+      if (!user) {
         return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
       }
-      const decryptedPassword = await decryptPassword(password, userExists.password);
+      if (user.isVerified === false) {
+        return res.status(404).json({ status: 404, message: 'Account is yet not verified, Check your email address for account Verification' });
+      }
+      const decryptedPassword = await decryptPassword(password, user.password);
       if (!decryptedPassword) {
         return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
       }
       const newUser = {
-        id: userExists.id,
-        email: userExists.email,
-        role: userExists.role
+        id: user.id,
+        email: user.email
       };
-
       const token = jwt.sign(newUser, process.env.KEY);
-      return res.status(200).json({ status: 200, message: ` Hey ${userExists.user_name}! you are  signed in Successfully on ${Validator.createdDate}`, data: { token } });
+      return res.status(200).json({ status: 200, message: ` Hey ${user.user_name}! you are  signed in Successfully`, data: { token } });
     } catch (err) {
       return res.status(500).json({ error: 'internal server error', err });
     }
