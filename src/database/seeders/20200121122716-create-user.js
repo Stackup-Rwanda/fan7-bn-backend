@@ -40,7 +40,16 @@ export default {
     role: 'manager',
     password: await hashPassword('Kemmy123'),
     isVerified: true
-  }], {}),
+  },
+  {
+    email: 'trey@3gmail.com',
+    user_name: 'Trey',
+    password: await hashPassword('Trey1234'),
+    isVerified: true,
+    line_manager: 'trey3@gmail.com'
+  }],
+  {}
+  ),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

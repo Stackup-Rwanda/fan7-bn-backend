@@ -1,7 +1,6 @@
 
 /** Formating location inputs to be used for search */
 export default class LocationFormat {
-
   static location(location) {
     const lowerCaseLocation = location.toLowerCase();
     let newloc = lowerCaseLocation.split(',');
