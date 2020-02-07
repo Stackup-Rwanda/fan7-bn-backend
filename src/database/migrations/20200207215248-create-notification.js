@@ -16,6 +16,24 @@ export default {
         as: 'user_id',
       },
     },
+    request_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Requests',
+        key: 'id',
+        as: 'request_id',
+      },
+    },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    message: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     status: {
       type: Sequelize.STRING,
       defaultValue: 'unread',

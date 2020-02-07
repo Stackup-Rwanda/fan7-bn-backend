@@ -1,16 +1,20 @@
 import dotenv from 'dotenv';
 import models from '../models';
+// import EventEmitter from 'events';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import Response, { onError, onSuccess } from '../utils/response';
 import RequestService from '../services/request.service';
 import AuthUtils from '../utils/auth.utils';
 import RequestRepository from '../repositories/requestRepository';
 import RequestServices from '../services/trip.services';
+import NotificationService from '../services/notification.service';
 
 
 dotenv.config();
 
 const { Request, User } = models;
+
+// const eventEmitter = new EventEmitter();
 
 class RequestController {
   /**
@@ -251,6 +255,16 @@ class RequestController {
       }
 
       const request = await RequestService.approveRequest(id);
+      const notification = {
+        eventType: 'approve_request',
+        userId: request[1].user_id,
+        requestId: request[1].id,
+        type: 'approve',
+        message: 'Your request has been approved'
+      };
+
+      await NotificationService.sendNotification(notification);
+
       response = new Response(res, 200, 'Request is sucessfully approved', request[1]);
       return response.sendSuccessResponse();
     } catch (error) {

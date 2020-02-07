@@ -17,6 +17,20 @@ class NotificationRepository {
 
   /**
    *
+   * @param {object} notification
+   *
+   * @returns {object} updated notification status
+   */
+  async create(notification) {
+    try {
+      return await this.db.create(notification);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  /**
+   *
    * @param {object} field
    *
    * @param {object} changes to update for notification status
