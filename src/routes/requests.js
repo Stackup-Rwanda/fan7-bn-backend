@@ -16,8 +16,7 @@ router.post(
   requestController.create,
   AuthMiddleware.rememberMe
 );
-
-
+router.get('/search', AuthMiddleware.verifyToken, requestController.search);
 router.post(
   '/return_trip',
   AuthMiddleware.verifyToken,

@@ -13,6 +13,7 @@ import autoFill from './autoFill.test';
 import onewayRequest from './onewayRequest.test';
 import returnTripRequest from './returnTripRequest.test';
 import approveRequest from './request.avail.test';
+import search from './request.search.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -30,4 +31,5 @@ describe('API test', () => {
   describe('one_way Request  test', onewayRequest);
   describe('returnTripRequest Request  test', returnTripRequest);
   describe('Approve request test', approveRequest);
+  describe('Search functionality test', search);
 });
