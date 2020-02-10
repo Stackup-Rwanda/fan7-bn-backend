@@ -26,7 +26,10 @@ class CommentRepository {
   static async getCommentsByRequest(id) {
     try {
       return await Comment.findAll({
-        where: { request_id: id }
+        where: { request_id: id },
+        order: [
+          ['createdAt', 'DESC'],
+        ]
       });
     } catch (error) {
       throw new Error(error);

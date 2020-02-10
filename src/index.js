@@ -18,7 +18,6 @@ export default (app) => {
   app.use('/api/accommodations', accommodation);
   app.use('/api/accommodations', Feeback);
 
-
   app.use((req, res, next) => {
     const err = new Error('Page not found');
     err.status = 404;

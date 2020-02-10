@@ -45,7 +45,7 @@ export default {
     status: {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: 'Pending',
+      defaultValue: 'Pending'
     },
     createdAt: {
       allowNull: false,
@@ -56,7 +56,7 @@ export default {
       allowNull: false,
       type: Sequelize.DATE,
       defaultValue: Sequelize.fn('NOW')
-    },
+    }
   }),
 
   down: queryInterface => queryInterface.dropTable('Accommodation')

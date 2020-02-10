@@ -30,7 +30,7 @@ export default {
     message: 'New equest has been created, waiting for approval'
   },
   {
-    user_id: 17,
+    user_id: 11,
     request_id: 4,
     type: 'Approved',
     message: 'Your request has been approved'
