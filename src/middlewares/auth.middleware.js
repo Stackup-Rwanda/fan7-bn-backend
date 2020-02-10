@@ -125,6 +125,54 @@ class AuthMiddleware {
       return userRepository.update({ id: req.userData.id }, { rememberMe: false });
     }
   }
+
+  /**
+   * @description This helps validate if user is a manager
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @param  {object} next - forwards request to the next middleware function
+   * @returns  {object} The response object
+   */
+  static async isManager(req, res, next) {
+    const { userData } = req;
+    try {
+      const isManager = await AuthUtils.isManager(userData);
+
+      if (!isManager) {
+        const response = new Response(res, 403, 'You have no rights over this endpoint');
+        return response.sendErrorMessage();
+      }
+
+      next();
+    } catch (error) {
+      const response = new Response(res, 500, error.message || 'Internal server error');
+      return response.sendErrorMessage();
+    }
+  }
+
+  /**
+   * @description This helps validate if user is a super admin
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @param  {object} next - forwards request to the next middleware function
+   * @returns  {object} The response object
+   */
+  static async isSuperAdmin(req, res, next) {
+    const { userData } = req;
+    try {
+      const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
+
+      if (!isSuperAdmin) {
+        const response = new Response(res, 403, 'You have no rights over this endpoint');
+        return response.sendErrorMessage();
+      }
+
+      next();
+    } catch (error) {
+      const response = new Response(res, 500, error.message || 'Internal server error');
+      return response.sendErrorMessage();
+    }
+  }
 }
 
 export default AuthMiddleware;

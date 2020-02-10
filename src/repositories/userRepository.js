@@ -122,6 +122,51 @@ class UserRepository {
       throw new Error(error);
     }
   }
+
+  /**
+     * @param {integer} id
+     * @param {string} role
+     * @returns {obj} record is object if id found or null if not
+     */
+  async findByIdAndRole(id, role) {
+    try {
+      const record = await this.db.findOne({ where: { id, role } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+     *
+     * @param {string} role
+     * @returns {obj} record is object if user found or null if not
+     */
+  async findByRole(role) {
+    try {
+      const record = await this.db.findOne({ where: { role } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+     *
+     * @param {string} managerEmail
+     * @returns {obj} record is object if managerEmail found or null if not
+     */
+  async findByLineManager(managerEmail) {
+    try {
+      const record = await this.db.findAll({ where: { line_manager: managerEmail }, attributes: ['id'] });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UserRepository();

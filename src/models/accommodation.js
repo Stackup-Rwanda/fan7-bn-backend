@@ -13,5 +13,9 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     },
   }, {});
+
+  Accommodation.associate = models => {
+    Accommodation.hasMany(models.Request, { foreignKey: 'accommodation_id', as: 'requests' });
+  };
   return Accommodation;
 };

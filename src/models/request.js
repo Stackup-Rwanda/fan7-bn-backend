@@ -12,16 +12,9 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER
       },
-      status: {
-        type: DataTypes.STRING,
+      accommodation_id: {
         allowNull: false,
-        defaultValue: 'Pending',
-        Validate: {
-          isIn: {
-            args: [['Pendig', 'Approved', 'Rejected']],
-            msg: 'Invalid status, uses Pending, Approved or Rejected only'
-          }
-        }
+        type: DataTypes.INTEGER
       },
       passportName: {
         type: DataTypes.STRING,
@@ -70,6 +63,17 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Pending',
+        validate: {
+          isIn: {
+            args: [['Pending', 'Approved', 'Rejected']],
+            msg: 'Invalid Status, uses Pending, Approved or Rejected only'
+          }
+        }
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
@@ -82,11 +86,9 @@ export default (sequelize, DataTypes) => {
     {}
   );
   Request.associate = models => {
-    Request.belongsTo(models.Accommodation, {
-      foreignKey: 'accommodation_id',
-      onDelete: 'CASCADE'
-    });
+    Request.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id' });
     Request.belongsTo(models.User, { foreignKey: 'user_id' });
   };
+
   return Request;
 };
