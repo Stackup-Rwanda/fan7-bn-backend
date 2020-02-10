@@ -23,7 +23,7 @@ class RequestServices {
           }
         ]
       },
-      include: [{ model: User }]
+      include: [{ model: User, as: 'user' }]
     });
     return searchArray;
   }

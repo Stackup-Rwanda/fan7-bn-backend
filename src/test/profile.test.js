@@ -67,7 +67,7 @@ it('Should not update user profile on 500 error', (done) => {
   };
   const smpl = {
     userData: { id: 1, email: 'test@gmail.com' },
-    profileData: { password: 1 }
+    profile: { password: 1 }
   };
   UserProfile.updateUser(smpl, res).then(data => {
     expect(data).to.eq(undefined);

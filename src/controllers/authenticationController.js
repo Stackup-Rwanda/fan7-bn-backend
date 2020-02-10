@@ -96,9 +96,9 @@ export default class AuthanticationController {
         return res.status(404).json({ status: 404, message: 'Email or password does not exists' });
       }
       const newUser = {
-        id: userExists.id,
-        email: userExists.email,
-        role: userExists.role
+        id: user.id,
+        email: user.email,
+        role: user.role
       };
       const token = jwt.sign(newUser, process.env.KEY);
       return res.status(200).json({ status: 200, message: ` Hey ${user.user_name}! you are  signed in Successfully`, data: { token } });

@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import model from '../models';
 
-const { Request } = model;
+const { Request, User } = model;
 const { Accommodation } = model;
 
 /**
@@ -111,7 +111,7 @@ class RequestRepository {
      */
   static async findById(id) {
     try {
-      const record = await Request.findByPk(id);
+      const record = await Request.findByPk(id, { include: [{ model: User, as: 'user' }] });
 
       return record;
     } catch (error) {
@@ -141,7 +141,7 @@ class RequestRepository {
      */
   static async findRequestById(id) {
     try {
-      const record = await Request.findOne({ where: { id } });
+      const record = await Request.findOne({ where: { id }, include: [{ model: User, as: 'user' }] });
 
       return record;
     } catch (error) {

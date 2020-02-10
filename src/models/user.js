@@ -97,6 +97,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.BOOLEAN,
         defaultValue: false
+      },
+      emailNotification: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {}

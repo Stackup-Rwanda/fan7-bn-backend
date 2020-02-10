@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Barefoot Nomad</title>
+    <style>
+        body {
+            background-color: #fff;
+            margin: 0;
+            font-family: 'Varela Round', sans-serif;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background-color: #fff;
+            width: 500px;
+            margin: 50px auto;
+            padding: 10px;
+            -moz-box-shadow: 3px 3px 2px 3px rgba(0, 0, 0, .075);
+            -webkit-box-shadow: 3px 3px 2px 3px rgba(0, 0, 0, .075);
+            box-shadow: 3px 2px 3px 3px rgba(0, 0, 0, .075);
+        }
+
+        .title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form {
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f3f3f3;
+            box-sizing: border-box;
+        }
+
+        #input {
+            display: inline-block;
+            width: 350px;
+            height: 34px;
+            box-sizing: border-box;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 50;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        }
+
+        #button {
+            width: 120px;
+            background-color: #ccc;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.42857143;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 50;
+            padding: 6px 12px;
+        }
+
+        ul {
+            display: block;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            position: relative;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1 class="title" id="title">Hello World!</h1>
+        <div id="connStatus"></div>
+        <form class="form" id="form">
+            <input id="input" type="text" placeholder="Submit id to join notification">
+            <input id="button" type="submit" value="Send">
+        </form>
+    </div>
+    <div class="card">
+        <h1 class="title">Notifications</h1>
+        <div class="form">
+            <ul id="notifications">
+            </ul>
+        </div>
+    </div>
+    <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io.connect(window.location.host);
+        socket.on('connect', () => {
+            document.querySelector('#connStatus').textContent = 'Server Connected!';
+        });
+        socket.on('disconnect', () => {
+            document.querySelector('#connStatus').textContent = 'Server Disconnected!';
+        });
+        socket.on('welcome', data => {
+            document.querySelector('#title').textContent = data;
+            socket.emit('check delay', Date.now());
+        });
+        document.querySelector("form").addEventListener('submit', event => {
+            event.preventDefault();
+            const id = document.querySelector("input").value;
+            socket.emit('join notification', { id: `notification_${id}` });
+            socket.emit('test', `notification_${id}`);
+        });
+        socket.on('created_request', data => {
+            socket.emit('check delay', data.time);
+            const list = document.createElement('li');
+            list.appendChild(document.createTextNode(JSON.stringify(data)));
+            document.querySelector('#notifications').appendChild(list);
+        });
+        socket.on('updated_request', data => {
+            socket.emit('check delay', data.time);
+            const list = document.createElement('li');
+            list.appendChild(document.createTextNode(JSON.stringify(data)));
+            document.querySelector('#notifications').appendChild(list);
+        });
+        socket.on('approved_request', data => {
+            socket.emit('check delay', data.time);
+            const list = document.createElement('li');
+            list.appendChild(document.createTextNode(JSON.stringify(data)));
+            document.querySelector('#notifications').appendChild(list);
+        });
+        socket.on('rejected_request', data => {
+            socket.emit('check delay', data.time);
+            const list = document.createElement('li');
+            list.appendChild(document.createTextNode(JSON.stringify(data)));
+            document.querySelector('#notifications').appendChild(list);
+        });
+        socket.on('commented_request', data => {
+            socket.emit('check delay', data.time);
+            const list = document.createElement('li');
+            list.appendChild(document.createTextNode(JSON.stringify(data)));
+            document.querySelector('#notifications').appendChild(list);
+        });
+    </script>
+</body>
+
+</html>
