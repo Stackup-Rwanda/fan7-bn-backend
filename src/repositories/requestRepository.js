@@ -133,6 +133,21 @@ class RequestRepository {
       throw new Error(error);
     }
   }
+
+  /**
+     *
+     * @param {obj} id
+     * @returns {obj} record is object if match options
+     */
+  static async findRequestById(id) {
+    try {
+      const record = await Request.findOne({ where: { id } });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default RequestRepository;

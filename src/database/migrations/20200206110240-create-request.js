@@ -69,6 +69,7 @@ export default {
     },
     status: {
       type: Sequelize.STRING,
+      allowNull: false,
       defaultValue: 'Pending'
     },
     createdAt: {

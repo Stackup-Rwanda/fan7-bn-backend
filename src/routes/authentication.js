@@ -7,12 +7,13 @@ import resetController from '../controllers/resetController';
 import confirmController from '../controllers/confirm.email';
 import emailValidate from '../middlewares/emailValidation';
 import emailAuth from '../middlewares/emailAuth';
+import LoginValidation from '../middlewares/login.middleware';
 
 require('../services/0auth');
 
 const router = express.Router();
 
-router.post('/login', AuthanticationController.Login);
+router.post('/login', LoginValidation.Validate, AuthanticationController.Login);
 router.post('/signup', AuthMiddleware.signup, AuthanticationController.register);
 router.get('/logout', AuthanticationController.logout);
 router.get('/testlogout', AuthMiddleware.verifyToken, AuthanticationController.loggedOut);
