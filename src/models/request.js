@@ -19,8 +19,14 @@ export default (sequelize, DataTypes) => {
         },
       },
       accommodation_id: {
+        type: DataTypes.INTEGER,
         allowNull: true,
-        type: DataTypes.INTEGER
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Accommodations',
+          key: 'id',
+          as: 'accommodation_id'
+        }
       },
       passportName: {
         type: DataTypes.STRING,
@@ -88,8 +94,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.DATE
       }
-    },
-    {}
+    }, {}
   );
   Request.associate = models => {
     Request.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id' });
