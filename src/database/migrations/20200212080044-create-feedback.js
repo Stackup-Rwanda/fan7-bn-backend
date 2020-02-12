@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Comments', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Feedbacks', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -16,11 +16,17 @@ export default {
         as: 'user_id',
       },
     },
-    request_id: {
+    accommodation_id: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      allowNull: true,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Accommodation',
+        key: 'id',
+        as: 'accommodation_id',
+      },
     },
-    comment: {
+    feedback: {
       type: Sequelize.STRING
     },
     createdAt: {
@@ -31,10 +37,6 @@ export default {
       allowNull: true,
       type: Sequelize.DATE
     },
-    deleted: {
-      type: Sequelize.STRING,
-      defaultValue: 'false'
-    },
   }),
-  down: queryInterface => queryInterface.dropTable('Comments')
+  down: queryInterface => queryInterface.dropTable('Feedbacks')
 };

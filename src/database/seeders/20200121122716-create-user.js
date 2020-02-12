@@ -121,6 +121,13 @@ export default {
     role: 'travel-administrator',
     password: await hashPassword('Kemmy123'),
     isVerified: true
+  },
+  {
+    email: 'kwizeradoddy@gmail.com',
+    user_name: 'skemc',
+    role: 'requester',
+    password: await hashPassword('skemc1234'),
+    isVerified: true
   }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})

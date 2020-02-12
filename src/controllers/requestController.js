@@ -126,8 +126,9 @@ class RequestController {
         requests = await RequestService.retrieveManagerRequests(directReportIds);
       }
 
-      // eslint-disable-next-line max-len
-      if (isRequester) requests = await RequestService.retrieveAllRequests({ user_id: userData.id });
+      if (isRequester) {
+        requests = await RequestService.retrieveAllRequests({ user_id: userData.id });
+      }
 
       if (requests.length === 0) {
         response = new Response(res, 404, 'No requests found');
@@ -170,8 +171,9 @@ class RequestController {
         requests = await RequestService.retrieveManagerRequests(directReportIds, { status });
       }
 
-      // eslint-disable-next-line max-len
-      if (isRequester) requests = await RequestService.retrieveAllRequests({ user_id: userData.id, status });
+      if (isRequester) {
+        requests = await RequestService.retrieveAllRequests({ user_id: userData.id, status });
+      }
 
       if (requests.length === 0) {
         response = new Response(res, 404, 'No requests found');
@@ -213,8 +215,9 @@ class RequestController {
         request = await RequestService.retrieveManagerRequest(directReportIds, id);
       }
 
-      // eslint-disable-next-line max-len
-      if (isRequester) request = await RequestService.retrieveOneRequest({ user_id: userData.id, id });
+      if (isRequester) {
+        request = await RequestService.retrieveOneRequest({ user_id: userData.id, id });
+      }
 
       if (!request) {
         response = new Response(res, 404, 'No requests found');
@@ -270,15 +273,13 @@ class RequestController {
         return response.sendErrorMessage();
       }
       const [{
-        // eslint-disable-next-line no-shadow
-        User, origin, destination, status, travel_date: travelDate, return_date: returnDate
+        User: user, origin, destination, status, travel_date: travelDate, return_date: returnDate
       }] = result;
 
-      // eslint-disable-next-line camelcase
-      const { first_name, last_name } = User.dataValues;
+      const { first_name: firstName, last_name: lastName } = user.dataValues;
       const data = {
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         origin,
         destination,
         travelDate,
