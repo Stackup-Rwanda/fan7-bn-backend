@@ -16,7 +16,7 @@ export default {
     use_env_variable: 'DATABASE_URL_PROD',
     dialect: 'postgres',
     dialectOptions: {
-      ssl: { require: true }
+      ssl: { require: true, rejectUnauthorized: false },
     }
   }
 };
