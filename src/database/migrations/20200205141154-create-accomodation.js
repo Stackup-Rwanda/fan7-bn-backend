@@ -1,22 +1,51 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Accommodations', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Accommodation', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
+    user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     name: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    location: {
+    address: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    capacity: {
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    image: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    geo_location: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    rooms: {
       type: Sequelize.INTEGER,
       allowNull: false
+    },
+    services: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false
+    },
+    amenities: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false
+    },
+    status: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'Pending',
     },
     createdAt: {
       allowNull: false,
@@ -30,5 +59,5 @@ export default {
     },
   }),
 
-  down: queryInterface => queryInterface.dropTable('Accommodations')
+  down: queryInterface => queryInterface.dropTable('Accommodation')
 };

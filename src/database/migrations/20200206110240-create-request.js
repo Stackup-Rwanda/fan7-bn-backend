@@ -53,7 +53,7 @@ export default {
       allowNull: true,
       onDelete: 'CASCADE',
       references: {
-        model: 'Accommodations',
+        model: 'Accommodation',
         key: 'id',
         as: 'accommodation_id',
       },

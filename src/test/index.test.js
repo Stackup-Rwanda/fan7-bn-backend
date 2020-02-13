@@ -17,6 +17,8 @@ import approveRequest from './request.avail.test';
 import rejectRequest from './requests.test';
 import search from './request.search.test';
 import Comment from './comment.test';
+import Accommodations from './accommodation.test';
+
 
 describe('API test', () => {
   describe('Server test', server);
@@ -38,4 +40,5 @@ describe('API test', () => {
   describe('Reject request test', rejectRequest);
   describe('Search functionality test', search);
   describe('Comment test', Comment);
+  describe('Accommodation test', Accommodations);
 });
