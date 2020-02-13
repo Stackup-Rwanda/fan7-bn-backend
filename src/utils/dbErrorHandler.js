@@ -18,10 +18,10 @@ export default class DbErrorHandler {
         if (error.parent.code === '23502') {
           response = new Response(res, 422, `${error.parent.column} is required`);
           response.sendErrorMessage();
+        } else {
+          response = new Response(res, 500, error.errors[0].message);
+          response.sendErrorMessage();
         }
-
-        response = new Response(res, 500, error.errors[0].message);
-        response.sendErrorMessage();
         break;
       case ('SequelizeUniqueConstraintError'):
         response = new Response(res, 400, error.errors[0].message);

@@ -11,7 +11,7 @@ class RequestUtils {
    * @returns {boolean} check if accomodation exists
    */
   static async accommodationExists(id) {
-    const accommodationExists = await RequestRepository.findById(id);
+    const accommodationExists = await RequestRepository.findAccommodationById(id);
     return accommodationExists;
   }
 }

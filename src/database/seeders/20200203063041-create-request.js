@@ -10,7 +10,7 @@ export default {
     travel_date: '2020-10-29',
     reason: 'life is short, just chill',
     accommodation_id: 1,
-    status: 'Pending'
+    status: 'Approved'
   },
   {
     user_id: 8,

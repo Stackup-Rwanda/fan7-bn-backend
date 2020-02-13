@@ -15,7 +15,7 @@ describe('User reset password test', () => {
         res.body.should.have.property('message', 'Link to reset password is sent to your email');
         done();
       });
-  });
+  }).timeout(10000);
 
   it('should not be able to send email if account does not exist', done => {
     chai.request(server)

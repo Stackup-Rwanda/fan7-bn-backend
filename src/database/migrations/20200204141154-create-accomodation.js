@@ -23,7 +23,7 @@ export default {
       allowNull: false
     },
     image: {
-      type: Sequelize.STRING,
+      type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: false
     },
     geo_location: {

@@ -21,7 +21,7 @@ class AccommodationController {
         services,
         amenities,
         status
-      } = req.body;
+      } = req.accommodationData;
       const data = {
         user_id: userData.id,
         name,
@@ -40,8 +40,7 @@ class AccommodationController {
         return response.sendSuccessResponse();
       }
     } catch (error) {
-      response = new Response(res, 500, error.message);
-      return response.sendErrorMessage();
+      return DbErrorHandler.handleSignupError(res, error);
     }
   }
 
@@ -83,12 +82,16 @@ class AccommodationController {
     try {
       const { userData } = req;
       const isRequester = await AuthUtils.isRequester(userData);
+      const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
+      const isHost = await AuthUtils.isHost(userData);
 
       if (isRequester) accommodations = await AccommodationRepository.findAll({ status: 'Approved' });
 
-      accommodations = await AccommodationRepository.findAll();
+      if (isSuperAdmin) accommodations = await AccommodationRepository.findAll();
 
-      if (!accommodations) {
+      if (isHost) accommodations = await AccommodationRepository.findAll({ user_id: userData.id });
+
+      if (accommodations.length === 0) {
         response = new Response(res, 404, 'No Accommodations found');
         return response.sendErrorMessage();
       }
@@ -96,7 +99,7 @@ class AccommodationController {
       response = new Response(res, 200, 'Accommodations info', accommodations);
       return response.sendSuccessResponse();
     } catch (error) {
-      response = new Response(res, 500, error);
+      response = new Response(res, 500, error.message);
       return response.sendErrorMessage();
     }
   }

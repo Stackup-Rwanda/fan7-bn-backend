@@ -18,13 +18,13 @@ const extensions = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
 class ImageUploader {
   /**
      *
-     * @param {*} images
-     * @returns {string} url
+     * @param {*} image
+     * @returns {string} image url
      */
-  static async uploadImage(images) {
-    const imgExt = images.name.split('.').pop();
+  static async uploadImage(image) {
+    const imgExt = image.name.split('.').pop();
     if (extensions.includes(imgExt)) {
-      const result = await cloudinary.uploader.upload(images.path);
+      const result = await cloudinary.uploader.upload(image.path);
       return result.url;
     }
     return null;

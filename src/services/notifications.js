@@ -10,7 +10,7 @@ class sendNotification {
    * @param  {string} url - The message object
    * @returns  {object} The message object
    */
-  sendNotification(receiver, url) {
+  static async sendNotification(receiver, url) {
     const message = `<!DOCTYPE html>
     <html lang="en">
     
@@ -85,7 +85,7 @@ class sendNotification {
     </body>
     
     </html>`;
-    this.sendEmail(receiver, message);
+    await this.sendEmail(receiver, message);
   }
 
   /**
@@ -94,9 +94,9 @@ class sendNotification {
    * @param  {object} message - The message object
    * @returns  {object} The message object
    */
-  async sendEmail(receiver, message) {
+  static async sendEmail(receiver, message) {
     try {
-      this.sender = nodemailer.createTransport({
+      const sender = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.EMAIL,
@@ -104,17 +104,17 @@ class sendNotification {
         },
       });
 
-      this.mailOptions = {
+      const mailOptions = {
         from: `Barefoot Nomad ${process.env.EMAIL}`,
         to: receiver.email,
         subject: 'Barefoot Nomad Password Reset',
         html: message
       };
-      return await this.sender.sendMail(this.mailOptions);
+      await sender.sendMail(mailOptions);
     } catch (err) {
       return err;
     }
   }
 }
 
-export default new sendNotification();
+export default sendNotification;
