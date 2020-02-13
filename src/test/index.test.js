@@ -12,7 +12,9 @@ import notification from './notification.test';
 import autoFill from './autoFill.test';
 import onewayRequest from './onewayRequest.test';
 import returnTripRequest from './returnTripRequest.test';
+import editRequest from './request.edit.test';
 import approveRequest from './request.avail.test';
+import rejectRequest from './requests.test';
 import search from './request.search.test';
 import Comment from './comment.test';
 
@@ -31,7 +33,9 @@ describe('API test', () => {
   describe('Remember user information', autoFill);
   describe('one_way Request  test', onewayRequest);
   describe('returnTripRequest Request  test', returnTripRequest);
+  describe('Edit request test', editRequest);
   describe('Approve request test', approveRequest);
+  describe('Reject request test', rejectRequest);
   describe('Search functionality test', search);
   describe('Comment test', Comment);
 });

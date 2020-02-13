@@ -42,7 +42,7 @@ export default {
     isVerified: true
   },
   {
-    email: 'trey@3gmail.com',
+    email: 'trey3@gmail.com',
     user_name: 'Trey',
     password: await hashPassword('Trey1234'),
     isVerified: true,
