@@ -51,6 +51,7 @@ export default (sequelize, DataTypes) => {
 
   Accommodation.associate = models => {
     Accommodation.hasMany(models.Request, { foreignKey: 'accommodation_id', as: 'requests' });
+    Accommodation.hasMany(models.Feedback, { foreignKey: 'accommodation_id', as: 'feedbacks' });
   };
 
   return Accommodation;

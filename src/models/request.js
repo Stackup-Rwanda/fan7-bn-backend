@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         onDelete: 'CASCADE',
         references: {
-          model: 'Accommodations',
+          model: 'Accommodation',
           key: 'id',
           as: 'accommodation_id'
         }

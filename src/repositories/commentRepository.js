@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-useless-catch */
 import database from '../models';
 
 const { Comment } = database;
@@ -7,20 +5,16 @@ const { Comment } = database;
 class CommentRepository {
   /**
    * Creates a new comment.
-   * @param {object} comment .
+   * @param {object} data .
    * @returns {object} comment.
    */
-  static async addComment({ comment, user_id, request_id }) {
+  static async addComment(data) {
     try {
-      return await Comment.create({
-        user_id,
-        request_id,
-        comment
-      }, {
+      return await Comment.create(data, {
         fields: ['user_id', 'request_id', 'comment']
       });
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -35,7 +29,7 @@ class CommentRepository {
         where: { request_id: id }
       });
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -50,13 +44,11 @@ class CommentRepository {
         where: [
           {
             id,
-            // deleted: false
           }
         ],
-      // attributes: ['id', 'user_id', 'request_id', 'comment', 'createdAt', 'updatedAt', 'deleted']
       });
     } catch (error) {
-      throw (error);
+      throw new Error(error);
     }
   }
   /**
@@ -71,7 +63,7 @@ class CommentRepository {
         where: [{ id }]
       });
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 }

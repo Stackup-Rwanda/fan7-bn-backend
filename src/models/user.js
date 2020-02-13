@@ -111,6 +111,7 @@ export default (sequelize, DataTypes) => {
   User.associate = models => {
     User.hasMany(models.Notification, { foreignKey: 'user_id', as: 'notifications' });
     User.hasMany(models.Request, { foreignKey: 'user_id', as: 'requests' });
+    User.hasMany(models.Feedback, { foreignKey: 'user_id', as: 'feedbacks' });
   };
 
   return User;

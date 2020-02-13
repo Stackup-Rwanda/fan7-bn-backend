@@ -6,6 +6,7 @@ import requests from './routes/requests';
 import request from './routes/request.route';
 import accommodation from './routes/accommodation.route';
 
+import Feeback from './routes/feedback.route';
 
 export default (app) => {
   app.use('/api/auth', authentication);
@@ -15,6 +16,7 @@ export default (app) => {
   app.use('/api/requests', request);
   app.use('/api/requests', Comment);
   app.use('/api/accommodations', accommodation);
+  app.use('/api/accommodations', Feeback);
 
 
   app.use((req, res, next) => {
