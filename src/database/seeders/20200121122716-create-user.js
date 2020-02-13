@@ -107,6 +107,20 @@ export default {
     line_manager: 'rugambaelvis@gmail.com',
     password: await hashPassword('Kemmy123'),
     isVerified: true
+  },
+  {
+    email: 'mutesisharon@hotmail.com',
+    user_name: 'great',
+    role: 'host-supplier',
+    password: await hashPassword('Kemmy123'),
+    isVerified: true
+  },
+  {
+    email: 'mutesishazam@hotmail.com',
+    user_name: 'great',
+    role: 'travel-administrator',
+    password: await hashPassword('Kemmy123'),
+    isVerified: true
   }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
