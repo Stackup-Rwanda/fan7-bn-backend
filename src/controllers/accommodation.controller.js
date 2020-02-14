@@ -36,6 +36,8 @@ class AccommodationController {
       };
       const { dataValues } = await Accommodation.create(data);
       if (dataValues) {
+        // const createRooms = await Room.bulkCreate({ ...rooms, accommodation_id: dataValues.id });
+        // console.log(createRooms)
         response = new Response(res, 201, 'Your request to create an accommodation has been sent successfully, wait for approval', dataValues);
         return response.sendSuccessResponse();
       }

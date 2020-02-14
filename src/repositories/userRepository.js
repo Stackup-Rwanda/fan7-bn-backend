@@ -185,6 +185,21 @@ class UserRepository {
       throw new Error(error);
     }
   }
+
+  /**
+     *
+     * @param {obj} where
+     * @returns {obj} record is object if managerEmail found or null if not
+     */
+  async findByAccommodationIdAndRoomId(where) {
+    try {
+      const record = await this.Room.findOne({ where });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UserRepository();
