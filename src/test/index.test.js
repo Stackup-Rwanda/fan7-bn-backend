@@ -19,6 +19,7 @@ import search from './request.search.test';
 import Comment from './comment.test';
 import Accommodations from './accommodation.test';
 import Feedback from './feedback.test';
+import Booking from './booking.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -42,4 +43,5 @@ describe('API test', () => {
   describe('Comment test', Comment);
   describe('Accommodation test', Accommodations);
   describe('Feedback on Accommodation test', Feedback);
+  describe('Booking on Accommodation test', Booking);
 });

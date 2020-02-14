@@ -1,6 +1,6 @@
 import model from '../models';
 
-const { User, Request } = model;
+const { User, Request, Room } = model;
 
 /**
  * @description UserRepository contains user repository
@@ -15,6 +15,7 @@ class UserRepository {
   constructor() {
     this.db = User;
     this.Request = Request;
+    this.Room = Room;
   }
 
   /**
@@ -161,6 +162,23 @@ class UserRepository {
   async findByLineManager(managerEmail) {
     try {
       const record = await this.db.findAll({ where: { line_manager: managerEmail }, attributes: ['id', 'user_name', 'email'] });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+     *
+     * @param {obj} data
+     * @returns {obj} record is object if managerEmail found or null if not
+     */
+  async findByAccommodationIdAndRoomId(data) {
+    try {
+      const record = await this.Room.findOne({
+        where: { accommodation_id: data.accommodation_id, id: data.id }
+      });
 
       return record;
     } catch (error) {
