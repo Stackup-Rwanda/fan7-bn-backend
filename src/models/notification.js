@@ -1,6 +1,15 @@
 export default (sequelize, DataTypes) => {
   const Notification = sequelize.define('Notification', {
     user_id: DataTypes.INTEGER,
+    request_id: DataTypes.INTEGER,
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -14,8 +23,8 @@ export default (sequelize, DataTypes) => {
     }
   }, {});
   Notification.associate = (models) => {
-    // associations can be defined here
     Notification.belongsTo(models.User, { foreignKey: 'user_id' });
+    Notification.belongsTo(models.Request, { foreignKey: 'request_id' });
   };
   return Notification;
 };

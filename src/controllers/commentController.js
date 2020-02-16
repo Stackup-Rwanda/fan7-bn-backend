@@ -3,6 +3,7 @@ import Response from '../utils/response';
 import CommentService from '../repositories/commentRepository';
 import UserService from '../repositories/userRepository';
 import RequestService from '../repositories/requestRepository';
+import { eventEmitter } from '../utils/event.util';
 
 class CommentController {
   /**
@@ -29,6 +30,18 @@ class CommentController {
       }, {
         fields: ['user_id', 'request_id', 'comment']
       });
+
+      const notification = {
+        eventType: 'commented_request',
+        requestId: requestID,
+        receiver: requestExists.user,
+        type: 'Commented',
+        message: 'Your request has been commented on',
+        link: `${req.headers.host}/api/requests/${requestID}`
+      };
+
+      eventEmitter.emit('notification', notification);
+
       const response = new Response(res, 201, 'comment sucessfully created', addedComment);
       response.sendSuccessResponse();
     } catch (error) {

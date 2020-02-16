@@ -69,7 +69,6 @@ it('Server should display homepage', (done) => {
     .get('/')
     .end((err, res) => {
       expect(res.status).to.eql(200);
-      expect(res.body).to.have.a.property('message');
       done();
     });
 });

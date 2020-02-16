@@ -97,7 +97,8 @@ export default class AuthanticationController {
       }
       const newUser = {
         id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role
       };
       const token = jwt.sign(newUser, process.env.KEY);
       return res.status(200).json({ status: 200, message: ` Hey ${user.user_name}! you are  signed in Successfully`, data: { token } });

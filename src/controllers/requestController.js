@@ -6,10 +6,15 @@ import RequestService from '../services/request.service';
 import AuthUtils from '../utils/auth.utils';
 import RequestRepository from '../repositories/requestRepository';
 import RequestServices from '../services/trip.services';
+import { eventEmitter } from '../utils/event.util';
+import userRepository from '../repositories/userRepository';
+
 
 dotenv.config();
 
 const { Request, User } = models;
+
+// const eventEmitter = new EventEmitter();
 
 class RequestController {
   /**
@@ -46,6 +51,18 @@ class RequestController {
             returning: false
           }
         );
+
+        const notification = {
+          eventType: 'rejected_request',
+          requestId,
+          receiver: lineManager,
+          type: 'Rejected',
+          message: 'Your request has been rejected',
+          link: `${req.headers.host}/api/requests/${requestId}`
+        };
+
+        eventEmitter.emit('notification', notification);
+
         return res.status(200).json({
           status: 200,
           message: 'Request rejected successfully',
@@ -91,7 +108,23 @@ class RequestController {
         gender
       };
       const { dataValues } = await Request.create(info);
-      if (dataValues) onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
+
+      if (dataValues) {
+        const user = await userRepository.findById(userData.id);
+        const lineManager = await userRepository.findByEmail(user.line_manager);
+        const notification = {
+          eventType: 'created_request',
+          requestId: dataValues.id,
+          receiver: lineManager,
+          type: 'Created',
+          message: 'New request has been created, waiting for approval',
+          link: `${req.headers.host}/api/requests/${dataValues.id}`
+        };
+
+        eventEmitter.emit('notification', notification);
+        onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
+      }
+
       return next();
     } catch (ex) {
       onError(res, 500, 'Internal Server Error');
@@ -242,14 +275,25 @@ class RequestController {
       const id = parseInt(req.params.id, 10);
       let response;
       const directReportIds = await RequestService.retrieveDirectReports(userData);
-      const { user_id: userId } = await RequestRepository.findById(id);
+      const { user_id: userId, user } = await RequestRepository.findById(id);
 
       if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
-        response = new Response(res, 404, 'No request found');
+        response = new Response(res, 404, 'Request not found in your direct reports');
         return response.sendErrorMessage();
       }
 
       const request = await RequestService.approveRequest(id);
+      const notification = {
+        eventType: 'approved_request',
+        requestId: id,
+        receiver: user,
+        type: 'Approved',
+        message: 'Your request has been approved',
+        link: `${req.headers.host}/api/requests/${id}`
+      };
+
+      eventEmitter.emit('notification', notification);
+
       response = new Response(res, 200, 'Request is sucessfully approved', request[1]);
       return response.sendSuccessResponse();
     } catch (error) {
@@ -273,7 +317,7 @@ class RequestController {
         return response.sendErrorMessage();
       }
       const [{
-        User: user, origin, destination, status, travel_date: travelDate, return_date: returnDate
+        user, origin, destination, status, travel_date: travelDate, return_date: returnDate
       }] = result;
 
       const { first_name: firstName, last_name: lastName } = user.dataValues;
@@ -329,6 +373,19 @@ class RequestController {
             error: 'Internal server error'
           });
         }
+
+        const lineManager = await userRepository.findByEmail(user.line_manager);
+        const notification = {
+          eventType: 'updated_request',
+          requestId,
+          receiver: lineManager,
+          type: 'Updated',
+          message: 'Request has been updated',
+          link: `${req.headers.host}/api/requests/${requestId}`
+        };
+
+        eventEmitter.emit('notification', notification);
+
         return res.status(200).json({
           status: 200,
           message: 'Request edited successfully'

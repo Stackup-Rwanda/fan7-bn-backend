@@ -101,7 +101,7 @@ class UserRepository {
      */
   async findById(id) {
     try {
-      const record = await this.db.findOne({ where: { id } });
+      const record = await this.db.findByPk(id);
 
       return record;
     } catch (error) {
@@ -160,7 +160,7 @@ class UserRepository {
      */
   async findByLineManager(managerEmail) {
     try {
-      const record = await this.db.findAll({ where: { line_manager: managerEmail }, attributes: ['id'] });
+      const record = await this.db.findAll({ where: { line_manager: managerEmail }, attributes: ['id', 'user_name', 'email'] });
 
       return record;
     } catch (error) {

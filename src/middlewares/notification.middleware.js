@@ -20,5 +20,21 @@ class NotificationMiddleware {
     }
     return next();
   }
+
+  /**
+   * @param {req} req object
+   * @param {res} res object
+   * @param {next} next forwards to the next middleware function
+   * or controller if there is no middleware
+   * @returns {obj} returns a response object
+  */
+  static async preference(req, res, next) {
+    const { error } = NotificationSchema.changePreference(req.body);
+    if (error) {
+      const response = new Response(res, 422, error.message);
+      return response.sendErrorMessage();
+    }
+    return next();
+  }
 }
 export default NotificationMiddleware;

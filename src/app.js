@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import bodyparser from 'body-parser';
 import { serve, setup } from 'swagger-ui-express';
+import path from 'path';
 import swagger from './swagger.json';
 
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(morgan('combined'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/`));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api/docs', serve, setup(swagger));
 app.get('/', (req, res) => {
