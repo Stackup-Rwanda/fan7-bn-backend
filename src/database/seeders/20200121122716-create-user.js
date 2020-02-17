@@ -129,16 +129,8 @@ export default {
     role: 'requester',
     password: await hashPassword('skemc1234'),
     isVerified: true
-  },
-  {
-    email: 'elvissoftdeveloper@gmail.com',
-    user_name: 'Elvis Soft Developer',
-    role: 'requester',
-    password: await hashPassword('Kemmy123'),
-    line_manager: 'elvisrugamba@gmail.com',
-    isVerified: true,
-    emailNotification: true
-  }], {}),
+  }
+  ], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

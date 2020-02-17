@@ -42,17 +42,22 @@ export default (sequelize, DataTypes) => {
       defaultValue: 'Pending',
       validate: {
         isIn: {
-          args: [['Pending', 'Approved']],
+          args: [
+            ['Pending', 'Approved']
+          ],
           msg: 'Invalid Status, uses Pending, Approved or Rejected only'
         }
       }
     },
   }, {});
-
   Accommodation.associate = models => {
-    Accommodation.hasMany(models.Request, { foreignKey: 'accommodation_id', as: 'requests' });
     Accommodation.hasMany(models.Feedback, { foreignKey: 'accommodation_id', as: 'feedbacks' });
+    Accommodation.belongsTo(models.User, { foreignKey: 'user_id' });
+    Accommodation.hasMany(models.Like, {
+      foreignKey: 'accommodation_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
-
   return Accommodation;
 };

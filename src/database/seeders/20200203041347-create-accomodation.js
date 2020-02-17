@@ -1,7 +1,7 @@
 export default {
   up: queryInterface => queryInterface.bulkInsert('Accommodation', [
     {
-      user_id: 11,
+      user_id: 14,
       name: 'John Doe',
       address: 'rwanda, kigali',
       rooms: 56,
@@ -9,10 +9,12 @@ export default {
       geo_location: '10.84854, 20.234708',
       services: ['conference hall', 'entertainment'],
       amenities: ['WIFI', 'WIFI'],
-      description: 'Good'
+      description: 'Good',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
-      user_id: 11,
+      user_id: 14,
       name: 'serena hotel',
       address: 'rwanda, kigali',
       rooms: 34,
@@ -20,7 +22,9 @@ export default {
       geo_location: '10.84854, 20.234708',
       services: ['conference hall', 'entertainment'],
       amenities: ['WIFI', 'WIFI'],
-      description: 'Good'
+      description: 'Good',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Accommodation', null, {})
