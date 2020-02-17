@@ -21,7 +21,7 @@ class AuthMiddleware {
    */
   static async verifyToken(req, res, next) {
     try {
-      const token = req.headers.token.split(' ')[1];
+      const token = (!req.headers.token) ? req.query.token.split(' ')[1] : req.headers.token.split(' ')[1];
       const payload = AuthUtils.jwtVerify(token);
       redisClient.get('token', (err, userToken) => {
         const user = userRepository.findByEmail(payload.email);
