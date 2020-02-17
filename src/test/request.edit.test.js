@@ -8,7 +8,7 @@ chai.should();
 describe('Request update Tests', () => {
   it('should be able to update if created by and status is pending', done => {
     chai.request(server)
-      .patch('/api/requests/1/edit')
+      .patch('/api/requests/6/edit')
       .set(
         'token',
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJlbHZpc0BnbWFpbC5jb20iLCJyb2xlIjoicmVxdWVzdGVyIiwiaWF0IjoxNTgxNDUyMTkwfQ.pWckfIXc_Ah8Cmiy11yVUvX08Y9xuQo-He8fun9sUto'

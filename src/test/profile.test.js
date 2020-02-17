@@ -80,9 +80,9 @@ it('Should update user profile', (done) => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('firstName', 'Sharon')
-    .field('lastName', 'Sharon')
-    .field('userName', 'Sharon')
+    .field('first_name', 'Sharon')
+    .field('last_name', 'Sharon')
+    .field('user_name', 'Sharon')
     .field('gender', 'Female')
     .field('phone', '984747738397349479')
     .field('address', 'null')
@@ -123,7 +123,7 @@ it('Should not update user profile if image format is invalid', (done) => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('userName', 'Sharon1')
+    .field('user_name', 'Sharon1')
     .attach('image', 'src/test/assets/invalid.pdf', 'invalid.pdf')
     .end((err, res) => {
       if (err) {
@@ -141,7 +141,7 @@ it('Should update user profile if image format is valid', () => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('userName', 'Sharon1')
+    .field('user_name', 'Sharon1')
     .attach('image', 'src/test/assets/image.png', 'image.png')
     .then((res) => {
       expect(res).to.have.status(200);
@@ -158,7 +158,7 @@ it('Should not update user profile for more than one image', () => {
     .patch('/api/profile')
     .set('Accept', 'application/json')
     .set('token', `Bearer ${token2}`)
-    .field('userName', 'Sharon1')
+    .field('user_name', 'Sharon1')
     .attach('image', 'src/test/assets/image.png', 'image.png')
     .attach('image', 'src/test/assets/image.png', 'image.png')
     .then((res) => {

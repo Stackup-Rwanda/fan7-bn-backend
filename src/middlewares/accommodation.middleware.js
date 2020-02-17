@@ -24,7 +24,7 @@ class AccommodationMiddleware {
       }
 
       if (req.files && req.files.image) {
-        const imageUrl = await ImageUploader.uploadImage(req.files.image);
+        const imageUrl = await ImageUploader.uploader(req.files.image);
         if (!imageUrl) {
           response = new Response(res, 415, 'Please Upload a valid image');
           return response.sendErrorMessage();
@@ -36,7 +36,7 @@ class AccommodationMiddleware {
       req.accommodationData = accommodationData;
       return next();
     } catch (err) {
-      response = new Response(res, 500, err);
+      response = new Response(res, 500, err.message);
       return response.sendErrorMessage();
     }
   }

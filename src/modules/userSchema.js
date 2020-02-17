@@ -58,19 +58,19 @@ class UserSchema {
   */
   static profile(data) {
     const schema = Joi.object().keys({
-      firstName: Joi.string().min(3).max(30)
+      first_name: Joi.string().min(3).max(30)
         .messages({
           'string.base': 'firstName must be a string',
           'string.min': 'firstName length must be at least {{#limit}} characters long',
           'string.max': 'firstName length must be less than or equal to {{#limit}} characters long',
         }),
-      lastName: Joi.string().min(3).max(30)
+      last_name: Joi.string().min(3).max(30)
         .messages({
           'string.base': 'lastName must be a string',
           'string.min': 'lastName length must be at least {{#limit}} characters long',
           'string.max': 'lastName length must be less than or equal to {{#limit}} characters long',
         }),
-      userName: Joi.string().min(3).max(30)
+      user_name: Joi.string().min(3).max(30)
         .messages({
           'string.base': 'userName must be a string',
           'string.min': 'userName length must be at least {{#limit}} characters long',

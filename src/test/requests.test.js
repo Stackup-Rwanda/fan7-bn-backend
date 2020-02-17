@@ -8,7 +8,7 @@ chai.should();
 describe('Requests Test', () => {
   it('should be able to reject if line manager', done => {
     chai.request(server)
-      .patch('/api/requests/1/reject')
+      .patch('/api/requests/2/reject')
       .set(
         'token',
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0cmV5M0BnbWFpbC5jb20iLCJpYXQiOjE1ODEwMDI3NjJ9.FGgqQWqOEYO6ovfvq_bM58pYXY0VG1-3Wm-hQ59_koE'

@@ -148,6 +148,21 @@ class RequestRepository {
       throw new Error(error);
     }
   }
+
+  /**
+   * Check if a user has check in the accomodation.
+   * @param {Integer} userId
+   * @param {Integer} accommodationId
+   * @returns {object} request.
+   */
+  static async checkIfUserCheckedInAccommodation(userId, accommodationId) {
+    try {
+      const result = await Request.findOne({ where: { user_id: userId, accommodation_id: accommodationId, status: 'Approved' } });
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default RequestRepository;

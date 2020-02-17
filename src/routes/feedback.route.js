@@ -6,6 +6,6 @@ import Validation from '../middlewares/feedback.middleware';
 
 const router = express.Router();
 
-router.post('/:id/feedback', Validation.FeedbackValidate, AuthMiddleware.verifyToken, Controller.addFeedback);
+router.post('/:id/feedback', AuthMiddleware.verifyToken, Validation.FeedbackValidate, Controller.addFeedback);
 
 export default router;

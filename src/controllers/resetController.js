@@ -30,7 +30,7 @@ class resetController {
     const token = jwt.sign(payload, process.env.KEY);
     const url = `${req.headers.host}/api/auth/reset/${exist.email}/${token}`;
 
-    notifications.sendEmail(exist, url);
+    await notifications.sendNotification(exist, url);
     return res.status(200).json({
       status: 200,
       message: 'Link to reset password is sent to your email',
