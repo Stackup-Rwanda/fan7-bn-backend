@@ -10,7 +10,7 @@ class AccommodationSchema {
           'any.required': 'name is required',
           'string.empty': 'name is not allowed to be empty'
         }),
-      geoLocation: Joi.string()
+      geo_location: Joi.string()
         .required()
         .pattern(/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/)
         .messages({
@@ -30,14 +30,6 @@ class AccommodationSchema {
         .messages({
           'any.regex': '"address" must be in Country, City format'
         }),
-      rooms: Joi
-        .number()
-        .required()
-        .messages({
-          'number.base': 'rooms must be a number',
-          'any.required': '"rooms" is reguired'
-
-        }),
       services: Joi.array().items(Joi.string())
         .required()
         .messages({
@@ -51,6 +43,70 @@ class AccommodationSchema {
           'any.required': 'amenities is required',
         }),
 
+    });
+
+    return schema.validate(data);
+  }
+
+  /**
+ * @description This helps to validate if user is a Host-supplier
+ * @param  {object} data - The object to validate
+ * @param  {object} res - The response object
+ * @param  {object} next - forwards request to the next middleware function
+ * @returns  {object} The response object
+ */
+  static createRoomSchema(data) {
+    const schema = Joi.object().keys({
+      area: Joi.number()
+        .min(3)
+        .required()
+        .messages({
+          'number.base': '"area" must be a number',
+          'number.required': '"area" is required'
+        }),
+      total_bedrooms: Joi.number()
+        .min(1)
+        .required()
+        .messages({
+          'number.base': '"totalBedrooms" must be a number',
+          'number.required': '"totalBedrooms" is required'
+        }),
+      accommodation_id: Joi.number()
+        .integer()
+        .required()
+        .messages({
+          'number.base': '"accommodationNumber" must be an integer',
+          'number.required': '"accommodationNumber" is required'
+        }),
+      type: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Type of the room must be string',
+        }),
+      room_number: Joi.string()
+        .trim()
+        .regex(/^[0-9]{4}$/)
+        .required()
+        .messages({
+          'number.base': '"roomNumber" must be a string of 4 number',
+          'number.required': '"roomNumber" is required'
+        }),
+      amenities: Joi.array()
+        .items(Joi.string())
+        .required()
+        .messages({
+          'array.base': 'amenities must be an array',
+          'any.required': 'amenities is required'
+        }),
+      cost: Joi.number()
+        .min(0)
+        .max(20000000000)
+        .required()
+        .messages({
+          'number.base': '"cost" must be a number',
+          'number.required': '"cost" is required'
+        }),
+      booked: Joi.boolean()
     });
 
     return schema.validate(data);

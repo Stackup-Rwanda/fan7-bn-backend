@@ -1,5 +1,6 @@
 import UserRepository from '../repositories/userRepository';
 import Response from '../utils/response';
+import ImageUploader from '../utils/imageUploader.util';
 
 class UserProfile {
   /**
@@ -35,6 +36,18 @@ class UserProfile {
     let response;
     try {
       const { userData, profileData } = req;
+      if (req.files && req.files.image) {
+        const images = Array.isArray(req.files.image) ? req.files.image : [req.files.image];
+        // uploading to cloudinary
+        const imageUrl = await ImageUploader.uploadImage(images);
+        if (!imageUrl) {
+          response = new Response(res, 415, 'Please Upload a valid image');
+          return response.sendErrorMessage();
+        }
+        // eslint-disable-next-line prefer-destructuring
+        profileData.image_url = imageUrl[0];
+      }
+
       await UserRepository.update({ id: userData.id }, profileData);
 
       response = new Response(res, 200, 'User profile data', profileData);

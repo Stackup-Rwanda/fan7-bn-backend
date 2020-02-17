@@ -3,7 +3,6 @@ import Response from '../utils/response';
 import UserSchema from '../modules/userSchema';
 import validator from '../utils/validator';
 import AuthUtils from '../utils/auth.utils';
-import ImageUploader from '../utils/imageUploader.util';
 
 const { trimmer } = validator;
 
@@ -33,16 +32,6 @@ class ProfileMiddleware {
       if (error) {
         response = new Response(res, 422, error.message);
         return response.sendErrorMessage();
-      }
-
-      if (req.files && req.files.image) {
-        const imageUrl = await ImageUploader.uploadImage(req.files.image);
-        if (!imageUrl) {
-          response = new Response(res, 415, 'Please Upload a valid image');
-          return response.sendErrorMessage();
-        }
-
-        profileData.image_url = imageUrl;
       }
 
       req.profileData = profileData;

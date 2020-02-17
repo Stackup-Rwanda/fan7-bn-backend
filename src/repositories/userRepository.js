@@ -1,6 +1,11 @@
 import model from '../models';
 
-const { User, Request, Room } = model;
+const {
+  User,
+  Request,
+  Room,
+  Accommodation
+} = model;
 
 /**
  * @description UserRepository contains user repository
@@ -16,13 +21,14 @@ class UserRepository {
     this.db = User;
     this.Request = Request;
     this.Room = Room;
+    this.Accommodation = Accommodation;
   }
 
   /**
-     *
-     * @param {string} email
-     * @returns {obj} record is object if email found or null if not
-     */
+   *
+   * @param {string} email
+   * @returns {obj} record is object if email found or null if not
+   */
   async findByEmail(email) {
     try {
       const record = await this.db.findOne({ where: { email } });
@@ -34,10 +40,10 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {string} userName
-     * @returns {obj} record is object if userName found or null if not
-     */
+   *
+   * @param {string} userName
+   * @returns {obj} record is object if userName found or null if not
+   */
   async findByUserName(userName) {
     try {
       const record = await this.db.findOne({ where: { user_name: userName } });
@@ -49,10 +55,10 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {integer} id
-     * @returns {obj} record is object if user found or null if not
-     */
+   *
+   * @param {integer} id
+   * @returns {obj} record is object if user found or null if not
+   */
   async findByUserId(id) {
     try {
       const record = await this.db.findOne({ where: { id } });
@@ -73,7 +79,10 @@ class UserRepository {
    */
   async update(userField, changes) {
     try {
-      return await this.db.update(changes, { returning: true, where: userField });
+      return await this.db.update(changes, {
+        returning: true,
+        where: userField
+      });
     } catch (e) {
       throw new Error(e);
     }
@@ -89,17 +98,20 @@ class UserRepository {
    */
   async verify(email, changes) {
     try {
-      return await this.db.update(changes, { returning: true, where: { email } });
+      return await this.db.update(changes, {
+        returning: true,
+        where: { email }
+      });
     } catch (e) {
       throw new Error(e);
     }
   }
 
   /**
-     *
-     * @param {integer} id
-     * @returns {obj} record is object if id found or null if not
-     */
+   *
+   * @param {integer} id
+   * @returns {obj} record is object if id found or null if not
+   */
   async findById(id) {
     try {
       const record = await this.db.findByPk(id);
@@ -111,13 +123,16 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {integer} userId
-     * @returns {obj} Return Request found
-     */
+   *
+   * @param {integer} userId
+   * @returns {obj} Return Request found
+   */
   async findRequestByUserId(userId) {
     try {
-      const request = await this.Request.findOne({ where: { user_id: userId }, order: [['id', 'DESC']] });
+      const request = await this.Request.findOne({
+        where: { user_id: userId },
+        order: [['id', 'DESC']]
+      });
       return request;
     } catch (error) {
       throw new Error(error);
@@ -125,10 +140,10 @@ class UserRepository {
   }
 
   /**
-     * @param {integer} id
-     * @param {string} role
-     * @returns {obj} record is object if id found or null if not
-     */
+   * @param {integer} id
+   * @param {string} role
+   * @returns {obj} record is object if id found or null if not
+   */
   async findByIdAndRole(id, role) {
     try {
       const record = await this.db.findOne({ where: { id, role } });
@@ -140,10 +155,10 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {string} role
-     * @returns {obj} record is object if user found or null if not
-     */
+   *
+   * @param {string} role
+   * @returns {obj} record is object if user found or null if not
+   */
   async findByRole(role) {
     try {
       const record = await this.db.findOne({ where: { role } });
@@ -155,29 +170,15 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {string} managerEmail
-     * @returns {obj} record is object if managerEmail found or null if not
-     */
+   *
+   * @param {string} managerEmail
+   * @returns {obj} record is object if managerEmail found or null if not
+   */
   async findByLineManager(managerEmail) {
     try {
-      const record = await this.db.findAll({ where: { line_manager: managerEmail }, attributes: ['id', 'user_name', 'email'] });
-
-      return record;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  /**
-     *
-     * @param {obj} data
-     * @returns {obj} record is object if managerEmail found or null if not
-     */
-  async findByAccommodationIdAndRoomId(data) {
-    try {
-      const record = await this.Room.findOne({
-        where: { accommodation_id: data.accommodation_id, id: data.id }
+      const record = await this.db.findAll({
+        where: { line_manager: managerEmail },
+        attributes: ['id']
       });
 
       return record;
@@ -187,13 +188,46 @@ class UserRepository {
   }
 
   /**
-     *
-     * @param {obj} where
-     * @returns {obj} record is object if managerEmail found or null if not
-     */
-  async findByAccommodationIdAndRoomId(where) {
+   *
+   * @param {obj} id
+   * @returns {obj} find accommodation by id
+   */
+  async findAccommodationById(id) {
     try {
-      const record = await this.Room.findOne({ where });
+      const record = await this.Accommodation.findOne({ where: { id } });
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {obj} data
+   * @returns {obj} helps find room_number in an accommodation
+   */
+  async findRoomWhere(data) {
+    try {
+      const record = await this.Room.findOne({
+        where: { accommodation_id: data.accommodation_id, room_number: data.room_number }
+      });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {obj} data
+   * @returns {obj} record is object if managerEmail found or null if not
+   */
+  async findByAccommodationIdAndRoomId(data) {
+    try {
+      const record = await this.Room.findOne({
+        where: { accommodation_id: data.accommodation_id, id: data.id }
+      });
 
       return record;
     } catch (error) {

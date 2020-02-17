@@ -2,15 +2,29 @@ import 'dotenv';
 import Response from '../utils/response';
 import AccommodationSchema from '../modules/accommodation.schema';
 import AuthUtils from '../utils/auth.utils';
-import ImageUploader from '../utils/imageUploader.util';
 
 class AccommodationMiddleware {
   static async validate(req, res, next) {
     let response;
     try {
       const { userData } = req;
-      const accommodationData = req.body;
-      const { error } = AccommodationSchema.createSchema(accommodationData);
+      const {
+        name,
+        address,
+        description,
+        geoLocation,
+        services,
+        amenities
+      } = req.body;
+      const accommodationData = {
+        name,
+        address,
+        description,
+        geo_location: geoLocation,
+        services,
+        amenities
+      };
+      const { error, value } = AccommodationSchema.createSchema(accommodationData);
       const verified = await AuthUtils.isVerified(userData);
 
       if (!verified) {
@@ -22,18 +36,72 @@ class AccommodationMiddleware {
         response = new Response(res, 422, error.message);
         return response.sendErrorMessage();
       }
-
-      if (req.files && req.files.image) {
-        const imageUrl = await ImageUploader.uploader(req.files.image);
-        if (!imageUrl) {
-          response = new Response(res, 415, 'Please Upload a valid image');
-          return response.sendErrorMessage();
-        }
-
-        accommodationData.image = [imageUrl];
+      if (!req.files || !req.files.image) {
+        response = new Response(res, 422, 'Image must be provided with key "image"');
+        return response.sendErrorMessage();
       }
+      req.accommodationData = value;
+      return next();
+    } catch (err) {
+      response = new Response(res, 500, err);
+      return response.sendErrorMessage();
+    }
+  }
 
-      req.accommodationData = accommodationData;
+  static async roomValidation(req, res, next) {
+    let response;
+    try {
+      const { userData } = req;
+
+      const accommodationId = req.params.accommodation_id;
+      const {
+        cost,
+        type,
+        roomNumber,
+        area,
+        totalBedrooms,
+        amenities
+      } = req.body;
+      const roomData = {
+        cost,
+        type,
+        area,
+        room_number: roomNumber,
+        total_bedrooms: totalBedrooms,
+        amenities,
+        accommodation_id: accommodationId,
+        booked: false
+      };
+      const { error, value } = AccommodationSchema.createRoomSchema(roomData);
+      if (error) {
+        response = new Response(res, 422, error.message);
+        return response.sendErrorMessage();
+      }
+      const { dataValues } = await AuthUtils.isHost(userData);
+      if (!(dataValues.role === 'host-supplier' || dataValues.role === 'travel-administrator')) {
+        response = new Response(res, 401, 'Only a host-supplier and travel admin can add rooms');
+        return response.sendErrorMessage();
+      }
+      const isAccommodation = await AuthUtils.isAccommodation(value.accommodation_id);
+      if (!isAccommodation) {
+        response = new Response(res, 404, 'Accommodation not found');
+        return response.sendErrorMessage();
+      }
+      if (isAccommodation.dataValues.user_id !== userData.id) {
+        response = new Response(res, 401, 'You have no rights over the following accommodation');
+        return response.sendErrorMessage();
+      }
+      if (isAccommodation.dataValues.status !== 'Approved') {
+        response = new Response(res, 405, 'The following accommodation must be approved to have rooms');
+        return response.sendErrorMessage();
+      }
+      const roomExist = await AuthUtils
+        .roomExist({ accommodation_id: value.accommodation_id, room_number: value.room_number });
+      if (roomExist) {
+        response = new Response(res, 409, 'A similar room number exist already');
+        return response.sendErrorMessage();
+      }
+      req.roomData = value;
       return next();
     } catch (err) {
       response = new Response(res, 500, err.message);
@@ -51,9 +119,9 @@ class AccommodationMiddleware {
   static async isHost(req, res, next) {
     const { userData } = req;
     try {
-      const isHost = await AuthUtils.isHost(userData);
-      if (!isHost) {
-        const response = new Response(res, 403, 'You have no rights over this endpoint');
+      const { dataValues } = await AuthUtils.isHost(userData);
+      if (!(dataValues.role === 'host-supplier' || dataValues.role === 'travel-administrator')) {
+        const response = new Response(res, 401, 'You have no rights over this endpoint');
         return response.sendErrorMessage();
       }
       next();
