@@ -4,7 +4,7 @@ import AccommodationRepository from '../repositories/accommodation.repository';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import AuthUtils from '../utils/auth.utils';
 
-const { Accommodation } = models;
+const { Accommodation, Room, Booking } = models;
 
 class AccommodationController {
   static async createAccommodation(req, res) {
@@ -17,8 +17,8 @@ class AccommodationController {
         description,
         image,
         geoLocation,
-        rooms,
         services,
+        rooms,
         amenities,
         status
       } = req.accommodationData;
@@ -28,8 +28,8 @@ class AccommodationController {
         address,
         description,
         image,
-        geo_location: geoLocation,
         rooms,
+        geo_location: geoLocation,
         services,
         amenities,
         status
@@ -131,6 +131,42 @@ class AccommodationController {
       return response.sendSuccessResponse();
     } catch (error) {
       response = new Response(res, 500, error);
+      return response.sendErrorMessage();
+    }
+  }
+
+
+  /** Function to he;p a user with a trip request book a room in an accommodation
+   * @param {object} req the request sent to the server
+   * @param {object} res the response returned
+   * @param {object} keyword to be searched for
+   * @returns {object} found data
+   */
+  static async bookRoom(req, res) {
+    let response;
+    try {
+      const changeToBooked = await Room.update({
+        booked: true
+      }, {
+        where: {
+          accommodation_id: req.value.accommodation_id,
+          id: req.value.room_id
+        }
+      });
+      if (changeToBooked[0] !== 0) {
+        const { dataValues } = await Booking.create({
+          checkin: req.value.checkin,
+          checkout: req.value.checkout,
+          accommodation_id: req.value.accommodation_id,
+          room_id: req.value.room_id,
+          user_id: req.userData.id,
+          trip_id: req.value.trip_id
+        });
+        response = new Response(res, 201, 'Your room was booked', dataValues);
+        return response.sendSuccessResponse();
+      }
+    } catch (error) {
+      response = new Response(res, 500, `Internal Server Error: ${error}`);
       return response.sendErrorMessage();
     }
   }

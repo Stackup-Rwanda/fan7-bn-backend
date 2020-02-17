@@ -102,6 +102,20 @@ class AuthUtils {
       throw new Error(error);
     }
   }
+
+  /**
+   *
+   * @param {obj} data
+   * @returns {boolean} isManager is true if user is a manager
+   */
+  static async isRoom(data) {
+    try {
+      const isRequester = await UserRepository.findByAccommodationIdAndRoomId(data);
+      return isRequester;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthUtils;

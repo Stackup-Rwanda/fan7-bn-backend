@@ -4,6 +4,7 @@ import Accommodation from '../controllers/accommodation.controller';
 import AuthMiddleware from '../middlewares/auth.middleware';
 import LikeController from '../controllers/LikeController';
 import AccommodationMiddleware from '../middlewares/accommodation.middleware';
+import roomBookingValidation from '../middlewares/roomBookingValidation';
 
 const router = express.Router();
 const connection = connect();
@@ -14,5 +15,6 @@ router.get('/', AuthMiddleware.verifyToken, Accommodation.getAllAccommodation);
 router.get('/:id', AuthMiddleware.verifyToken, AccommodationMiddleware.param, Accommodation.getSpecificAccommodation);
 router.post('/:id/like', AuthMiddleware.verifyToken, LikeController.LikeOrUnlike);
 router.get('/:id/likes', AuthMiddleware.verifyToken, LikeController.countAccommodationLikes);
+router.post('/:accommodation_id/book/:room_id', AuthMiddleware.verifyToken, roomBookingValidation.valid, Accommodation.bookRoom);
 
 export default router;
