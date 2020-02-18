@@ -6,17 +6,48 @@ export default {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    type: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
     accommodation_id: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Accommodation',
+        key: 'id',
+        as: 'accommodation_id',
+      },
     },
     booked: {
       type: Sequelize.BOOLEAN,
       default: false
+    },
+    cost: {
+      type: Sequelize.DECIMAL,
+      allowNull: false
+    },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    area: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    room_number: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      unique: true
+    },
+    total_bedrooms: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    amenities: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: true
+    },
+    image: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: true
     },
     createdAt: {
       allowNull: false,

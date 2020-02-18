@@ -30,10 +30,6 @@ export default {
       type: Sequelize.STRING,
       allowNull: false
     },
-    rooms: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
     services: {
       type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: false

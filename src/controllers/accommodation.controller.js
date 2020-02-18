@@ -3,40 +3,33 @@ import Response from '../utils/response';
 import AccommodationRepository from '../repositories/accommodation.repository';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import AuthUtils from '../utils/auth.utils';
+import ImageUploader from '../utils/imageUploader.util';
 
 const { Accommodation, Room, Booking } = models;
 
 class AccommodationController {
   static async createAccommodation(req, res) {
     let response;
+    const { accommodationData, userData } = req;
     try {
-      const { userData } = req;
-      const {
-        name,
-        address,
-        description,
-        image,
-        geoLocation,
-        services,
-        rooms,
-        amenities,
-        status
-      } = req.accommodationData;
-      const data = {
-        user_id: userData.id,
-        name,
-        address,
-        description,
-        image,
-        rooms,
-        geo_location: geoLocation,
-        services,
-        amenities,
-        status
-      };
-      const { dataValues } = await Accommodation.create(data);
+      if (req.files && req.files.image) {
+        const images = Array.isArray(req.files.image) ? req.files.image : [req.files.image];
+        const imageUrl = await ImageUploader.uploadImage(images);
+        if (!imageUrl) {
+          response = new Response(res, 415, 'Please Upload a valid image');
+          return response.sendErrorMessage();
+        }
+        accommodationData.image = imageUrl;
+      }
+      const { dataValues } = await Accommodation
+        .create({ ...accommodationData, user_id: userData.id });
       if (dataValues) {
-        response = new Response(res, 201, 'Your request to create an accommodation has been sent successfully, wait for approval', dataValues);
+        response = new Response(
+          res,
+          201,
+          'Your request to create an accommodation has been sent successfully, wait for approval',
+          dataValues
+        );
         return response.sendSuccessResponse();
       }
     } catch (error) {
@@ -62,8 +55,16 @@ class AccommodationController {
         return response.sendErrorMessage();
       }
 
-      const approvedAccommodation = await AccommodationRepository.accommodationApprove({ id }, { status: 'Approved' });
-      response = new Response(res, 200, 'Accommodation is sucessfully approved', approvedAccommodation[1]);
+      const approvedAccommodation = await AccommodationRepository.accommodationApprove(
+        { id },
+        { status: 'Approved' }
+      );
+      response = new Response(
+        res,
+        200,
+        'Accommodation is sucessfully approved',
+        approvedAccommodation[1]
+      );
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
@@ -105,6 +106,44 @@ class AccommodationController {
   }
 
   /**
+   * @description This helps to create a room
+   * @param  {object} req - The accommodation object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async createRoom(req, res) {
+    let response;
+    const { roomData } = req;
+    try {
+      if (req.files && req.files.image) {
+        const images = Array.isArray(req.files.image)
+          ? req.files.image
+          : [req.files.image];
+        const imageUrl = await ImageUploader.uploadImage(images);
+        if (!imageUrl) {
+          response = new Response(res, 415, 'Please Upload a valid image');
+          return response.sendErrorMessage();
+        }
+
+        roomData.image = imageUrl;
+      }
+      const { dataValues } = await Room.create(roomData);
+      if (dataValues) {
+        response = new Response(
+          res,
+          201,
+          `Room number ${dataValues.room_number} was successfully created`,
+          dataValues
+        );
+        return response.sendSuccessResponse();
+      }
+    } catch (error) {
+      response = new Response(res, 500, error);
+      return response.sendErrorMessage();
+    }
+  }
+
+  /**
    * @description This helps to find accommodation by id
    * @param  {object} req - The accommodation object
    * @param  {object} res - The response object
@@ -118,8 +157,12 @@ class AccommodationController {
       const id = parseInt(req.params.id, 10);
       const isRequester = await AuthUtils.isRequester(userData);
 
-      if (isRequester) accommodation = await AccommodationRepository.findOne({ id, status: 'Approved' });
-
+      if (isRequester) {
+        accommodation = await AccommodationRepository.findOne({
+          id,
+          status: 'Approved'
+        });
+      }
       accommodation = await AccommodationRepository.findById(id);
 
       if (!accommodation) {
@@ -135,7 +178,6 @@ class AccommodationController {
     }
   }
 
-
   /** Function to he;p a user with a trip request book a room in an accommodation
    * @param {object} req the request sent to the server
    * @param {object} res the response returned
@@ -145,14 +187,17 @@ class AccommodationController {
   static async bookRoom(req, res) {
     let response;
     try {
-      const changeToBooked = await Room.update({
-        booked: true
-      }, {
-        where: {
-          accommodation_id: req.value.accommodation_id,
-          id: req.value.room_id
+      const changeToBooked = await Room.update(
+        {
+          booked: true
+        },
+        {
+          where: {
+            accommodation_id: req.value.accommodation_id,
+            id: req.value.room_id
+          }
         }
-      });
+      );
       if (changeToBooked[0] !== 0) {
         const { dataValues } = await Booking.create({
           checkin: req.value.checkin,

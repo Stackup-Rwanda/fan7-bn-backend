@@ -16,5 +16,7 @@ router.get('/:id', AuthMiddleware.verifyToken, AccommodationMiddleware.param, Ac
 router.post('/:id/like', AuthMiddleware.verifyToken, LikeController.LikeOrUnlike);
 router.get('/:id/likes', AuthMiddleware.verifyToken, LikeController.countAccommodationLikes);
 router.post('/:accommodation_id/book/:room_id', AuthMiddleware.verifyToken, roomBookingValidation.valid, Accommodation.bookRoom);
+router.post('/:accommodation_id/room', AuthMiddleware.verifyToken, connection, AccommodationMiddleware.roomValidation, Accommodation.createRoom);
+
 
 export default router;

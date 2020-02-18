@@ -24,10 +24,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    rooms: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     services: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false

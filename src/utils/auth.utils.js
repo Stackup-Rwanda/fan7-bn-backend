@@ -17,55 +17,68 @@ class AuthUtils {
   }
 
   /**
-    *
-    * @param {string} email
-    * @returns {boolean} isEmailExists is true if email exists
-    */
+   *
+   * @param {string} email
+   * @returns {boolean} isEmailExists is true if email exists
+   */
   static async emailExists({ email }) {
     const isEmailExists = await UserRepository.findByEmail(email);
     return !!isEmailExists;
   }
 
   /**
-    *
-    * @param {string} email
-    * @returns {boolean} isEmailExists is true if email exists
-    */
+   *
+   * @param {string} email
+   * @returns {boolean} isEmailExists is true if email exists
+   */
   static async isVerified({ id }) {
     const { isVerified } = await UserRepository.findByUserId(id);
     return isVerified;
   }
 
   /**
-  *
-  * @param {number} id
-  * @returns {boolean} check if super Administrator exists
-  */
+   *
+   * @param {number} id
+   * @returns {boolean} check if super Administrator exists
+   */
   static async loggedInUser(id) {
     const loggedInUser = await UserRepository.findById(id);
     return loggedInUser;
   }
 
   /**
-    *
-    * @param {obj} userData
-    * @returns {boolean} isManager is true if user is a manager
-    */
+   *
+   * @param {obj} userData
+   * @returns {boolean} isManager is true if user is a manager
+   */
   static async isHost({ id }) {
     try {
-      const isHost = await UserRepository.findByIdAndRole(id, 'host-supplier');
-      const isTravelAdmin = await UserRepository.findByIdAndRole(id, 'travel-administrator');
-      return !!isHost || !!isTravelAdmin;
+      const isHost = await UserRepository.findById(id);
+      return isHost;
     } catch (error) {
       throw new Error(error);
     }
   }
 
   /**
-    *
-    * @param {obj} userData
-    * @returns {boolean} isManager is true if user is a manager
-    */
+   *
+   * @param {obj} id
+   * @returns {boolean} check if accomodation exist and belongs to the user
+   */
+  static async isAccommodation(id) {
+    try {
+      const isAccommodation = await UserRepository.findAccommodationById(id);
+      return isAccommodation || undefined;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {obj} userData
+   * @returns {boolean} isManager is true if user is a manager
+   */
   static async isManager({ id }) {
     try {
       const isManager = await UserRepository.findByIdAndRole(id, 'manager');
@@ -76,10 +89,10 @@ class AuthUtils {
   }
 
   /**
-    *
-    * @param {obj} userData
-    * @returns {boolean} isManager is true if user is a manager
-    */
+   *
+   * @param {obj} userData
+   * @returns {boolean} isManager is true if user is a manager
+   */
   static async isSuperAdmin({ id }) {
     try {
       const isSuperAdmin = await UserRepository.findByIdAndRole(id, 'super-administrator');
@@ -90,10 +103,10 @@ class AuthUtils {
   }
 
   /**
-    *
-    * @param {obj} userData
-    * @returns {boolean} isManager is true if user is a manager
-    */
+   *
+   * @param {obj} userData
+   * @returns {boolean} isManager is true if user is a manager
+   */
   static async isRequester({ id }) {
     try {
       const isRequester = await UserRepository.findByIdAndRole(id, 'requester');
@@ -106,7 +119,21 @@ class AuthUtils {
   /**
    *
    * @param {obj} data
-   * @returns {boolean} isManager is true if user is a manager
+   * @returns {boolean} check if room number exist an an accommodation
+   */
+  static async roomExist(data) {
+    try {
+      const roomExist = await UserRepository.findRoomWhere(data);
+      return !!roomExist;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {obj}  data
+   * @returns {dataValues} returns the matching room
    */
   static async isRoom(data) {
     try {
