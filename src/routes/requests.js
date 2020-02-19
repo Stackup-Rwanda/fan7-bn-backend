@@ -18,7 +18,17 @@ router.post(
   AuthMiddleware.rememberMe
 );
 router.get('/search', AuthMiddleware.verifyToken, requestController.search);
-router.get('/mostTravelled', AuthMiddleware.verifyToken, requestController.MostTravelledDestination);
+router.get(
+  '/mostTravelled',
+  AuthMiddleware.verifyToken,
+  requestController.MostTravelledDestination
+);
+router.get(
+  '/destinations/mostTravelled',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.isManager,
+  requestController.MostTravelledDestination
+);
 router.post(
   '/return_trip',
   AuthMiddleware.verifyToken,
@@ -32,7 +42,6 @@ router.post(
   AuthMiddleware.rememberMe
 );
 
-
 router.post(
   '/multi_city',
   AuthMiddleware.verifyToken,
@@ -44,6 +53,5 @@ router.post(
   requestController.create,
   AuthMiddleware.rememberMe
 );
-
 
 export default router;
