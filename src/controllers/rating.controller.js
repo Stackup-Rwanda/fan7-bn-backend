@@ -8,7 +8,7 @@ class RatingController {
   static async addRate(req, res) {
     const accommodationId = req.params.id;
     const userId = req.userData.id;
-    const { rating } = req.body;
+    const rating = Math.round(req.body.rating);
     const foundUser = await userRepository.findById(userId);
     const foundAccommodation = await accommodationRepo.findById(accommodationId);
 
@@ -40,21 +40,21 @@ class RatingController {
           order: [[Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'DESC']]
         }));
 
-        // avg.ratingAvg.toFixed(2);
-        // const average = avg.map(({dataValues}) => {
-        //     console.log(Math.round(dataValues.ratingAvg));
-
-        // });
         if (!addedRating) {
           return res.status(500).json({
             status: 500,
             error: 'Internal Server Error'
           });
         }
-        return res.status(200).json({
-          status: 200,
+        const [{ dataValues }] = avg;
+        const { ratingAvg } = dataValues;
+        return res.status(201).json({
+          status: 201,
           message: 'You have successfully rated a centre',
-          data: avg,
+          data: {
+            accommodationId: dataValues.accommodation_id,
+            ratingAvg: parseFloat(ratingAvg)
+          },
         });
       }
       const updateRating = await Rating.update(
@@ -75,10 +75,15 @@ class RatingController {
         order: [[Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'DESC']]
       }));
       if (updateRating) {
-        return res.status(200).json({
-          status: 200,
+        const [{ dataValues }] = avg;
+        const { ratingAvg } = dataValues;
+        return res.status(201).json({
+          status: 201,
           message: 'You have successfully updated your rate',
-          data: avg,
+          data: {
+            accommodationId: dataValues.accommodation_id,
+            ratingAvg: parseFloat(ratingAvg),
+          },
         });
       }
       return res.status(500).json({
