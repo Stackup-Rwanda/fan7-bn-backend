@@ -18,6 +18,7 @@ router.post(
   AuthMiddleware.rememberMe
 );
 router.get('/search', AuthMiddleware.verifyToken, requestController.search);
+router.get('/mostTravelled', AuthMiddleware.verifyToken, requestController.MostTravelledDestination);
 router.post(
   '/return_trip',
   AuthMiddleware.verifyToken,

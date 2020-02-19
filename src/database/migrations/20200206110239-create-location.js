@@ -9,6 +9,10 @@ export default {
     destination: {
       type: Sequelize.STRING
     },
+    visitCount: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE
