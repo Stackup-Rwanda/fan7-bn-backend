@@ -36,18 +36,6 @@ export default {
       type: Sequelize.STRING,
       allowNull: true
     },
-    destination: {
-      type: Sequelize.STRING,
-      allowNull: true
-    },
-    travel_date: {
-      type: Sequelize.DATE,
-      allowNull: true
-    },
-    return_date: {
-      type: Sequelize.DATE,
-      allowNull: true
-    },
     accommodation_id: {
       type: Sequelize.INTEGER,
       allowNull: true,
@@ -57,6 +45,18 @@ export default {
         key: 'id',
         as: 'accommodation_id',
       },
+    },
+    destination: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false
+    },
+    travel_date: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false
+    },
+    return_date: {
+      type: Sequelize.STRING,
+      allowNull: true
     },
     reason: {
       type: Sequelize.STRING,

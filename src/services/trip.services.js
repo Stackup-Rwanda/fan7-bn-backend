@@ -1,8 +1,6 @@
-import { Op } from 'sequelize';
 import models from '../models';
 
-const { Request } = models;
-const { User } = models;
+const { sequelize } = models;
 
 class RequestServices {
   /** Function to search according to what the user is typing
@@ -11,21 +9,14 @@ class RequestServices {
    * @returns {object} found data
    */
   static async search(searching) {
-    const searchArray = await Request.findAll({
-      where: {
-        [Op.or]: [
-          {
-            [Op.or]: ['origin', 'destination', 'status'].map(key => ({
-              [key]: {
-                [Op.like]: `%${searching}%`
-              },
-            }))
-          }
-        ]
-      },
-      include: [{ model: User, as: 'user' }]
-    });
-    return searchArray;
+    const searchArray = await sequelize.query(
+      'SELECT "Users".*,"Requests".* FROM "Requests" JOIN "Users" ON ("Requests".user_id = "Users".id) WHERE origin LIKE :searching OR status LIKE :searching OR EXISTS(SELECT 1 FROM unnest(destination) AS ip WHERE ip LIKE :searching) OR EXISTS(SELECT 1 FROM unnest(travel_date) AS ip WHERE ip LIKE :searching);',
+      {
+        replacements: { searching: `%${searching}%` }
+      }
+    );
+
+    return searchArray[0];
   }
 }
 

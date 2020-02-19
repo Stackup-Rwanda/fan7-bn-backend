@@ -22,6 +22,7 @@ import Feedback from './feedback.test';
 import Booking from './booking.test';
 import createRoom from './createRoom.test';
 import chatTest from './chat.test';
+import multiCityRequest from './multiCityRequest.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -48,4 +49,5 @@ describe('API test', () => {
   describe('Booking on Accommodation test', Booking);
   describe('create rooms for  Accommodation test', createRoom);
   describe('Chat functionality test', chatTest);
+  describe('muticityTripRequest Request  test', multiCityRequest);
 });

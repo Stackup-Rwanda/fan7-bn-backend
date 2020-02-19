@@ -79,29 +79,37 @@ class RequestController {
     });
   }
 
+  /**
+   * @description This helps requester to create trip request
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns {object} The response object
+   */
+
   static async create(req, res, next) {
     try {
       const { userData } = req;
       const {
         origin,
         destination,
-        travelDate,
+        travelDates,
         returnDate,
         reason,
-        accommodationId,
+        // eslint-disable-next-line camelcase
+        accommodation_id,
         dob,
         passportName,
         passportNumber,
         gender
-      } = req.body;
+      } = req.value;
       const info = {
         user_id: userData.id,
         origin,
-        destination,
-        travel_date: travelDate,
+        accommodation_id,
+        destination: Array.isArray(destination) ? destination : [destination],
+        travel_date: Array.isArray(travelDates) ? travelDates : [travelDates],
         return_date: returnDate,
         reason,
-        accommodation_id: accommodationId,
         dob,
         passportName,
         passportNumber,
@@ -122,7 +130,7 @@ class RequestController {
         };
 
         eventEmitter.emit('notification', notification);
-        onSuccess(res, 201, 'Your request has sent successfully, wait for approval');
+        onSuccess(res, 201, 'Your request has sent successfully, wait for approval', dataValues);
       }
 
       return next();
@@ -316,20 +324,21 @@ class RequestController {
         response = new Response(res, 404, `Ooops. Nothing was found for ${keyword}`);
         return response.sendErrorMessage();
       }
-      const [{
-        user, origin, destination, status, travel_date: travelDate, return_date: returnDate
-      }] = result;
 
-      const { first_name: firstName, last_name: lastName } = user.dataValues;
-      const data = {
-        firstName,
-        lastName,
-        origin,
-        destination,
-        travelDate,
-        returnDate,
-        status,
-      };
+      const data = [];
+      result.forEach(obj => {
+        const objData = {
+          id: obj.id,
+          first_nameorigin: obj.first_name,
+          last_name: obj.last_name,
+          origin: obj.origin,
+          destination: obj.destination,
+          travelDate: obj.travel_date,
+          returnDate: obj.return_date,
+          status: obj.status
+        };
+        data.push(objData);
+      });
       response = new Response(res, 200, `The results for ${keyword}`, data);
       return response.sendSuccessResponse();
     } catch (error) {

@@ -107,10 +107,10 @@ class AuthMiddleware {
     if (!data) return next();
     if (dataValues.rememberMe !== false) {
       const {
-        passportName, passportNumber, gender, role, dob
+        passportName, passportNumber, gender, dob
       } = data.dataValues;
       req.body = {
-        ...req.body, passportName, passportNumber, gender, role, dob
+        ...req.body, passportName, passportNumber, gender, dob
 
       };
       return next();

@@ -14,15 +14,14 @@ it('Should successfully send a request', done => {
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtdWhpcmVib3JpQHlhaG9vLmZyIiwiaWF0IjoxNTgwOTU2ODgyfQ.Z75OGHWY7AePt0HnbrYSR48GBMHJs8IFyuwBYGAfKps'
     )
     .send({
-      origin: 'rwanda, kigali',
-      destination: 'burundi, bujumbura',
+      origin: 'nigeria, lagos',
+      destination: 'rwanda, kigali',
       travelDate: '2020-10-01',
       reason: 'business',
-      accommodationId: 2,
-      user_id: 1,
-      dob: '2020-10-23',
+      dob: '2020-10-01',
+      accommodationId: 1,
       passportName: 'bihire jules boris',
-      passportNumber: 232450,
+      passportNumber: '896723',
       gender: 'Male',
       rememberMe: true
     })
@@ -46,11 +45,11 @@ it('Should return error about inputs', done => {
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtdWhpcmVib3JpQHlhaG9vLmZyIiwiaWF0IjoxNTgwOTU2ODgyfQ.Z75OGHWY7AePt0HnbrYSR48GBMHJs8IFyuwBYGAfKps'
     )
     .send({
-      origin: 'rwanda',
-      destination: 'burundi, bujumbura',
+      origin: 'nigeria',
+      destination: 2,
+      accommodationId: 1,
       travelDate: '2020-10-01',
-      reason: 'business',
-      accommodationId: 2
+      reason: 'business'
     })
     .end((err, res) => {
       if (err) {

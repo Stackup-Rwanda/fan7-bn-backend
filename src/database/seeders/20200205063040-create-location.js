@@ -3,17 +3,17 @@ export default {
     'Locations',
     [
       {
-        destination: 'Rwanda, Kigali',
+        destination: 'kenya, nairobi',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        destination: 'Burundi, Bujumbura',
+        destination: 'burundi, bujumbura',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        destination: 'Nigeria, Lagos',
+        destination: 'rwanda, kigali',
         createdAt: new Date(),
         updatedAt: new Date()
       }
