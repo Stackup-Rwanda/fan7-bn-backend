@@ -1,6 +1,6 @@
 import 'dotenv';
 import models from '../models';
-import Response from '../utils/response';
+import Response, { onError } from '../utils/response';
 import RatingSchema from '../modules/rating.schema';
 
 const { Request } = models;
@@ -23,7 +23,7 @@ class RatingMiddleware {
       }
       return next();
     } catch (err) {
-      const response = new Response('Internal server error');
+      const response = new Response(res, 500, 'Internal server error');
       return response.sendErrorMessage();
     }
   }
@@ -47,10 +47,7 @@ class RatingMiddleware {
     if (grantUser) {
       return next();
     }
-    return res.status(401).json({
-      status: 401,
-      error: 'Sorry, You can not rate this centre',
-    });
+    return onError(res, 401, 'Sorry, You can not rate this centre');
   }
 }
 export default RatingMiddleware;

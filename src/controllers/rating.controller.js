@@ -2,6 +2,7 @@ import models from '../models';
 import userRepository from '../repositories/userRepository';
 import accommodationRepo from '../repositories/accommodation.repository';
 import ratingRepository from '../repositories/rating.repository';
+import { onError, onSuccess } from '../utils/response';
 
 const { Rating } = models;
 class RatingController {
@@ -20,10 +21,7 @@ class RatingController {
         }
       });
       if (!foundAccommodation) {
-        return res.status(404).json({
-          status: 404,
-          error: 'Accomodation not found',
-        });
+        return onError(res, 404, 'Accomodation not found');
       }
       if (!foundRating) {
         const addedRating = await ratingRepository.addRate({
@@ -34,28 +32,22 @@ class RatingController {
           fields: ['user_id', 'accommodation_id', 'ratings']
         });
         const avg = await (ratingRepository.findAll({
-          attributes: ['accommodation_id', [Rating.sequelize.fn('AVG',
-            Rating.sequelize.col('ratings')), 'ratingAvg']],
+          attributes: ['accommodation_id', [Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'ratingAvg']],
           group: ['accommodation_id'],
           order: [[Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'DESC']]
-        }));
+        })
+        );
 
         if (!addedRating) {
-          return res.status(500).json({
-            status: 500,
-            error: 'Internal Server Error'
-          });
+          return onError(res, 500, 'Internal Server Error');
         }
         const [{ dataValues }] = avg;
         const { ratingAvg } = dataValues;
-        return res.status(201).json({
-          status: 201,
-          message: 'You have successfully rated a centre',
-          data: {
-            accommodationId: dataValues.accommodation_id,
-            ratingAvg: parseFloat(ratingAvg)
-          },
-        });
+        const data = {
+          accommodationId: dataValues.accommodation_id,
+          ratingAvg: parseFloat(ratingAvg)
+        };
+        return onSuccess(res, 201, 'You have successfully rated a centre', data);
       }
       const updateRating = await Rating.update(
         {
@@ -69,32 +61,23 @@ class RatingController {
         }
       );
       const avg = await (ratingRepository.findAll({
-        attributes: ['accommodation_id', [Rating.sequelize.fn('AVG',
-          Rating.sequelize.col('ratings')), 'ratingAvg']],
+        attributes: ['accommodation_id', [Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'ratingAvg']],
         group: ['accommodation_id'],
         order: [[Rating.sequelize.fn('AVG', Rating.sequelize.col('ratings')), 'DESC']]
-      }));
+      })
+      );
       if (updateRating) {
         const [{ dataValues }] = avg;
         const { ratingAvg } = dataValues;
-        return res.status(201).json({
-          status: 201,
-          message: 'You have successfully updated your rate',
-          data: {
-            accommodationId: dataValues.accommodation_id,
-            ratingAvg: parseFloat(ratingAvg),
-          },
-        });
+        const data = {
+          accommodationId: dataValues.accommodation_id,
+          ratingAvg: parseFloat(ratingAvg)
+        };
+        return onSuccess(res, 201, 'You have successfully updated your rate', data);
       }
-      return res.status(500).json({
-        status: 500,
-        error: 'Internal Server Error'
-      });
+      return onError(res, 500, 'Internal Server Error');
     }
-    return res.status(400).json({
-      status: 400,
-      error: 'Sorry, you can not rate! your account is not verified',
-    });
+    return onError(res, 400, 'Sorry, you can not rate! your account is not verified');
   }
 }
 export default RatingController;
