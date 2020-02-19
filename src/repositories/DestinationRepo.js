@@ -4,23 +4,25 @@ const { Location, Request } = models;
 
 class DestinationRepository {
   /**
-   * Gets one destination
+   * Gets all requests
    * @returns {object} destination object.
    */
   static async AllRequests() {
-    const result = Request.count();
+    const result = Request.count({
+      where: { status: 'Approved' }
+    });
     return result;
   }
 
   /**
-   * Gets one destination
+   * Gets all destinations
    * @returns {object} destination object.
    */
   static async FetchAllDestinations() {
     const result = Location.findAll({
-      attributes: ['destination', 'visitCount'],
+      attributes: ['destination', 'visit_count'],
       order: [
-        ['visitCount', 'DESC'],
+        ['visit_count', 'DESC'],
       ],
       limit: 10
     });

@@ -9,7 +9,7 @@ export default {
     destination: {
       type: Sequelize.STRING
     },
-    visitCount: {
+    visit_count: {
       type: Sequelize.INTEGER,
       allowNull: false
     },
