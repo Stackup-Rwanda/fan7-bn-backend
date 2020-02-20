@@ -6,6 +6,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      visit_count: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     },
     {}
   );

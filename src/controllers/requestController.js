@@ -8,11 +8,12 @@ import RequestRepository from '../repositories/requestRepository';
 import RequestServices from '../services/trip.services';
 import { eventEmitter } from '../utils/event.util';
 import userRepository from '../repositories/userRepository';
+import DestinationService from '../repositories/DestinationRepo';
 
 
 dotenv.config();
 
-const { Request, User } = models;
+const { Request, User, sequelize } = models;
 
 // const eventEmitter = new EventEmitter();
 
@@ -291,6 +292,15 @@ class RequestController {
       }
 
       const request = await RequestService.approveRequest(id);
+
+      await request[1].dataValues.destination.forEach((obj) => {
+        sequelize.query(
+          'UPDATE "Locations" SET visit_count = visit_count + 1 WHERE destination = :obj',
+          {
+            replacements: { obj: obj.toLowerCase() }
+          }
+        );
+      });
       const notification = {
         eventType: 'approved_request',
         requestId: id,
@@ -414,10 +424,7 @@ class RequestController {
   /**
    * @description This methods helps travelers and managers get statistics of
    * trips made in certain range of time
-   * @param  {object} req - The request object
-   * @param  {object} res - The response object
-   * @returns  {object} The response object
-   */
+  */
 
   static async getTripStatistics(req, res) {
     let tripStatistics;
@@ -463,6 +470,28 @@ class RequestController {
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
     }
+  }
+
+  /**
+ * @description This methods helps users get info of most travelled destinations
+ * @param  {object} req - The request object
+ * @param  {object} res - The response object
+ * @returns  {object} The response object
+ */
+  static async MostTravelledDestination(req, res) {
+    const Destinations = await DestinationService.FetchAllDestinations();
+    const Requests = await DestinationService.AllRequests();
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Destinations info',
+      Requaests: `Total trip requests are ${Requests} requests`,
+      most_travelled_destinations: Destinations,
+      data: {
+        Requests: `Total trip requests are ${Requests} requests`,
+        Destinations
+      }
+    });
   }
 }
 
