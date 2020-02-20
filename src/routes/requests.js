@@ -11,8 +11,9 @@ router.post(
   AuthMiddleware.verifyToken,
   AuthMiddleware.autoFill,
   requestValidation.oneway,
+  tripValues.validOrigin,
+  tripValues.areValidDates,
   tripValues.locationExist,
-  tripValues.accommodationExist,
   requestController.create,
   AuthMiddleware.rememberMe
 );
@@ -23,8 +24,22 @@ router.post(
   AuthMiddleware.autoFill,
   requestValidation.oneway,
   requestValidation.returnTrip,
+  tripValues.validOrigin,
+  tripValues.areValidDates,
   tripValues.locationExist,
-  tripValues.accommodationExist,
+  requestController.create,
+  AuthMiddleware.rememberMe
+);
+
+
+router.post(
+  '/multi_city',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.autoFill,
+  requestValidation.multiCity,
+  tripValues.validOrigin,
+  tripValues.areValidDates,
+  tripValues.locationExist,
   requestController.create,
   AuthMiddleware.rememberMe
 );

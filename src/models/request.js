@@ -49,15 +49,15 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       destination: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: false
       },
       travel_date: {
-        type: DataTypes.DATE,
-        allowNull: true
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: false
       },
       return_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: true
       },
       reason: {

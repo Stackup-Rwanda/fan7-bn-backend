@@ -3,11 +3,22 @@ import model from '../models';
 
 const { Request, User } = model;
 const { Accommodation } = model;
+const { Location } = model;
 
 /**
  * @description RequestRepository contains Request repository
  */
 class RequestRepository {
+  /**
+  * @description constructor handles the class models
+  * Request Repository constructor
+  * @constructor
+  *
+  */
+  constructor() {
+    this.Location = Location;
+  }
+
   /**
    * @description findAll helps to find all reqests
    * @param {obj} options
@@ -16,7 +27,6 @@ class RequestRepository {
   static async findAll(options = {}) {
     try {
       const requests = await Request.findAll({ where: options });
-
       return requests;
     } catch (error) {
       throw new Error(error);
@@ -162,6 +172,35 @@ class RequestRepository {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  /**
+   * Check if a user has check in the accomodation.
+   * @param {Integer} userId
+   * @param {Date} travelDate
+   * @returns {object} request.
+   */
+  static async checkTravevalDateExist(userId, travelDate) {
+    try {
+      const result = await Request.findOne({
+        where: {
+          user_id: userId,
+          travel_date: { [Op.contains]: [travelDate] }
+        }
+      });
+      return result || false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * Returns all locations
+   * @returns {object} all locations.
+   */
+  static async findAllLoc() {
+    const result = await Location.findAll();
+    return result;
   }
 }
 

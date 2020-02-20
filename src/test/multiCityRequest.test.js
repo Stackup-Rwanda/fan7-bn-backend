@@ -5,9 +5,9 @@ import server from '../server';
 chai.use(chaiHttp);
 const { request } = chai;
 
-it('Should successfully send a successful return request', done => {
+it('Should successfully send a multi city request', done => {
   request(server)
-    .post('/api/requests/return_trip')
+    .post('/api/requests/multi_city')
     .set('Accept', 'application/json')
     .set(
       'token',
@@ -15,16 +15,15 @@ it('Should successfully send a successful return request', done => {
     )
     .send({
       origin: 'nigeria, lagos',
-      destination: 'burundi, bujumbura',
-      travelDate: '2020-10-02',
+      destination: ['kenya, nairobi'],
+      travelDates: ['2021-10-01'],
       reason: 'business',
-      returnDate: '2020-11-03',
+      returnDate: '2022-11-01',
       dob: '2020-10-01',
+      accommodationId: 1,
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
-      accommodationId: 1,
-      rememberMe: true
+      gender: 'Male'
     })
     .end((err, res) => {
       if (err) {
@@ -37,9 +36,9 @@ it('Should successfully send a successful return request', done => {
     });
 });
 
-it('Should return an error about no returnDate', done => {
+it('Should send an error about travelDates length not eqaul to destination length', done => {
   request(server)
-    .post('/api/requests/return_trip')
+    .post('/api/requests/multi_city')
     .set('Accept', 'application/json')
     .set(
       'token',
@@ -47,15 +46,15 @@ it('Should return an error about no returnDate', done => {
     )
     .send({
       origin: 'nigeria, lagos',
-      destination: 'burundi, bujumbura',
-      travelDate: '2020-10-01',
+      destination: ['kenya, nairobi'],
+      travelDates: ['2021-10-01', '2021-10-01'],
       reason: 'business',
+      returnDate: '2022-11-01',
       dob: '2020-10-01',
+      accommodationId: 1,
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
-      accommodationId: 1,
-      rememberMe: true
+      gender: 'Male'
     })
     .end((err, res) => {
       if (err) {
@@ -68,9 +67,9 @@ it('Should return an error about no returnDate', done => {
     });
 });
 
-it('Should return error about inputs', done => {
+it('Should return error about multi city inputs', done => {
   request(server)
-    .post('/api/requests/return_trip')
+    .post('/api/requests/one_way')
     .set('Accept', 'application/json')
     .set(
       'token',
@@ -78,15 +77,10 @@ it('Should return error about inputs', done => {
     )
     .send({
       origin: 'nigeria',
-      destination: 'burundi, bujumbura',
-      travelDate: '2020-1h-01',
-      reason: 'business',
-      dob: '2020-10-01',
-      passportName: 'bihire jules boris',
-      passportNumber: '896723',
-      gender: 'Male',
+      destination: ['kenya, nairobi'],
+      travelDates: ['2022-11-05'],
       accommodationId: 1,
-      rememberMe: true
+      reason: 'business'
     })
     .end((err, res) => {
       if (err) {
