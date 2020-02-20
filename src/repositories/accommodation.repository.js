@@ -9,11 +9,18 @@ class RequestRepository {
   /**
    * @description findAll helps to find all reqests
    * @param {obj} options
+   * @param {*} limit
+   * @param {*} offset
    * @returns {*} requests
    */
-  static async findAll(options = {}) {
+  static async findAll(options = {}, limit, offset) {
     try {
-      const accommodations = await Accommodation.findAll({ where: options });
+      const accommodations = await Accommodation.findAll({
+        where: options,
+        limit: limit || null,
+        offset: offset || 0,
+        order: [['createdAt', 'DESC']]
+      });
 
       return accommodations;
     } catch (error) {

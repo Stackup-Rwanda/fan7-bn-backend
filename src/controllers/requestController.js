@@ -9,7 +9,7 @@ import RequestServices from '../services/trip.services';
 import { eventEmitter } from '../utils/event.util';
 import userRepository from '../repositories/userRepository';
 import DestinationService from '../repositories/DestinationRepo';
-
+import pagination from '../utils/pagination.utils';
 
 dotenv.config();
 
@@ -151,12 +151,12 @@ class RequestController {
     let response;
     try {
       const { userData } = req;
-
+      const { limit, offset } = pagination(req.query);
       const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
       const isManager = await AuthUtils.isManager(userData);
       const isRequester = await AuthUtils.isRequester(userData);
 
-      if (isSuperAdmin) requests = await RequestService.retrieveAllRequests();
+      if (isSuperAdmin) requests = await RequestService.retrieveAllRequests({}, limit, offset);
 
       if (isManager) {
         const directReportIds = await RequestService.retrieveDirectReports(userData);
@@ -165,17 +165,19 @@ class RequestController {
           return response.sendErrorMessage();
         }
 
-        requests = await RequestService.retrieveManagerRequests(directReportIds);
+        requests = await RequestService.retrieveManagerRequests(directReportIds, {}, limit, offset);
       }
 
       if (isRequester) {
-        requests = await RequestService.retrieveAllRequests({ user_id: userData.id });
+        requests = await RequestService
+          .retrieveAllRequests({ user_id: userData.id }, limit, offset);
       }
 
       if (requests.length === 0) {
         response = new Response(res, 404, 'No requests found');
         return response.sendErrorMessage();
       }
+
       response = new Response(res, 200, 'All requests', requests);
       return response.sendSuccessResponse();
     } catch (error) {
@@ -196,12 +198,16 @@ class RequestController {
       const { userData } = req;
       const { value } = req.params;
       const status = value.charAt(0).toUpperCase() + value.slice(1);
+      const { limit, offset } = pagination(req.query);
 
       const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
       const isManager = await AuthUtils.isManager(userData);
       const isRequester = await AuthUtils.isRequester(userData);
 
-      if (isSuperAdmin) requests = await RequestService.retrieveAllRequests({ status });
+      if (isSuperAdmin) {
+        requests = await RequestService
+          .retrieveAllRequests({ status }, limit, offset);
+      }
 
       if (isManager) {
         const directReportIds = await RequestService.retrieveDirectReports(userData);
@@ -210,11 +216,13 @@ class RequestController {
           return response.sendErrorMessage();
         }
 
-        requests = await RequestService.retrieveManagerRequests(directReportIds, { status });
+        requests = await RequestService
+          .retrieveManagerRequests(directReportIds, { status }, limit, offset);
       }
 
       if (isRequester) {
-        requests = await RequestService.retrieveAllRequests({ user_id: userData.id, status });
+        requests = await RequestService
+          .retrieveAllRequests({ user_id: userData.id, status }, limit, offset);
       }
 
       if (requests.length === 0) {

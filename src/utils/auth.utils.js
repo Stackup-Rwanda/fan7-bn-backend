@@ -53,6 +53,21 @@ class AuthUtils {
    */
   static async isHost({ id }) {
     try {
+      const isHost = await UserRepository.findByIdAndRole(id, 'host-supplier');
+      const isTravelAdmin = await UserRepository.findByIdAndRole(id, 'travel-administrator');
+      return !!isHost || !!isTravelAdmin;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {obj} userData
+   * @returns {boolean} isManager is true if user is a manager
+   */
+  static async isHostSupplier({ id }) {
+    try {
       const isHost = await UserRepository.findById(id);
       return isHost;
     } catch (error) {

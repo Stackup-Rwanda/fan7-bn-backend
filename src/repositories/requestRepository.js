@@ -22,11 +22,15 @@ class RequestRepository {
   /**
    * @description findAll helps to find all reqests
    * @param {obj} options
+   * @param {*} limit
+   * @param {*} offset
    * @returns {*} requests
    */
-  static async findAll(options = {}) {
+  static async findAll(options = {}, limit, offset) {
     try {
-      const requests = await Request.findAll({ where: options });
+      const requests = await Request.findAll({
+        where: options, limit: limit || null, offset: offset || 0, order: [['createdAt', 'DESC']]
+      });
       return requests;
     } catch (error) {
       throw new Error(error);
@@ -37,12 +41,17 @@ class RequestRepository {
    * @description findByIds helps to find reqest by array of ids
    * @param {Array} arrayIds
    * @param {obj} options
+   * @param {*} limit
+   * @param {*} offset
    * @returns {*} requests
    */
-  static async findByIds(arrayIds, options) {
+  static async findByIds(arrayIds, options, limit, offset) {
     try {
       const requests = await Request.findAll({
-        where: { user_id: { [Op.in]: arrayIds }, ...options || { [Op.in]: ['Pending', 'Approved', 'Rejected'] } }
+        where: { user_id: { [Op.in]: arrayIds }, ...options || { [Op.in]: ['Pending', 'Approved', 'Rejected'] } },
+        limit: limit || null,
+        offset: offset || 0,
+        order: [['createdAt', 'DESC']]
       });
 
       return requests;
