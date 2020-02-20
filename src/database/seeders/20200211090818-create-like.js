@@ -1,5 +1,5 @@
 export default {
-  up: queryInterface => queryInterface.bulkInsert('Like', [{
+  up: queryInterface => queryInterface.bulkInsert('Likes', [{
     user_id: 9,
     accommodation_id: 1,
     createdAt: new Date(),
@@ -12,5 +12,5 @@ export default {
     updatedAt: new Date()
   }], {}),
 
-  down: queryInterface => queryInterface.bulkDelete('Like', null, {})
+  down: queryInterface => queryInterface.bulkDelete('Likes', null, {})
 };

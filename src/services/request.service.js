@@ -20,6 +20,42 @@ class RequestService {
   /**
    * @description retrieveManagerRequests helps to find manager's requests
    * @param {Array} directReportIds
+   * @param {Date} startDate
+   * @param {Date} endDate
+   * @returns {*} requestst
+   */
+  static async retrieveManagerStatistics(directReportIds, startDate, endDate) {
+    try {
+      const requests = await RequestRepository
+        .findRequestByTimeframe(directReportIds, startDate, endDate);
+
+      return requests;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * @description retrieveTravelerStatistics helps to find traveler's requests
+   * @param {Obj} userData
+   * @param {Date} startDate
+   * @param {Date} endDate
+   * @returns {*} requestst
+   */
+  static async retrieveTravelerStatistics({ id }, startDate, endDate) {
+    try {
+      const requests = await RequestRepository
+        .findRequestByTimeframe([id], startDate, endDate);
+
+      return requests;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * @description retrieveManagerRequests helps to find manager's requests
+   * @param {Array} directReportIds
    * @param {obj} options
    * @returns {*} requestst
    */

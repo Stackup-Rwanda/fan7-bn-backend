@@ -410,6 +410,60 @@ class RequestController {
       error: 'Unauthorized access',
     });
   }
+
+  /**
+   * @description This methods helps travelers and managers get statistics of
+   * trips made in certain range of time
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+
+  static async getTripStatistics(req, res) {
+    let tripStatistics;
+    let response;
+    try {
+      const { userData } = req;
+      const { startDate, endDate } = req.searchDates;
+      const minDate = new Date(startDate);
+      const maxDate = new Date(endDate);
+      maxDate.setHours(
+        maxDate.getHours() + 23,
+        maxDate.getMinutes() + 59,
+        maxDate.getSeconds() + 59,
+        maxDate.getMilliseconds() + 999
+      );
+
+      const isManager = await AuthUtils.isManager(userData);
+      const isTraveler = await AuthUtils.isRequester(userData);
+
+      if (isManager) {
+        const directReportIds = await RequestService.retrieveDirectReports(userData);
+        if (directReportIds.length === 0) {
+          response = new Response(res, 404, 'No direct report found for you');
+          return response.sendErrorMessage();
+        }
+
+        tripStatistics = await RequestService
+          .retrieveManagerStatistics(directReportIds, minDate, maxDate);
+      }
+
+      if (isTraveler) {
+        tripStatistics = await RequestService
+          .retrieveTravelerStatistics(userData, minDate, maxDate);
+      }
+
+      if (tripStatistics === 0) {
+        response = new Response(res, 404, `There were no trip requests made from: ${startDate} to: ${endDate}`);
+        return response.sendErrorMessage();
+      }
+
+      response = new Response(res, 200, `Trip requests statistics from: ${startDate} to: ${endDate}`, { count: tripStatistics });
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(res, error);
+    }
+  }
 }
 
 export default RequestController;

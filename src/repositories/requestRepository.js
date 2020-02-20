@@ -52,6 +52,30 @@ class RequestRepository {
   }
 
   /**
+   * @description findRequestByTimeframe helps to find reqest in a certain time frame
+   * @param {Array} arrayIds
+   * @param {Date} startDate
+   * @param {Date} endDate
+   * @returns {*} statistics
+   */
+  static async findRequestByTimeframe(arrayIds, startDate, endDate) {
+    try {
+      const statistics = await Request.count({
+        where: {
+          user_id: { [Op.in]: arrayIds },
+          createdAt: {
+            [Op.between]: [startDate, endDate]
+          }
+        },
+      });
+
+      return statistics;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
    * @description findByIds helps to find reqest by array of ids and status
    * @param {Array} arrayIds
    * @param {obj} id

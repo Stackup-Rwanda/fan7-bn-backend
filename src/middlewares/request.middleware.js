@@ -50,6 +50,28 @@ class ReqestMiddleware {
       return response.sendErrorMessage();
     }
   }
+
+  /**
+   * @param {req} req object
+   * @param {res} res object
+   * @param {next} next forwards request to the next middleware function
+   * @returns {obj} returns a response object
+  */
+  static async tripStatistics(req, res, next) {
+    const searchDates = trimmer(req.body);
+    const { error } = RequestSchema.tripStatistics(searchDates);
+    try {
+      if (error) {
+        const response = new Response(res, 422, error.message);
+        return response.sendErrorMessage();
+      }
+      req.searchDates = searchDates;
+      return next();
+    } catch (err) {
+      const response = new Response(res, 500, err.message);
+      return response.sendErrorMessage();
+    }
+  }
 }
 
 export default ReqestMiddleware;
