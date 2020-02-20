@@ -97,7 +97,7 @@ export default (sequelize, DataTypes) => {
     }, {}
   );
   Request.associate = models => {
-    Request.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id' });
+    Request.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id', as: 'accommodation' });
     Request.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     Request.hasMany(models.Notification, { foreignKey: 'request_id', as: 'notifications' });
   };

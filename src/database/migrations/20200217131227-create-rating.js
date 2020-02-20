@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Rating', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Ratings', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -36,5 +36,5 @@ export default {
       defaultValue: 'false'
     },
   }),
-  down: queryInterface => queryInterface.dropTable('Rating')
+  down: queryInterface => queryInterface.dropTable('Ratings')
 };

@@ -260,6 +260,29 @@ class RequestSchema {
     });
     return schema.validate(data);
   }
+
+  static tripStatistics(data) {
+    const schema = Joi.object({
+      startDate: Joi
+        .date()
+        .max(new Date())
+        .required()
+        .messages({
+          'date.base': 'startDate must have format of yyyy-mm-dd',
+          'any.required': 'startDate must be provided',
+          'date.max': 'startDate must not be greater than today',
+        }),
+
+      endDate: Joi
+        .date()
+        .required()
+        .messages({
+          'date.base': 'endDate must have format of yyyy-mm-dd',
+          'any.required': 'endDate must be provided',
+        })
+    });
+    return schema.validate(data);
+  }
 }
 
 export default RequestSchema;
