@@ -2,6 +2,7 @@
 import { io } from '../server';
 import NotificationRepository from '../repositories/notification.repository';
 import Mailer from '../utils/mailer.util';
+import NotificationUtils from '../utils/notification.utils';
 
 const notificationRepository = new NotificationRepository();
 
@@ -19,14 +20,9 @@ class NotificationService {
    * @param { String } link
    * @returns { obj } Notification record
    */
-  static async send({
-    eventType, requestId, receiver, type, message, link
-  }) {
+  static async send({ eventType, requestId, role }) {
     try {
-      const notification = {
-        user_id: receiver.id, request_id: requestId, type, message, link
-      };
-
+      const { notification, receiver } = await NotificationUtils(eventType, requestId, role);
       const record = await notificationRepository.create(notification);
 
       notification.id = record.id;
@@ -53,7 +49,7 @@ class NotificationService {
       }
 
       if (receiver.emailNotification) {
-        const mailer = new Mailer('Barefoot Nomad notification', receiver, message, link);
+        const mailer = new Mailer('Barefoot Nomad Notification', receiver, notification.message, notification.link);
         mailer.sendMail();
       }
 

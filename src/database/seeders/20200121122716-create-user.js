@@ -53,7 +53,8 @@ export default {
     user_name: 'great',
     role: 'manager',
     password: await hashPassword('Kemmy123'),
-    isVerified: true
+    isVerified: true,
+    emailNotification: true
   },
   {
     email: 'elvis@gmail.com',

@@ -15,6 +15,7 @@ class CommentController {
    */
   static async addComment(req, res, next) {
     try {
+      const { userData } = req;
       const { comment } = req.body;
       const requestID = Number(req.params.id);
       const requestExists = await RequestService.findRequestById(requestID);
@@ -22,7 +23,7 @@ class CommentController {
         const response = new Response(res, 404, 'Request is not found to add a comment');
         return response.sendErrorMessage();
       }
-      const user = await UserService.findByUserId(req.userData.id);
+      const user = await UserService.findByUserId(userData.id);
       const addedComment = await CommentService.addComment({
         user_id: user.id,
         request_id: requestID,
@@ -34,10 +35,7 @@ class CommentController {
       const notification = {
         eventType: 'commented_request',
         requestId: requestID,
-        receiver: requestExists.user,
-        type: 'Commented',
-        message: 'Your request has been commented on',
-        link: `${req.headers.host}/api/requests/${requestID}`
+        role: userData.role
       };
 
       eventEmitter.emit('notification', notification);

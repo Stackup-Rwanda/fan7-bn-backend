@@ -76,7 +76,7 @@ class Mailer {
                     <p>${this.message}</p>
                 </div>
             </div>
-            <a href=${this.url}>
+            <a href='https://barefoot-nomad-staging.herokuapp.com/${this.url}'>
                 <button class="EmailView-btn">Show Notification</button>
             </a>
         </div>

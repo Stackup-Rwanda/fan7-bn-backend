@@ -7,7 +7,6 @@ import AuthUtils from '../utils/auth.utils';
 import RequestRepository from '../repositories/requestRepository';
 import RequestServices from '../services/trip.services';
 import { eventEmitter } from '../utils/event.util';
-import userRepository from '../repositories/userRepository';
 import DestinationService from '../repositories/DestinationRepo';
 import pagination from '../utils/pagination.utils';
 
@@ -55,11 +54,7 @@ class RequestController {
 
         const notification = {
           eventType: 'rejected_request',
-          requestId,
-          receiver: lineManager,
-          type: 'Rejected',
-          message: 'Your request has been rejected',
-          link: `${req.headers.host}/api/requests/${requestId}`
+          requestId
         };
 
         eventEmitter.emit('notification', notification);
@@ -119,15 +114,9 @@ class RequestController {
       const { dataValues } = await Request.create(info);
 
       if (dataValues) {
-        const user = await userRepository.findById(userData.id);
-        const lineManager = await userRepository.findByEmail(user.line_manager);
         const notification = {
           eventType: 'created_request',
-          requestId: dataValues.id,
-          receiver: lineManager,
-          type: 'Created',
-          message: 'New request has been created, waiting for approval',
-          link: `${req.headers.host}/api/requests/${dataValues.id}`
+          requestId: dataValues.id
         };
 
         eventEmitter.emit('notification', notification);
@@ -292,10 +281,15 @@ class RequestController {
       const id = parseInt(req.params.id, 10);
       let response;
       const directReportIds = await RequestService.retrieveDirectReports(userData);
-      const { user_id: userId, user } = await RequestRepository.findById(id);
+      const { user_id: userId, status } = await RequestRepository.findById(id);
 
       if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
         response = new Response(res, 404, 'Request not found in your direct reports');
+        return response.sendErrorMessage();
+      }
+
+      if (status === 'Approved') {
+        response = new Response(res, 400, 'Request is already approved');
         return response.sendErrorMessage();
       }
 
@@ -309,13 +303,10 @@ class RequestController {
           }
         );
       });
+
       const notification = {
         eventType: 'approved_request',
-        requestId: id,
-        receiver: user,
-        type: 'Approved',
-        message: 'Your request has been approved',
-        link: `${req.headers.host}/api/requests/${id}`
+        requestId: id
       };
 
       eventEmitter.emit('notification', notification);
@@ -401,14 +392,9 @@ class RequestController {
           });
         }
 
-        const lineManager = await userRepository.findByEmail(user.line_manager);
         const notification = {
-          eventType: 'updated_request',
-          requestId,
-          receiver: lineManager,
-          type: 'Updated',
-          message: 'Request has been updated',
-          link: `${req.headers.host}/api/requests/${requestId}`
+          eventType: 'edited_request',
+          requestId
         };
 
         eventEmitter.emit('notification', notification);
@@ -432,8 +418,10 @@ class RequestController {
   /**
    * @description This methods helps travelers and managers get statistics of
    * trips made in certain range of time
+   * @param {object} req the request sent to the server
+   * @param {object} res the response returned
+   * @returns  {object} The response object
   */
-
   static async getTripStatistics(req, res) {
     let tripStatistics;
     let response;
