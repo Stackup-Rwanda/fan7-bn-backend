@@ -57,11 +57,13 @@ class RequestService {
    * @description retrieveManagerRequests helps to find manager's requests
    * @param {Array} directReportIds
    * @param {obj} options
+   * @param {*} limit
+   * @param {*} offset
    * @returns {*} requestst
    */
-  static async retrieveManagerRequests(directReportIds, options = {}) {
+  static async retrieveManagerRequests(directReportIds, options = {}, limit, offset) {
     try {
-      const requests = await RequestRepository.findByIds(directReportIds, options);
+      const requests = await RequestRepository.findByIds(directReportIds, options, limit, offset);
 
       return requests;
     } catch (error) {
@@ -88,11 +90,13 @@ class RequestService {
   /**
    * @description retrieveAllRequests helps to find all requests
    * @param {obj} options
+   * @param {*} limit
+   * @param {*} offset
    * @returns {*} requestst
    */
-  static async retrieveAllRequests(options) {
+  static async retrieveAllRequests(options, limit, offset) {
     try {
-      const requests = await RequestRepository.findAll(options);
+      const requests = await RequestRepository.findAll(options, limit, offset);
 
       return requests;
     } catch (error) {

@@ -77,7 +77,7 @@ class AccommodationMiddleware {
         response = new Response(res, 422, error.message);
         return response.sendErrorMessage();
       }
-      const { dataValues } = await AuthUtils.isHost(userData);
+      const { dataValues } = await AuthUtils.isHostSupplier(userData);
       if (!(dataValues.role === 'host-supplier' || dataValues.role === 'travel-administrator')) {
         response = new Response(res, 401, 'Only a host-supplier and travel admin can add rooms');
         return response.sendErrorMessage();
@@ -119,7 +119,7 @@ class AccommodationMiddleware {
   static async isHost(req, res, next) {
     const { userData } = req;
     try {
-      const { dataValues } = await AuthUtils.isHost(userData);
+      const { dataValues } = await AuthUtils.isHostSupplier(userData);
       if (!(dataValues.role === 'host-supplier' || dataValues.role === 'travel-administrator')) {
         const response = new Response(res, 401, 'You have no rights over this endpoint');
         return response.sendErrorMessage();

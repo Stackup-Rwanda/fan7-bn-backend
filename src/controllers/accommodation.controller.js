@@ -4,6 +4,7 @@ import AccommodationRepository from '../repositories/accommodation.repository';
 import DbErrorHandler from '../utils/dbErrorHandler';
 import AuthUtils from '../utils/auth.utils';
 import ImageUploader from '../utils/imageUploader.util';
+import pagination from '../utils/pagination.utils';
 
 const { Accommodation, Room, Booking } = models;
 
@@ -82,15 +83,19 @@ class AccommodationController {
     let response;
     try {
       const { userData } = req;
+      const { limit, offset } = pagination(req.query);
       const isRequester = await AuthUtils.isRequester(userData);
       const isSuperAdmin = await AuthUtils.isSuperAdmin(userData);
       const isHost = await AuthUtils.isHost(userData);
 
-      if (isRequester) accommodations = await AccommodationRepository.findAll({ status: 'Approved' });
+      if (isRequester) accommodations = await AccommodationRepository.findAll({ status: 'Approved' }, limit, offset);
 
-      if (isSuperAdmin) accommodations = await AccommodationRepository.findAll();
+      if (isSuperAdmin) accommodations = await AccommodationRepository.findAll({}, limit, offset);
 
-      if (isHost) accommodations = await AccommodationRepository.findAll({ user_id: userData.id });
+      if (isHost) {
+        accommodations = await AccommodationRepository
+          .findAll({ user_id: userData.id }, limit, offset);
+      }
 
       if (accommodations.length === 0) {
         response = new Response(res, 404, 'No Accommodations found');
