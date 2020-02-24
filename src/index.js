@@ -21,7 +21,6 @@ export default (app) => {
   app.use('/api/chat', chat);
   app.use('/api/accommodations', Rating);
 
-
   app.use((req, res, next) => {
     const err = new Error('Page not found');
     err.status = 404;

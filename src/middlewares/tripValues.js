@@ -71,7 +71,7 @@ export default class TripValues {
 
       next();
     } catch (error) {
-      const response = new Response(res, 500, error);
+      const response = new Response(res, 500, error.message);
       return response.sendErrorMessage();
     }
   }

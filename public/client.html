@@ -81,8 +81,20 @@
         }
 
         li {
+            width: 100%;
+            display: block;
             position: relative;
             padding: 10px;
+        }
+
+        .badge {
+            width: 20px;
+            display: inline-block;
+            background-color: #ccc;
+            border: 1px solid #ccc;
+            border-radius: 50;
+            padding: 3px 6px;
+            font-size: 24px;
         }
     </style>
 </head>
@@ -97,15 +109,47 @@
         </form>
     </div>
     <div class="card">
-        <h1 class="title">Notifications</h1>
+        <h1 class="title">Notifications <span class="badge">0</span></h1>
         <div class="form">
             <ul id="notifications">
             </ul>
         </div>
     </div>
-    <script src="http://localhost:5000/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io.connect(window.location.host);
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./notification.js"></script>
+    <script defer>
+        const socket = io();
+        let notificationsCount = 0;
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/notification.js', { scope: '/' });
+            navigator.serviceWorker.ready
+                .then(registration => {
+                    console.log(`Registration succeeded. Scope is ${registration.scope}`);
+                    return registration.addEventListener('install', () => {
+                        registration.skipWaiting();
+                        clients.claim();
+                    });
+                })
+                .catch(error => console.log('Service worker registration failed:', error));
+        } else {
+            console.log('Service workers are not supported.');
+        }
+
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                console.log("Permission to receive notifications is already granted");
+            } else {
+                Notification.requestPermission(permission => {
+                    if (permission === "granted") {
+                        console.log("Permission to receive notifications has been granted");
+                    }
+                });
+            }
+        } else {
+            console.error("This browser does not support desktop notification");
+        }
+
         socket.on('connect', () => {
             document.querySelector('#connStatus').textContent = 'Server Connected!';
         });
@@ -114,44 +158,40 @@
         });
         socket.on('welcome', data => {
             document.querySelector('#title').textContent = data;
-            socket.emit('check delay', Date.now());
         });
         document.querySelector("form").addEventListener('submit', event => {
             event.preventDefault();
             const id = document.querySelector("input").value;
             socket.emit('join notification', { id: `notification_${id}` });
-            socket.emit('test', `notification_${id}`);
         });
         socket.on('created_request', data => {
-            socket.emit('check delay', data.time);
-            const list = document.createElement('li');
-            list.appendChild(document.createTextNode(JSON.stringify(data)));
-            document.querySelector('#notifications').appendChild(list);
+            notificationsCount += 1;
+            showNotification(data);
         });
-        socket.on('updated_request', data => {
-            socket.emit('check delay', data.time);
-            const list = document.createElement('li');
-            list.appendChild(document.createTextNode(JSON.stringify(data)));
-            document.querySelector('#notifications').appendChild(list);
+        socket.on('edited_request', data => {
+            notificationsCount += 1;
+            showNotification(data);
         });
         socket.on('approved_request', data => {
-            socket.emit('check delay', data.time);
-            const list = document.createElement('li');
-            list.appendChild(document.createTextNode(JSON.stringify(data)));
-            document.querySelector('#notifications').appendChild(list);
+            notificationsCount += 1;
+            showNotification(data);
         });
         socket.on('rejected_request', data => {
-            socket.emit('check delay', data.time);
-            const list = document.createElement('li');
-            list.appendChild(document.createTextNode(JSON.stringify(data)));
-            document.querySelector('#notifications').appendChild(list);
+            notificationsCount += 1;
+            showNotification(data);
         });
         socket.on('commented_request', data => {
-            socket.emit('check delay', data.time);
+            notificationsCount += 1;
+            showNotification(data);
+        });
+
+        const showNotification = data => {
+            pushNotification(data);
+            document.querySelector('.badge').textContent = notificationsCount
             const list = document.createElement('li');
             list.appendChild(document.createTextNode(JSON.stringify(data)));
             document.querySelector('#notifications').appendChild(list);
-        });
+        }
     </script>
 </body>
 
