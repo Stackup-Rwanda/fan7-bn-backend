@@ -6,11 +6,10 @@
     "description": "Make company global travel and accommodation easy and convenient ",
     "contact": {}
   },
-  "host": "localhost:5000",
-  "basePath": "/api/",
+  "basePath": "/api",
   "schemes": [
-    "https",
-    "http"
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -21,7 +20,6 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "description": "User can signup to Barefoot Nomad",
         "summary": "Signup",
         "tags": [
           "User"
@@ -31,52 +29,14 @@
         "produces": [
           "application/json"
         ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "Email",
+            "name": "Body",
             "in": "body",
             "required": true,
-            "type": "string",
-            "description": "The Email must be a valid email",
-            "schema": {
-              "$ref": "#/definitions/SignupRequest"
-            }
-          },
-          {
-            "name": "userName",
-            "in": "body",
-            "required": true,
-            "type": "string",
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/SignupRequest"
-            }
-          },
-          {
-            "name": "firstName",
-            "in": "body",
-            "required": true,
-            "type": "string",
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/SignupRequest"
-            }
-          },
-          {
-            "name": "lastName",
-            "in": "body",
-            "required": true,
-            "type": "string",
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/SignupRequest"
-            }
-          },
-          {
-            "name": "password",
-            "in": "body",
-            "required": true,
-            "type": "string",
             "description": "",
             "schema": {
               "$ref": "#/definitions/SignupRequest"
@@ -84,229 +44,27 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "on success It should respond with a jwt token or 404 if the email exist already",
+          "200": {
+            "description": "",
             "headers": {}
-          },
-          "409": {
-            "description": "email already exists",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
-          },
-          "422": {
-            "description": "Invalid parameters",
-            "schema": {
-              "$ref": "#/definitions/ErrorResponse"
-            }
           }
         }
       }
     },
-    "/auth/confirmation/:emailToken": {
+    "/auth/confirmation/{emailToken}": {
       "post": {
-        "description": "User can verify his/her account after signUp",
-        "summary": "Account Verification",
+        "summary": "Confirm Email",
         "tags": [
           "User"
         ],
-        "operationId": "Account Verification",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [ 
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Confirm-Email-Request"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "on success It should respond with a message or 404 if the email is not found or 409 if the account is already verified",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/signin": {
-      "post": {
-        "description": "User can signin to his/her account",
-        "summary": "Signin",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Signin",
+        "operationId": "ConfirmEmail",
         "deprecated": false,
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/SigninRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/google": {
-      "get": {
-        "description": "Sign in to Barefoot application via Google",
-        "summary": "Google",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Google",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/facebook": {
-      "get": {
-        "description": "Sign in to Barefoot application via Facebook",
-        "summary": "Facebook",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Facebook",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "get": {
-        "description": "User can logout to Barefoot Nomad",
-        "summary": "Logout",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Logout",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "on success It should respond that the user is logged in",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "description": "User should receive an email with a reset password link.",
-        "summary": "Forgot-password",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Forgot-password",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Forgot-password-Request"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/auth/reset-password/{token}": {
-      "patch": {
-        "description": "User should be able to provide new password.",
-        "summary": "Reset-password",
-        "tags": [
-          "User"
-        ],
-        "operationId": "Reset-password",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Reset-password-Request"
-            }
-          },
-          {
-            "name": "token",
+            "name": "emailToken",
             "in": "path",
             "required": true,
             "type": "string",
@@ -321,19 +79,1200 @@
         }
       }
     },
-    "/auth/users": {
-      "get": {
-        "description": "Admin should be able to get all users",
-        "summary": "Users",
+    "/auth/login": {
+      "post": {
+        "summary": "Logging In",
         "tags": [
           "User"
         ],
-        "operationId": "Users",
+        "operationId": "LoggingIn",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LoggingInRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "View User Profile",
+        "tags": [
+          "Profile"
+        ],
+        "operationId": "ViewUserProfile",
         "deprecated": false,
         "produces": [
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      },
+      "patch": {
+        "summary": "Edit User Profile",
+        "tags": [
+          "Profile"
+        ],
+        "operationId": "EditUserProfile",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "first_name",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "last_name",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/forget": {
+      "post": {
+        "summary": "Forget Password",
+        "tags": [
+          "User"
+        ],
+        "operationId": "ForgetPassword",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ForgetPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/reset/{email}/{password}": {
+      "patch": {
+        "summary": "Reset User Password",
+        "tags": [
+          "User"
+        ],
+        "operationId": "ResetUserPassword",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ResetUserPasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/assignRole": {
+      "patch": {
+        "summary": "Assign User Roles",
+        "tags": [
+          "User"
+        ],
+        "operationId": "AssignUserRoles",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssignUserRolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "Logout",
+        "tags": [
+          "User"
+        ],
+        "operationId": "Logout",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations": {
+      "post": {
+        "summary": "Create accommodations",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Createaccommodations",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "address",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "geoLocation",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "rooms",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "services",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "amenities",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all accommodation",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Getallaccommodation",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{accommodation_id}/room": {
+      "post": {
+        "summary": "Add room request",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Addroomrequest",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "geoLocation",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "amenities",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "area",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "totalBedrooms",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "roomNumber",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "cost",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{id}": {
+      "get": {
+        "summary": "View a single accommodation",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Viewasingleaccommodation",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{id}/approve": {
+      "patch": {
+        "summary": "Approve an accommodation",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Approveanaccommodation",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{id}/feedback": {
+      "post": {
+        "summary": "Feedback on Accommodation",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "FeedbackonAccommodation",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/FeedbackonAccommodationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{id}/rate": {
+      "post": {
+        "summary": "Rating Accommodation",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "RatingAccommodation",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RatingAccommodationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/one_way": {
+      "post": {
+        "summary": "Request a one way trip",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Requestaonewaytrip",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RequestaonewaytripRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/return_trip": {
+      "post": {
+        "summary": "Request a return trip",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Requestareturntrip",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RequestareturntripRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/accommodations/{accommodation_id}/book/{room_id}": {
+      "post": {
+        "summary": "Booking a room request",
+        "tags": [
+          "Accommodations"
+        ],
+        "operationId": "Bookingaroomrequest",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BookingaroomrequestRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/{id}/edit": {
+      "patch": {
+        "summary": "Edit Travel request",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "EditTravelrequest",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/EditTravelrequestRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/{id}/approve": {
+      "patch": {
+        "summary": "Aprove requests",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Aproverequests",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/request/{id}/reject": {
+      "patch": {
+        "summary": "Reject request",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Rejectrequest",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests": {
+      "get": {
+        "summary": "Get all requests by the requester",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Getallrequestsbytherequester",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/{id}/comment": {
+      "post": {
+        "summary": "Comment on request",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Commentonrequest",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CommentonrequestRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/{id}/comments": {
+      "get": {
+        "summary": "Get all comments",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Getallcomments",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/comment/{id}": {
+      "delete": {
+        "summary": "Delete a comment",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Deleteacomment",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/search": {
+      "get": {
+        "summary": "Search functionality",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Searchfunctionality",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/statistics": {
+      "get": {
+        "summary": "Get Trip Statistics",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "GetTripStatistics",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/requests/destinations/mostTravelled": {
+      "get": {
+        "summary": "Most travelled destination",
+        "tags": [
+          "Trip"
+        ],
+        "operationId": "Mosttravelleddestination",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/notifications/preferences": {
+      "patch": {
+        "summary": "Set Notification Preference",
+        "tags": [
+          "Notifications"
+        ],
+        "operationId": "SetNotificationPreference",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SetNotificationPreferenceRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/notifications/status/{value}": {
+      "get": {
+        "summary": "See Notification Status ( Either Read or Unread )",
+        "tags": [
+          "Notifications"
+        ],
+        "operationId": "SeeNotificationStatus(EitherReadorUnread)",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
           {
             "name": "token",
             "in": "header",
@@ -352,86 +1291,11 @@
     },
     "/notifications": {
       "get": {
-        "description": "User can view his/her notifications",
-        "summary": "Notifications",
+        "summary": "Get all Notifications",
         "tags": [
           "Notifications"
         ],
-        "operationId": "Notifications",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/notifications/mark-as-read/{notificationId}": {
-      "patch": {
-        "description": "User can mark as read his/her notification",
-        "summary": "Mark-As-Read-Notification",
-        "tags": [
-          "Notifications"
-        ],
-        "operationId": "Mark-As-Read-Notification",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Mark-As-Read-Notification-Request"
-            }
-          },
-          {
-            "name": "notificationId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/profile": {
-      "get": {
-        "description": "User can view his/her profile",
-        "summary": "View Profile",
-        "tags": [
-          "Profile"
-        ],
-        "operationId": "ViewProfile",
+        "operationId": "GetallNotifications",
         "deprecated": false,
         "produces": [
           "application/json"
@@ -453,12 +1317,11 @@
         }
       },
       "patch": {
-        "description": "User can update his/her profile",
-        "summary": "Update Profile",
+        "summary": "Mark all notifications as Read",
         "tags": [
-          "Profile"
+          "Notifications"
         ],
-        "operationId": "UpdateProfile",
+        "operationId": "MarkallnotificationsasRead",
         "deprecated": false,
         "produces": [
           "application/json"
@@ -470,15 +1333,6 @@
             "required": true,
             "type": "string",
             "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/UpdateProfileRequest"
-            }
           }
         ],
         "responses": {
@@ -489,147 +1343,126 @@
         }
       }
     },
-    "/requests/one-way": {
-      "post": {
-        "description": "User should be able to make one-way trip request",
-        "summary": "One way Request",
-        "tags": [
-          "Trip"
-        ],
-        "operationId": "OnewayRequest",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/OnewayRequestRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/requests/return-trip": {
-      "post": {
-        "description": "User should be able to make return trip request",
-        "summary": "Return Trip Request",
-        "tags": [
-          "Trip"
-        ],
-        "operationId": "ReturnTripRequest",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ReturnTripRequestRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      }
-    },
-    "/requests/{requestId}/comments": {
-      "post": {
-        "description": "User should be able to comment on his trip request",
-        "summary": "Comment on Request",
-        "tags": [
-          "Comment"
-        ],
-        "operationId": "CommentonRequest",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/CommentonRequestRequest"
-            }
-          },
-          {
-            "name": "requestId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      },
-      "delete": {
-        "description": "User should be able to delete comment on his trip request",
-        "summary": "Delete Comment on Request",
-        "tags": [
-          "Comment"
-        ],
-        "operationId": "DeleteCommentonRequest",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "requestId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
-          }
-        }
-      },
+    "/notifications/{id}": {
       "get": {
-        "description": "User should be able to view comments on his trip request",
-        "summary": "Delete Comment on Request",
+        "summary": "Get single Notifications",
         "tags": [
-          "Comment"
+          "Notifications"
         ],
-        "operationId": "GetDeleteCommentonRequest",
+        "operationId": "GetsingleNotifications",
         "deprecated": false,
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "requestId",
+            "name": "id",
             "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/notifications/{id}/read": {
+      "patch": {
+        "summary": "Mark a single notification as Read",
+        "tags": [
+          "Notifications"
+        ],
+        "operationId": "MarkasinglenotificationasRead",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/notifications/{id}/unread": {
+      "patch": {
+        "summary": "Mark a single notification as Unread",
+        "tags": [
+          "Notifications"
+        ],
+        "operationId": "MarkasinglenotificationasUnread",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/chat/": {
+      "get": {
+        "summary": "Chat bot",
+        "tags": [
+          "Chat"
+        ],
+        "operationId": "Chat",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
             "required": true,
             "type": "string",
             "description": ""
@@ -648,20 +1481,16 @@
     "SignupRequest": {
       "title": "SignupRequest",
       "example": {
-        "firstname": "Peter",
-        "lastname": "Paul",
-        "email": "name@example.com",
-        "password": "YourPassword"
+        "email": "sharonuase@gmail.com",
+        "userName": "copain",
+        "password": "Skemc1234"
       },
       "type": "object",
       "properties": {
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
-        },
         "email": {
+          "type": "string"
+        },
+        "userName": {
           "type": "string"
         },
         "password": {
@@ -669,32 +1498,16 @@
         }
       },
       "required": [
-        "firstname",
-        "lastname",
         "email",
+        "userName",
         "password"
       ]
     },
-    "Confirm-Email-Request": {
-      "title": "Confirm-Email-Request",
+    "LoggingInRequest": {
+      "title": "LoggingInRequest",
       "example": {
-        "emailToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZWx2aXNydWdhbWJhQGdtYWlsLmNvbSIsImlhdCI6MTU4MDM3MzU5MX0.Xmsx9U7kkOEljPvZM1rEQbSRkB4XqNQHzz1SIyZeHqA"
-      },
-      "type": "object",
-      "properties": {
-        "emailToken": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "emailToken"
-      ]
-    },
-    "SigninRequest": {
-      "title": "SigninRequest",
-      "example": {
-        "email": "name@example.com",
-        "password": "YourPassword"
+        "email": "sharonuase@gmail.com",
+        "password": "Skemc1234"
       },
       "type": "object",
       "properties": {
@@ -710,10 +1523,10 @@
         "password"
       ]
     },
-    "Forgot-password-Request": {
-      "title": "Forgot-password-Request",
+    "ForgetPasswordRequest": {
+      "title": "ForgetPasswordRequest",
       "example": {
-        "email": "name@example.com"
+        "email": "eric.mico6@gmail.com"
       },
       "type": "object",
       "properties": {
@@ -725,11 +1538,11 @@
         "email"
       ]
     },
-    "Reset-password-Request": {
-      "title": "Reset-password-Request",
+    "ResetUserPasswordRequest": {
+      "title": "ResetUserPasswordRequest",
       "example": {
-        "password": "newstrongpassword",
-        "confirmPassword": "newstrongpassword"
+        "password": "Skemc12345",
+        "confirmPassword": "Skemc12345"
       },
       "type": "object",
       "properties": {
@@ -745,97 +1558,145 @@
         "confirmPassword"
       ]
     },
-    "Mark-As-Read-Notification-Request": {
-      "title": "Mark-As-Read-Notification-Request",
+    "AssignUserRolesRequest": {
+      "title": "AssignUserRolesRequest",
+      "example": {
+        "email": "bienaime.fabrice@andela.com",
+        "role": "requester"
+      },
+      "type": "object",
       "properties": {
-        "access_token": {
+        "email": {
+          "type": "string"
+        },
+        "role": {
           "type": "string"
         }
       },
       "required": [
-        "access_token"
+        "email",
+        "role"
       ]
     },
-    "UpdateProfileRequest": {
-      "title": "UpdateProfileRequest",
+    "FeedbackonAccommodationRequest": {
+      "title": "FeedbackonAccommodationRequest",
       "example": {
-        "firstName": "string",
-        "lastName": "string",
-        "gender": "string",
-        "phoneNumber": "string",
-        "birthDate": "string",
-        "language": "string",
-        "currency": "string",
-        "location": "string",
-        "role": "string",
-        "department": "string",
-        "manager": "string"
+        "feedback": "Update wifi"
       },
       "type": "object",
       "properties": {
-        "firstName": {
+        "feedback": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "feedback"
+      ]
+    },
+    "RatingAccommodationRequest": {
+      "title": "RatingAccommodationRequest",
+      "example": {
+        "rating": "3"
+      },
+      "type": "object",
+      "properties": {
+        "rating": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rating"
+      ]
+    },
+    "RequestaonewaytripRequest": {
+      "title": "RequestaonewaytripRequest",
+      "example": {
+        "origin": "nigeria, lagos",
+        "destination": "burundi, bujumbura",
+        "travelDate": "2020-10-01",
+        "reason": "business",
+        "accommodationId": 1,
+        "user_id": 1,
+        "dob": "2020-10-01",
+        "passportName": "bihire jules boris",
+        "passportNumber": "232450",
+        "gender": "Male",
+        "rememberMe": true
+      },
+      "type": "object",
+      "properties": {
+        "origin": {
           "type": "string"
         },
-        "lastName": {
+        "destination": {
+          "type": "string"
+        },
+        "travelDate": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "accommodationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "passportName": {
+          "type": "string"
+        },
+        "passportNumber": {
           "type": "string"
         },
         "gender": {
           "type": "string"
         },
-        "phoneNumber": {
-          "type": "string"
-        },
-        "birthDate": {
-          "type": "string"
-        },
-        "language": {
-          "type": "string"
-        },
-        "currency": {
-          "type": "string"
-        },
-        "location": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "department": {
-          "type": "string"
-        },
-        "manager": {
-          "type": "string"
+        "rememberMe": {
+          "type": "boolean"
         }
       },
       "required": [
-        "firstName",
-        "lastName",
+        "origin",
+        "destination",
+        "travelDate",
+        "reason",
+        "accommodationId",
+        "user_id",
+        "dob",
+        "passportName",
+        "passportNumber",
         "gender",
-        "phoneNumber",
-        "birthDate",
-        "language",
-        "currency",
-        "location",
-        "role",
-        "department",
-        "manager"
+        "rememberMe"
       ]
     },
-    "OnewayRequestRequest": {
-      "title": "OnewayRequestRequest",
+    "RequestareturntripRequest": {
+      "title": "RequestareturntripRequest",
       "example": {
-        "from": "Kampala, Uganda",
-        "to": "Lagos, Nigeria",
-        "travelDate": "2020-01-30",
-        "reason": "Reason description",
-        "accommodation": "Intercontinental Hotel"
+        "origin": "nigeria, lagos",
+        "destination": "burundi, bujumbura",
+        "travelDate": "2020-10-01",
+        "reason": "business",
+        "accommodationId": 1,
+        "user_id": 1,
+        "returnDate": "2020-11-01",
+        "dob": "2020-10-01",
+        "passportName": "bihire jules boris",
+        "passportNumber": 232450,
+        "gender": "Male",
+        "rememberMe": true
       },
       "type": "object",
       "properties": {
-        "from": {
+        "origin": {
           "type": "string"
         },
-        "to": {
+        "destination": {
           "type": "string"
         },
         "travelDate": {
@@ -844,120 +1705,106 @@
         "reason": {
           "type": "string"
         },
-        "accommodation": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "from",
-        "to",
-        "travelDate",
-        "reason",
-        "accommodation"
-      ]
-    },
-    "ReturnTripRequestRequest": {
-      "title": "ReturnTripRequestRequest",
-      "example": {
-        "from": "Kampala, Uganda",
-        "to": "Lagos, Nigeria",
-        "travelDate": "2020-01-30",
-        "returnDate": "2020-02-30",
-        "reason": "Reason description",
-        "accommodation": "Intercontinental Hotel"
-      },
-      "type": "object",
-      "properties": {
-        "from": {
-          "type": "string"
+        "accommodationId": {
+          "type": "integer",
+          "format": "int32"
         },
-        "to": {
-          "type": "string"
-        },
-        "travelDate": {
-          "type": "string"
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
         },
         "returnDate": {
           "type": "string"
         },
-        "reason": {
+        "dob": {
           "type": "string"
         },
-        "accommodation": {
+        "passportName": {
           "type": "string"
+        },
+        "passportNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "rememberMe": {
+          "type": "boolean"
         }
       },
       "required": [
-        "from",
-        "to",
+        "origin",
+        "destination",
         "travelDate",
-        "returnDate",
         "reason",
-        "accommodation"
+        "accommodationId",
+        "user_id",
+        "returnDate",
+        "dob",
+        "passportName",
+        "passportNumber",
+        "gender",
+        "rememberMe"
       ]
     },
-    "MulticitiesRequestRequest": {
-      "title": "MulticitiesRequestRequest",
+    "BookingaroomrequestRequest": {
+      "title": "BookingaroomrequestRequest",
       "example": {
-        "from": "Kigali, Rwanda",
-        "to": [
-          "Kampala, Uganda",
-          "Lagos, Nigeria"
-        ],
-        "travelDate": [
-          "2020-02-01",
-          "2020-04-01"
-        ],
-        "returnDate": "2020-05-30",
-        "reason": "Reason goes here",
-        "accommodation": [
-          "Intercontinental Hotel",
-          "Downtown Hotel"
-        ]
+        "trip_id": 1,
+        "room_id": 2,
+        "accommodation_id": 1,
+        "checkin": "2020-06-09",
+        "checkout": "2020-08-06"
       },
       "type": "object",
       "properties": {
-        "from": {
+        "trip_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "room_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "accommodation_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "checkin": {
           "type": "string"
         },
-        "to": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "travelDate": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "returnDate": {
+        "checkout": {
           "type": "string"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "accommodation": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       },
       "required": [
-        "from",
-        "to",
-        "travelDate",
-        "returnDate",
-        "reason",
-        "accommodation"
+        "trip_id",
+        "room_id",
+        "accommodation_id",
+        "checkin",
+        "checkout"
       ]
     },
-    "CommentonRequestRequest": {
-      "title": "CommentonRequestRequest",
+    "EditTravelrequestRequest": {
+      "title": "EditTravelrequestRequest",
       "example": {
-        "comment": "comment description"
+        "reason": "Family vacation"
+      },
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "CommentonrequestRequest": {
+      "title": "CommentonrequestRequest",
+      "example": {
+        "comment": "thank you for joining"
       },
       "type": "object",
       "properties": {
@@ -969,38 +1816,20 @@
         "comment"
       ]
     },
-    "ErrorResponse": {
+    "SetNotificationPreferenceRequest": {
+      "title": "SetNotificationPreferenceRequest",
+      "example": {
+        "emailNotification": "true"
+      },
       "type": "object",
       "properties": {
-        "status": {
-          "type": "integer"
-        },
-        "error": {
+        "emailNotification": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "emailNotification"
+      ]
     }
-  },
-  "tags": [
-    {
-      "name": "User",
-      "description": "User activities"
-    },
-    {
-      "name": "Profile",
-      "description": "User's profile"
-    },
-    {
-      "name": "Notifications",
-      "description": "Notifications of the user"
-    },
-    {
-      "name": "Trip",
-      "description": "Trip requests of the user"
-    },
-    {
-      "name": "Comment",
-      "description": "Comments on TRip request"
-    }
-  ]
+  }
 }
