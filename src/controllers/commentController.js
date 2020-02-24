@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import Response from '../utils/response';
+import { onError, onSuccess } from '../utils/response';
 import CommentService from '../repositories/commentRepository';
-import UserService from '../repositories/userRepository';
 import RequestService from '../repositories/requestRepository';
 import { eventEmitter } from '../utils/event.util';
 
@@ -17,15 +16,19 @@ class CommentController {
     try {
       const { userData } = req;
       const { comment } = req.body;
+      const { id: userId } = req.userData;
       const requestID = Number(req.params.id);
       const requestExists = await RequestService.findRequestById(requestID);
       if (!requestExists) {
-        const response = new Response(res, 404, 'Request is not found to add a comment');
-        return response.sendErrorMessage();
+        return onError(res, 404, 'Request is not found to add a comment');
       }
-      const user = await UserService.findByUserId(userData.id);
+      const { id: requestOwner } = await CommentService.findRequestOwnerId(requestID);
+
+      if (requestOwner === userId) {
+        return onError(res, 404, 'You are not authorized to post on your request');
+      }
       const addedComment = await CommentService.addComment({
-        user_id: user.id,
+        user_id: userId,
         request_id: requestID,
         comment
       }, {
@@ -40,8 +43,7 @@ class CommentController {
 
       eventEmitter.emit('notification', notification);
 
-      const response = new Response(res, 201, 'comment sucessfully created', addedComment);
-      response.sendSuccessResponse();
+      return onSuccess(res, 201, 'comment sucessfully created', addedComment);
     } catch (error) {
       return next(error);
     }
@@ -56,19 +58,51 @@ class CommentController {
    */
   static async getCommentsByRequest(req, res, next) {
     try {
+      const { id: userId, role } = req.userData;
       const requestID = Number(req.params.id);
-      const requestExists = await RequestService.findRequestById(requestID);
-      if (!requestExists) {
-        const response = new Response(res, 404, 'Request is not found');
-        return response.sendErrorMessage();
+      const request = await RequestService.findRequestById(requestID);
+      if (!request) {
+        return onError(res, 404, 'Request is not found');
       }
       const comments = await CommentService.getCommentsByRequest(req.params.id);
-      return res.status(200).json({ status: 200, message: 'Comments fetched successfully', comments });
+      if (comments.length === 0) {
+        return onError(res, 404, 'No comment(s) found for this request');
+      }
+      if (request.user_id !== userId && role !== 'super-administrator' && role !== 'manager') {
+        return onError(res, 404, 'You are not authorized to view this comment(s)');
+      }
+      return onSuccess(res, 200, 'Comments fetched successfully', comments);
     } catch (error) {
       return next(error);
     }
   }
 
+  /**
+   * updates a comment
+   * @param {object} req request.
+   * @param {object} res response.
+   * @param {object} next next
+   * @returns {object} response object.
+   */
+  static async updateComment(req, res, next) {
+    try {
+      const { id: userId } = req.userData;
+      const commentID = Number(req.params.id);
+      const comment = await CommentService.getCommentById(commentID);
+      if (!comment) {
+        return onError(res, 404, 'Comment not found');
+      }
+      if (comment.user_id !== userId) {
+        return onError(res, 404, 'This comment does not belong to you');
+      }
+      const result = await CommentService.updateComment(commentID, req.body);
+      if (result) {
+        return onSuccess(res, 200, 'Comment updated successfully', result);
+      }
+    } catch (error) {
+      return next(error);
+    }
+  }
   /**
    * delete comment by request
    * @param {object} req request
@@ -79,19 +113,19 @@ class CommentController {
 
   static async deleteComment(req, res, next) {
     try {
+      const { id: userId } = req.userData;
       const commentID = Number(req.params.id);
-      const commentFound = await CommentService.getCommentById(commentID);
-      if (!commentFound) {
-        const response = new Response(res, 404, 'Comment not found');
-        return response.sendErrorMessage();
+      const comment = await CommentService.getCommentById(commentID);
+      if (!comment) {
+        return onError(res, 404, 'Comment not found');
       }
-      const commentDeleted = await CommentService.deleteComment(commentID);
-      if (!commentDeleted) {
-        const response = new Response(res, 400, 'Error deleting the comment');
-        return response.sendErrorMessage();
+      if (comment.user_id !== userId) {
+        return onError(res, 404, 'This comment does not belong to you ');
       }
-      const response = new Response(res, 200, 'comment sucessfully deleted');
-      response.sendSuccessMessage();
+      const result = await CommentService.deleteComment(commentID);
+      if (result) {
+        return onSuccess(res, 200, 'comment sucessfully deleted');
+      }
     } catch (error) {
       return next(error);
     }

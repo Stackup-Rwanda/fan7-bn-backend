@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import database from '../models';
 
 const { Comment } = database;
@@ -19,8 +20,26 @@ class CommentRepository {
   }
 
   /**
-   * Gets comment by id.
-   * @param {object} id .
+   * Update a comment
+   * @param {object} id The id of the comment
+   * @param {object} comment The new comment
+   * @returns {object} The response object.
+   */
+  static async updateComment(id, comment) {
+    try {
+      const result = await Comment.update(comment, {
+        returning: true,
+        where: [{ id }]
+      });
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Gets comments belonged to a user.
+   * @param {object} id
    * @returns {object} comment object.
    */
   static async getCommentsByRequest(id) {
@@ -52,6 +71,38 @@ class CommentRepository {
       });
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  /**
+   * Gets comment owner.
+   * @param {object} requestId .
+   * @returns {object} comment object.
+   */
+  static async getCommentOwnerById(requestId) {
+    try {
+      return await Comment.findOne({
+        where: [
+          {
+            request_id: requestId,
+          }
+        ],
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * @param {string} id the id of the travel request
+   * @returns {string} the id of the owner of the request
+   */
+  static async findRequestOwnerId(id) {
+    try {
+      const result = await Comment.findAll({ where: { user_id: id } });
+      return result;
+    } catch (error) {
+      throw error;
     }
   }
   /**
