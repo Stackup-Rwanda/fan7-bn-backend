@@ -1,0 +1,49 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    container_name: barefoot-nomad-postgres
+    restart: always
+    volumes:
+      - ".:/app/var/lib/postgresql/data"
+    ports:
+      - "5455:5432"
+    expose: 
+      - "5455"
+    environment:
+      - POSTGRES_USER=fantastic
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis
+  barefoot-nomad-app:
+    command: bash -c "npm run undo:db && run migrate:db && run seed:db && npm run dev"
+    build: .
+    env_file: ./.env
+    container_name: barefoot-nomad-backend
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - POSTGRES_DB=${DATABASE_URL_PROD}
+      - JWT_SECRET= ${KEY}
+      - REDIS_URL=${REDIS_URL}
+      - CLOUDINARY_NAME= ${CLOUDINARY_NAME}
+      - CLOUDINARY_API_KEY= ${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET= ${CLOUDINARY_API_SECRET}
+      - CLOUDINARY_URL=${CLOUDINARY_URL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}
+      - FACEBOOK_CLIENT_SECRET=${FACEBOOK_CLIENT_SECRET}
+      - EMAIL=${EMAIL}
+      - EPASS=${EPASS}
+      - PASSWORD=${PASSWORD}
+
+    links:
+      - db
+    volumes:
+      - .:/app

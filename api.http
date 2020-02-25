@@ -1,0 +1,87 @@
+@base-url = localhost:5000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoibWVla3lfQG1haWwuY29tIiwicm9sZSI6InJlcXVlc3RlciIsImlhdCI6MTU4MjU0NTY0OX0.TFOAVdmbalNiuBnGYqlG9VJHgCrNiNgBWIMBG8xeZ2w
+
+### Get all topics
+# GET http://{{base-url}}/topics
+
+### Get single topic
+# GET http://{{base-url}}/topic/Fluid Mechanics
+
+### Update a topic
+# PUT http://{{base-url}}/topic/Chemistry
+# HOST: localhost
+# Content-Type: application/json
+
+# {
+#   "id": "Fluid Mechanics II",
+#   "name": "Advance Fluid Mechanics II",
+#   "description": "Fluid flow"
+# }
+
+### Delete a topic
+# DELETE http://{{base-url}}/topic/Mathematics
+
+
+### Post a user
+POST http://{{base-url}}/api/auth/signup HTTP/1.1
+HOST: localhost
+Content-Type: application/json
+
+{
+  "email": "meeky_@mail.com",
+  "password": "Password123",
+  "userName":"meeky_"
+}
+
+### Login a user
+
+POST http://{{base-url}}/api/auth/login HTTP/1.1
+HOST: localhost
+Content-Type: application/json
+
+{
+  "email": "meeky_@mail.com",
+  "password": "Password123"
+}
+
+#### Create a trip request
+
+POST http://{{base-url}}/api/requests/multi_city
+HOST: localhost
+Content-Type: application/json
+Token: Bearer {{token}}
+
+{
+	"origin": "nigeria, lagos",
+	"destination": ["burundi, bujumbura", "rwanda, kigali"],
+	"travelDates": ["2020-10-25", "2020-10-26"],
+	"reason": "business",
+	"accommodationId": 1,
+    "dob":"2020-10-01",
+    "passportName":"bihire jules boris",
+    "passportNumber": "232450",
+    "gender":"Male",
+    "rememberMe": true
+}
+
+
+### Get all users
+# GET http://{{base-url}}/user HTTP/1.1
+
+### Delete a user
+# DELETE http://{{base-url}}/user/e8fa2e4e-eb35-4dcf-85be-4549cc37b98c HTTP/1.1
+
+### Update a user
+# PUT http://{{base-url}}/user HTTP/1.1
+# HOST: localhost
+# Content-Type: application/json
+
+# {
+#     "id": "e8fa2e4e-eb35-4dcf-85be-4549cc37b98c",
+#     "username": "meeky_0",
+#     "email": "meeky_0@mail.com",
+#     "verified": false
+# }
+
+### Get a user
+# GET http://{{base-url}}/user/7173b9f2-7767-4de2-a1d3-1f5e31438a88 HTTP/1.1bash: __git_ps1: command not found
