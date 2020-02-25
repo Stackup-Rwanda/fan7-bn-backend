@@ -53,7 +53,8 @@ it('Should not return user profile data on 500 error', (done) => {
   const smpl = {
     userData: { email: 'test@gmail.com' }
   };
-  UserProfile.getUser(smpl, res).then(data => {
+
+  UserProfile.getProfile(smpl, res).then(data => {
     expect(data).to.eq(undefined);
     done();
   });
@@ -69,6 +70,7 @@ it('Should not update user profile on 500 error', (done) => {
     userData: { id: 1, email: 'test@gmail.com' },
     profile: { password: 1 }
   };
+
   UserProfile.updateUser(smpl, res).then(data => {
     expect(data).to.eq(undefined);
     done();
@@ -97,6 +99,23 @@ it('Should update user profile', (done) => {
       expect(res).to.have.status(200);
       expect(res.body).to.be.an('object');
       expect(res.body).to.have.a.property('data');
+      return done();
+    });
+});
+
+it('Should not update user profile for invalid inputs', (done) => {
+  request(server)
+    .patch('/api/profile')
+    .set('Accept', 'application/json')
+    .set('token', `Bearer ${token2}`)
+    .field('userName', 1)
+    .end((err, res) => {
+      if (err) {
+        return done(err);
+      }
+      expect(res).to.have.status(422);
+      expect(res.body).to.be.an('object');
+      expect(res.body).to.have.a.property('error');
       return done();
     });
 });

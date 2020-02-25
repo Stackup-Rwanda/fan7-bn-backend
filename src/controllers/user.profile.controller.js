@@ -1,6 +1,7 @@
 import UserRepository from '../repositories/userRepository';
 import Response from '../utils/response';
 import ImageUploader from '../utils/imageUploader.util';
+import DbErrorHandler from '../utils/dbErrorHandler';
 
 class UserProfile {
   /**
@@ -9,7 +10,7 @@ class UserProfile {
        * @param {res} res
        * @returns {obj} returns a response
        */
-  static async getUser({ userData }, res) {
+  static async getProfile({ userData }, res) {
     let response;
     const { id } = userData;
 
@@ -21,8 +22,7 @@ class UserProfile {
       response = new Response(res, 200, 'User profile data', user);
       return response.sendSuccessResponse();
     } catch (error) {
-      response = new Response(res, 500, error.message);
-      return response.sendErrorMessage();
+      return DbErrorHandler.handleSignupError(res, error);
     }
   }
 
@@ -53,8 +53,7 @@ class UserProfile {
       response = new Response(res, 200, 'User profile data', profileData);
       return response.sendSuccessResponse();
     } catch (error) {
-      response = new Response(res, 500, error.message);
-      return response.sendErrorMessage();
+      return DbErrorHandler.handleSignupError(res, error);
     }
   }
 }

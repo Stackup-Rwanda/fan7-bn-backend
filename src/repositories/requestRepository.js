@@ -10,16 +10,6 @@ const { Location } = model;
  */
 class RequestRepository {
   /**
-  * @description constructor handles the class models
-  * Request Repository constructor
-  * @constructor
-  *
-  */
-  constructor() {
-    this.Location = Location;
-  }
-
-  /**
    * @description findAll helps to find all reqests
    * @param {obj} options
    * @param {*} limit

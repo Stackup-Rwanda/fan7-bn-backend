@@ -126,6 +126,38 @@ class AccommodationSchema {
           'number.unsafe': 'Parameter id  must be a safe number',
           'any.required': 'Parameter id  is required',
         }),
+      accommodationId: Joi.number()
+        .integer()
+        .positive()
+        .min(1)
+        .messages({
+          'number.base': 'Parameter accommodation id must be a number',
+          'string.min': 'Parameter accommodation id length must be at least {{#limit}} characters long',
+          'number.integer': 'Parameter accommodation id must be an integer',
+          'number.positive': 'Parameter accommodation id must be a positive number',
+          'number.unsafe': 'Parameter accommodation id must be a safe number',
+          'any.required': 'Parameter accommodation id is required',
+        }),
+      roomId: Joi.number()
+        .integer()
+        .positive()
+        .min(1)
+        .messages({
+          'number.base': 'Parameter room id must be a number',
+          'string.min': 'Parameter room id length must be at least {{#limit}} characters long',
+          'number.integer': 'Parameter room id must be an integer',
+          'number.positive': 'Parameter room id must be a positive number',
+          'number.unsafe': 'Parameter room id must be a safe number',
+          'any.required': 'Parameter room id is required',
+        }),
+
+
+      status: Joi.string()
+        .valid('available', 'booked')
+        .messages({
+          'string.base': 'status must be a string',
+          'any.only': 'status must be {if(#valids.length == 1, "", "one of ")}{{#valids}}',
+        }),
     });
     return schema.validate(data);
   }

@@ -1,11 +1,11 @@
-import model from '../models';
+import models from '../models';
 
-const { Accommodation } = model;
+const { Accommodation, Room } = models;
 
 /**
- * @description RequestRepository contains Accommodation Request repository
+ * @description AccommodationRepository contains Accommodation Request repository
  */
-class RequestRepository {
+class AccommodationRepository {
   /**
    * @description findAll helps to find all reqests
    * @param {obj} options
@@ -107,6 +107,66 @@ class RequestRepository {
       throw new Error(error);
     }
   }
+
+  /**
+   * @description findAllRooms helps to find all rooms
+   * @param {Integer} accommodationId
+   * @param {Integer} limit
+   * @param {Integer} offset
+   * @returns {*} rooms
+   */
+  static async findAllRooms(accommodationId, limit, offset) {
+    try {
+      const rooms = await Room.findAll({
+        where: { accommodation_id: accommodationId },
+        limit: limit || null,
+        offset: offset || 0,
+        order: [['createdAt', 'DESC']]
+      });
+
+      return rooms;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * @description findAllRooms helps to find all rooms by status
+   * @param {Integer} accommodationId
+   * @param {boolean} booked
+   * @param {Integer} limit
+   * @param {Integer} offset
+   * @returns {*} rooms
+   */
+  static async findAllRoomsByStatus(accommodationId, booked, limit, offset) {
+    try {
+      const rooms = await Room.findAll({
+        where: { accommodation_id: accommodationId, booked },
+        limit: limit || null,
+        offset: offset || 0,
+        order: [['createdAt', 'DESC']]
+      });
+
+      return rooms;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * @description findOneRoom helps to find a room
+   * @param {Integer} id
+   * @returns {*} room
+   */
+  static async findOneRoom(id) {
+    try {
+      const room = await Room.findByPk(id);
+
+      return room;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
-export default RequestRepository;
+export default AccommodationRepository;

@@ -28,6 +28,7 @@ class ReqestMiddleware {
       return response.sendErrorMessage();
     }
   }
+
   /**
    * @param {req} req object
    * @param {res} res object

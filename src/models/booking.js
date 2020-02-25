@@ -14,10 +14,10 @@ export default (sequelize, DataTypes) => {
     {}
   );
   Booking.associate = models => {
-    Booking.belongsTo(models.User, { foreignKey: 'user_id' });
-    Booking.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id' });
-    Booking.belongsTo(models.Room, { foreignKey: 'room_id' });
-    Booking.belongsTo(models.Request, { foreignKey: 'trip_id' });
+    Booking.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    Booking.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id', as: 'accommodation' });
+    Booking.belongsTo(models.Room, { foreignKey: 'room_id', as: 'room' });
+    Booking.belongsTo(models.Request, { foreignKey: 'trip_id', as: 'request' });
   };
   return Booking;
 };

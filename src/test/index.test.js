@@ -25,6 +25,7 @@ import chatTest from './chat.test';
 import multiCityRequest from './multiCityRequest.test';
 import rating from './rating.test';
 import statistics from './tripStatistics.test';
+import user from './user.test';
 
 describe('API test', () => {
   describe('Server test', server);
@@ -54,4 +55,5 @@ describe('API test', () => {
   describe('muticityTripRequest Request  test', multiCityRequest);
   describe('Rating test', rating);
   describe('Get Statistics on trips made on a time range', statistics);
+  describe('Users', user);
 });
