@@ -4,19 +4,19 @@ export default {
     [
       {
         destination: 'kenya, nairobi',
-        visit_count: 120,
+        visit_count: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         destination: 'burundi, bujumbura',
-        visit_count: 25,
+        visit_count: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         destination: 'rwanda, kigali',
-        visit_count: 200,
+        visit_count: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }
