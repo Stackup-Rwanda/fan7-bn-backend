@@ -25,6 +25,7 @@ class RequestController {
      */
   static async rejectRequest(req, res) {
     const requestId = req.params.id;
+    const { userData } = req;
     const Useremail = req.userData.email;
 
     const lineManager = await User.findOne({
@@ -33,40 +34,49 @@ class RequestController {
       }
     });
 
-    if (lineManager.line_manager === Useremail) {
-      const exist = await Request.findOne({
-        where: {
-          id: requestId
-        }
-      });
-      if (exist) {
-        await Request.update(
-          {
-            status: 'Rejected'
-          },
-          {
-            where: {
-              id: requestId
-            },
-            returning: false
-          }
-        );
+    if (lineManager.role === 'manager') {
+      const directReportIds = await RequestService.retrieveDirectReports(userData);
+      const { user_id: userId, status } = await RequestRepository.findById(requestId);
 
-        const notification = {
-          eventType: 'rejected_request',
-          requestId
-        };
-
-        eventEmitter.emit('notification', notification);
-
-        return res.status(200).json({
-          status: 200,
-          message: 'Request rejected successfully',
+      if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
+        return res.status(404).json({
+          status: 404,
+          error: 'Sorry, Request is not found in your report',
         });
       }
-      return res.status(404).json({
-        status: 404,
-        error: 'Sorry, the request you are looking for is not found',
+      if (status === 'Rejected') {
+        return res.status(400).json({
+          status: 400,
+          error: 'Request is already rejected',
+        });
+      }
+      const update = await Request.update(
+        {
+          status: 'Rejected'
+        },
+        {
+          where: {
+            id: requestId
+          },
+          returning: false
+        }
+      );
+      if (!update) {
+        return res.status(500).json({
+          status: 500,
+          error: 'Internal server error',
+        });
+      }
+      const notification = {
+        eventType: 'rejected_request',
+        requestId
+      };
+
+      eventEmitter.emit('notification', notification);
+
+      return res.status(200).json({
+        status: 200,
+        message: 'Request rejected successfully',
       });
     }
     return res.status(401).json({

@@ -98,6 +98,19 @@ export default {
     accommodation_id: 1,
     reason: 'life is short, just chill',
     status: 'Pending'
+  },
+  {
+    user_id: 7,
+    passportName: 'Boris Bihire',
+    passportNumber: 198700,
+    gender: 'Female',
+    dob: '2020-02-19T07:24:22.510Z',
+    origin: 'Rwanda, Kigali',
+    destination: ['Kenya, Nairobi'],
+    travel_date: ['2020-10-29'],
+    accommodation_id: 1,
+    reason: 'life is short, just chill',
+    status: 'Approved'
   }], {}),
 
   down: queryInterface => queryInterface.bulkDelete('Requests', null, {})

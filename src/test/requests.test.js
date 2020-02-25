@@ -5,13 +5,36 @@ import server from '../server';
 chai.use(chaiHttp);
 chai.should();
 
+let managerToken;
+let requesterToken;
+
+const manager = {
+  email: 'elvisrugamba@gmail.com',
+  password: 'Kemmy123'
+};
+const requester = {
+  email: 'elvis@gmail.com',
+  password: 'Kemmy123'
+};
+
 describe('Requests Test', () => {
+  before((done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .set('Accept', 'application/json')
+      .send(manager)
+      .end(async (err, res) => {
+        const { token } = res.body.data;
+        managerToken = token;
+        done();
+      });
+  });
   it('should be able to reject if line manager', done => {
     chai.request(server)
-      .patch('/api/requests/2/reject')
+      .patch('/api/requests/9/reject')
       .set(
         'token',
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0cmV5M0BnbWFpbC5jb20iLCJpYXQiOjE1ODEwMDI3NjJ9.FGgqQWqOEYO6ovfvq_bM58pYXY0VG1-3Wm-hQ59_koE'
+        `Bearer ${managerToken}`,
       )
       .end((err, res) => {
         res.should.have.status(200);
@@ -22,24 +45,50 @@ describe('Requests Test', () => {
 
   it('should not be able to reject if request not found', done => {
     chai.request(server)
-      .patch('/api/requests/100/reject')
+      .patch('/api/requests/3/reject')
       .set(
         'token',
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0cmV5M0BnbWFpbC5jb20iLCJpYXQiOjE1ODEwMDI3NjJ9.FGgqQWqOEYO6ovfvq_bM58pYXY0VG1-3Wm-hQ59_koE'
+        `Bearer ${managerToken}`,
       )
       .end((err, res) => {
         res.should.have.status(404);
-        res.body.should.have.property('error', 'Sorry, the request you are looking for is not found');
+        res.body.should.have.property('error', 'Sorry, Request is not found in your report');
         done();
       });
   });
+  it('should not be able to reject if already rejected', done => {
+    chai.request(server)
+      .patch('/api/requests/9/reject')
+      .set(
+        'token',
+        `Bearer ${managerToken}`,
+      )
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error', 'Request is already rejected');
+        done();
+      });
+  });
+});
 
+describe('User who is not manager', () => {
+  before((done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .set('Accept', 'application/json')
+      .send(requester)
+      .end(async (err, res) => {
+        const { token } = res.body.data;
+        requesterToken = token;
+        done();
+      });
+  });
   it('should not be able to reject if request not line manager', done => {
     chai.request(server)
       .patch('/api/requests/10/reject')
       .set(
         'token',
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJmYW50YXN0aWM3QGdtYWlsLmNvbSIsImlhdCI6MTU4MTAwNDI3OH0.ch70yYv9AeO_Dt9_b1xDmbVNKxflMtYqiDESfM3aeMU'
+        `Bearer ${requesterToken}`,
       )
       .end((err, res) => {
         res.should.have.status(401);
