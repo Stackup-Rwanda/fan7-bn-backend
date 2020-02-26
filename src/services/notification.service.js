@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { io } from '../server';
 import NotificationRepository from '../repositories/notification.repository';
-import Mailer from '../utils/mailer.util';
+import Mailer from './mail/Mailer';
 import NotificationUtils from '../utils/notification.utils';
 
 const notificationRepository = new NotificationRepository();
@@ -49,8 +49,19 @@ class NotificationService {
       }
 
       if (receiver.emailNotification) {
-        const mailer = new Mailer('Barefoot Nomad Notification', receiver, notification.message, notification.link);
-        mailer.sendMail();
+        const mail = new Mailer({
+          to: receiver,
+          header: 'Notification',
+          messageHeader: 'Hi,',
+          messageBody: notification.message,
+          optionLink: `${process.env.APP_URL}/api/notifications`,
+          Button: true
+        });
+        mail.InitButton({
+          text: 'Show notification',
+          link: notification.link
+        });
+        await mail.sendMail();
       }
 
       return record;
