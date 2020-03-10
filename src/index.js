@@ -8,6 +8,8 @@ import accommodation from './routes/accommodation.route';
 import Feeback from './routes/feedback.route';
 import chat from './routes/chat';
 import Rating from './routes/rating.route';
+import user from './routes/user.route';
+import booking from './routes/booking.route';
 
 export default (app) => {
   app.use('/api/auth', authentication);
@@ -20,6 +22,8 @@ export default (app) => {
   app.use('/api/accommodations', Feeback);
   app.use('/api/chat', chat);
   app.use('/api/accommodations', Rating);
+  app.use('/api/users', user);
+  app.use('/api/bookings', booking);
 
   app.use((req, res, next) => {
     const err = new Error('Page not found');

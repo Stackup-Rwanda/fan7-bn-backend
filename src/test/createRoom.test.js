@@ -234,4 +234,68 @@ describe('Accommodations Rooms', () => {
         return done();
       });
   });
+
+  it('Should get all rooms', (done) => {
+    request(server)
+      .get('/api/accommodations/1/rooms')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('data');
+        return done();
+      });
+  });
+
+  it('Should get a specific room', (done) => {
+    request(server)
+      .get('/api/accommodations/1/rooms/1')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('data');
+        return done();
+      });
+  });
+
+  it('Should not get a specific room if not found', (done) => {
+    request(server)
+      .get('/api/accommodations/1/rooms/100')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(404);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('error');
+        return done();
+      });
+  });
+
+  it('Should get all rooms by status', (done) => {
+    request(server)
+      .get('/api/accommodations/1/rooms/status/available')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('data');
+        return done();
+      });
+  });
 });

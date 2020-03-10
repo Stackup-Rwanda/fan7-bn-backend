@@ -220,5 +220,85 @@ class AccommodationController {
       return response.sendErrorMessage();
     }
   }
+
+  /**
+   * @description This helps to find all rooms
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getAllRooms(req, res) {
+    let response;
+    try {
+      let { accommodationId } = req.params;
+      const { limit, offset } = pagination(req.query);
+      accommodationId = parseInt(accommodationId, 10);
+      const rooms = await AccommodationRepository.findAllRooms(accommodationId, limit, offset);
+
+      if (rooms.length === 0) {
+        response = new Response(res, 404, 'No rooms found');
+        return response.sendErrorMessage();
+      }
+
+      response = new Response(res, 200, 'All rooms data', rooms);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(error);
+    }
+  }
+
+  /**
+   * @description This helps to find one room
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getRoom(req, res) {
+    let response;
+    try {
+      let { roomId } = req.params;
+      roomId = parseInt(roomId, 10);
+      const room = await AccommodationRepository.findOneRoom(roomId);
+
+      if (!room) {
+        response = new Response(res, 404, 'Room not found');
+        return response.sendErrorMessage();
+      }
+
+      response = new Response(res, 200, 'Room data', room);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(error);
+    }
+  }
+
+  /**
+   * @description This helps to find all rooms by status
+   * @param  {object} req - The request object
+   * @param  {object} res - The response object
+   * @returns  {object} The response object
+   */
+  static async getRoomsByStatus(req, res) {
+    let response;
+    try {
+      let { accommodationId } = req.params;
+      const { status } = req.params;
+      const booked = status === 'booked';
+      const { limit, offset } = pagination(req.query);
+      accommodationId = parseInt(accommodationId, 10);
+      const rooms = await AccommodationRepository
+        .findAllRoomsByStatus(accommodationId, booked, limit, offset);
+
+      if (rooms.length === 0) {
+        response = new Response(res, 404, 'No rooms found');
+        return response.sendErrorMessage();
+      }
+
+      response = new Response(res, 200, 'All rooms data', rooms);
+      return response.sendSuccessResponse();
+    } catch (error) {
+      return DbErrorHandler.handleSignupError(error);
+    }
+  }
 }
 export default AccommodationController;

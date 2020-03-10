@@ -8,7 +8,7 @@ const router = express.Router();
 
 const connection = connect();
 
-router.get('/', AuthMiddleware.verifyToken, UserProfile.getUser);
+router.get('/', AuthMiddleware.verifyToken, UserProfile.getProfile);
 router.patch('/', AuthMiddleware.verifyToken, connection, ProfileMiddleware.validate, UserProfile.updateUser);
 
 export default router;

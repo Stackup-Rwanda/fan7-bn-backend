@@ -61,7 +61,7 @@ class UserRepository {
    */
   async findByUserId(id) {
     try {
-      const record = await this.db.findOne({ where: { id } });
+      const record = await this.db.findByPk(id);
 
       return record;
     } catch (error) {
@@ -115,6 +115,22 @@ class UserRepository {
   async findById(id) {
     try {
       const record = await this.db.findByPk(id);
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   *
+   * @param {Integer} limit
+   * @param {Integer} offset
+   * @returns {obj} record is object if users found or null if not
+   */
+  async findAll(limit, offset) {
+    try {
+      const record = await this.db.findAll({ limit: limit || null, offset: offset || 0, order: [['createdAt']] });
 
       return record;
     } catch (error) {

@@ -1,7 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../server';
-import UserProfile from '../controllers/user.profile.controller';
 
 chai.use(chaiHttp);
 const { request } = chai;
@@ -203,37 +202,6 @@ it('Should not get read/unread notifications when the specified param is invalid
       expect(res.body).to.have.a.property('error');
       return done();
     });
-});
-
-it('Should not return user profile data on 500 error', (done) => {
-  const res = {
-    status: () => ({
-      json: ({ st, err }) => ({ st, err })
-    })
-  };
-  const smpl = {
-    userData: { email: 'test@gmail.com' }
-  };
-  UserProfile.getUser(smpl, res).then(data => {
-    expect(data).to.eq(undefined);
-    done();
-  });
-});
-
-it('Should not update user profile on 500 error', (done) => {
-  const res = {
-    status: () => ({
-      json: ({ st, err }) => ({ st, err })
-    })
-  };
-  const smpl = {
-    userData: { id: 1, email: 'test@gmail.com' },
-    profileData: { password: 1 }
-  };
-  UserProfile.updateUser(smpl, res).then(data => {
-    expect(data).to.eq(undefined);
-    done();
-  });
 });
 
 describe('other tests', () => {
