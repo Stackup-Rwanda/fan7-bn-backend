@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import notifications from '../services/notifications';
+import Mailer from '../services/mail/Mailer';
 import hash from '../utils/hash';
 import models from '../models';
 
@@ -25,12 +25,24 @@ class resetController {
     }
     const payload = {
       id: exist.id,
+      userName: exist.user_name,
       email: exist.email,
     };
     const token = jwt.sign(payload, process.env.KEY);
-    const url = `${req.headers.host}/api/auth/reset/${exist.email}/${token}`;
 
-    await notifications.sendNotification(exist, url);
+    const mail = new Mailer({
+      to: exist.email,
+      header: 'Reset your password',
+      messageHeader: `Hi, <strong>${exist.user_name}!</strong>`,
+      messageBody: 'You are requesting a password reset, Click the following link to reset your passaword.',
+      optionLink: `${process.env.APP_URL}/api/auth/reset`,
+      Button: true
+    });
+    mail.InitButton({
+      text: 'Reset Password',
+      link: `${process.env.APP_URL}/api/auth/reset/${exist.email}/${token}`
+    });
+    await mail.sendMail();
     return res.status(200).json({
       status: 200,
       message: 'Link to reset password is sent to your email',

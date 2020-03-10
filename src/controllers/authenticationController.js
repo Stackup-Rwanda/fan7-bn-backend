@@ -5,7 +5,7 @@ import models from '../models';
 import redisClient from '../database/redis.database';
 import Response from '../utils/response';
 import DbErrorHandler from '../utils/dbErrorHandler';
-import SendMailer from '../services/send.email';
+import Mailer from '../services/mail/Mailer';
 import UserRepository from '../repositories/userRepository';
 
 dotenv.config();
@@ -61,9 +61,19 @@ export default class AuthanticationController {
         },
         token
       };
-      const emailView = SendMailer.confirm(req, token, userName);
-      SendMailer.sendEmail(email, 'Account Verification', emailView);
-
+      const mail = new Mailer({
+        to: data.user.email,
+        header: 'Verify your email address',
+        messageHeader: `Hi, <strong>${user.user_name}!</strong>`,
+        messageBody: 'Thank you for creating an account, Just click the link below to verify your account.',
+        optionLink: `${process.env.APP_URL}/api/auth/confirmation/resend`,
+        Button: true
+      });
+      mail.InitButton({
+        text: 'Verify my account',
+        link: `${process.env.APP_URL}/api/auth/confirmation/${token}`
+      });
+      await mail.sendMail();
       const response = new Response(res, 201, 'User sucessfully registered', data);
       response.sendSuccessResponse();
     } catch (error) {
