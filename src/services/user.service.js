@@ -7,9 +7,10 @@ class UserServices {
      * This is a function that verifies a user account
      * @param {string} email this is a user email to be verified
      * @param {object} verifyUser this is a value needed to verify a user account
+     * @param {string} token this is a user token to be verified
      * @returns {object} return  a response object
      */
-  static async verifyingUser(email, verifyUser) {
+  static async verifyingUser(email, verifyUser, token) {
     try {
       const userToVerify = await User.findOne({
         where: { email }
@@ -28,7 +29,15 @@ class UserServices {
 
         return {
           status: 200,
-          message: 'User Account Has Been Successfuly Verified'
+          message: 'User Account Has Been Successfuly Verified',
+          data: {
+            user: {
+              email: userToVerify.email,
+              userName: userToVerify.user_name,
+              image_url: userToVerify.image_url,
+            },
+            token,
+          }
         };
       }
       return {

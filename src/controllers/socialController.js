@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import models from '../models';
-import { onError, onSuccess } from '../utils/response';
+import { onError } from '../utils/response';
 
 dotenv.config();
 
@@ -65,15 +65,17 @@ export default class SocialController {
   static async socialLogin(req, res) {
     try {
       const user = await SocialController.findSocialUser(req.user);
+      const { value } = req.user.photos[0];
       if (user) {
         const payload1 = {
           id: user.dataValues.id,
           social_id: req.user.id,
           username: req.user.displayName,
+          image: value,
           provider: req.user.provider
         };
         const token1 = jwt.sign(payload1, process.env.KEY);
-        return onSuccess(res, 200, `${user.user_name}, You are successful logged in`, token1);
+        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token1}`);
       }
       const { dataValues } = await SocialController.socialCreate(req.user);
       if (dataValues) {
@@ -81,10 +83,11 @@ export default class SocialController {
           id: dataValues.id,
           social_id: req.user.id,
           username: req.user.displayName,
+          image: value,
           provider: req.user.provider
         };
         const token2 = jwt.sign(payload2, process.env.KEY);
-        return onSuccess(res, 200, `${dataValues.user_name}, You are successful logged in`, token2);
+        return res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token2}`);
       }
     } catch (ex) {
       return onError(res, 500, 'Internal Server Error');

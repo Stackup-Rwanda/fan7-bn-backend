@@ -11,12 +11,13 @@ class ConfirmController {
    */
   static async verifyingUsers(req, res) {
     const { email } = jwt.verify(req.params.emailToken, process.env.KEY);
+    const token = req.params.emailToken;
     const verify = true;
-    const verifyUser = await UserServices.verifyingUser(email, verify);
+    const verifyUser = await UserServices.verifyingUser(email, verify, token);
 
     if (verifyUser.status === 200) {
-      const response = new Response(res, 200, verifyUser.message);
-      response.sendSuccessMessage();
+      const response = new Response(res, 200, verifyUser.message, verifyUser.data);
+      response.sendSuccessResponse();
     } else {
       const response = new Response(res, verifyUser.status, verifyUser.message);
       response.sendErrorMessage();
