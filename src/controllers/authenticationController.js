@@ -66,12 +66,12 @@ export default class AuthanticationController {
         header: 'Verify your email address',
         messageHeader: `Hi, <strong>${user.user_name}!</strong>`,
         messageBody: 'Thank you for creating an account, Just click the link below to verify your account.',
-        optionLink: `${process.env.APP_URL}/api/auth/confirmation/resend`,
+        optionLink: `${process.env.FRONTEND_URL}/api/auth/confirmation/resend`,
         Button: true
       });
       mail.InitButton({
         text: 'Verify my account',
-        link: `${process.env.FRONTEND_URL}/email/confirm?token=${token}`
+        link: `${process.env.FRONTEND_URL}/confirmEmail?token=${token}`
       });
       await mail.sendMail();
       const response = new Response(res, 201, 'User sucessfully registered', data);
