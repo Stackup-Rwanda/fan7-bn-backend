@@ -40,7 +40,7 @@ class resetController {
     });
     mail.InitButton({
       text: 'Reset Password',
-      link: `${process.env.FRONTEND_URL}/reset?email=${exist.email}&token=${token} `
+      link: `${process.env.FRONTEND_URL}/resetPassword?email=${exist.email}&token=${token} `
     });
     await mail.sendMail();
     return res.status(200).json({
