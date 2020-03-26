@@ -138,6 +138,18 @@ class AccommodationSchema {
           'number.unsafe': 'Parameter accommodation id must be a safe number',
           'any.required': 'Parameter accommodation id is required',
         }),
+      request_id: Joi.number()
+        .integer()
+        .positive()
+        .min(1)
+        .messages({
+          'number.base': 'Parameter request id must be a number',
+          'string.min': 'Parameter request id length must be at least {{#limit}} characters long',
+          'number.integer': 'Parameter request id must be an integer',
+          'number.positive': 'Parameter request id must be a positive number',
+          'number.unsafe': 'Parameter request id must be a safe number',
+          'any.required': 'Parameter request id is required',
+        }),
       roomId: Joi.number()
         .integer()
         .positive()

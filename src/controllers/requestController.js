@@ -101,8 +101,7 @@ class RequestController {
         travelDates,
         returnDate,
         reason,
-        // eslint-disable-next-line camelcase
-        accommodation_id,
+        accommodationId,
         dob,
         passportName,
         passportNumber,
@@ -111,7 +110,7 @@ class RequestController {
       const info = {
         user_id: userData.id,
         origin,
-        accommodation_id,
+        accommodation_id: accommodationId,
         destination: Array.isArray(destination) ? destination : [destination],
         travel_date: Array.isArray(travelDates) ? travelDates : [travelDates],
         return_date: returnDate,
@@ -272,7 +271,7 @@ class RequestController {
         response = new Response(res, 404, 'No requests found');
         return response.sendErrorMessage();
       }
-      response = new Response(res, 200, 'All requests', request);
+      response = new Response(res, 200, 'Request data', request);
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
@@ -498,6 +497,58 @@ class RequestController {
         Destinations
       }
     });
+  }
+
+  /**
+ * @description This methods helps users update their own travel requests
+ * @param  {object} req - The request object
+ * @param  {object} res - The response object
+ * @param  {object} next - The next function object
+ * @returns  {object} The response object
+ */
+  static async update(req, res, next) {
+    try {
+      const {
+        origin,
+        destination,
+        travelDates,
+        returnDate,
+        reason,
+        // eslint-disable-next-line camelcase
+        accommodationId,
+        dob,
+        passportName,
+        passportNumber,
+        gender
+      } = req.value;
+      const info = {
+        origin,
+        accommodation_id: accommodationId,
+        destination: Array.isArray(destination) ? destination : [destination],
+        travel_date: Array.isArray(travelDates) ? travelDates : [travelDates],
+        return_date: returnDate || null,
+        reason,
+        dob,
+        passportName,
+        passportNumber,
+        gender
+      };
+      const dataValues = await Request
+        .update(info, { where: { id: req.params.request_id }, returning: true });
+      if (dataValues[1][0]) {
+        const notification = {
+          eventType: 'edited_request',
+          requestId: dataValues[1][0].id
+        };
+
+        eventEmitter.emit('notification', notification);
+        onSuccess(res, 200, 'Your request has been successfully updated', dataValues[1][0]);
+      }
+
+      return next();
+    } catch (error) {
+      onError(res, 500, 'Internal Server Error');
+    }
   }
 }
 

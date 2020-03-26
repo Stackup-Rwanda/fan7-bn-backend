@@ -26,11 +26,6 @@ class RequestSchema {
           'any.required': 'passportName is required',
           'string.empty': 'passportName is not allowed to be empty'
         }),
-      gender: Joi.string().trim().required().valid('Male', 'Female'),
-      dob: Joi.date()
-        .messages({
-          'date.base': 'dob must be a date',
-        }),
       origin: Joi.string()
         .trim()
         .regex(/^[a-zA-Z]+,\s[a-zA-Z]+$/)
@@ -93,11 +88,6 @@ class RequestSchema {
         .messages({
           'string.base': 'passportName must be string',
           'string.empty': 'passportName is not allowed to be empty'
-        }),
-      gender: Joi.string().trim().valid('Male', 'Female'),
-      dob: Joi.date()
-        .messages({
-          'date.base': 'dob must be a date',
         }),
       origin: Joi.string()
         .trim()
@@ -231,13 +221,6 @@ class RequestSchema {
         .messages({
           'date.base': 'return date must have format of yyyy-mm-dd'
         }),
-      gender: Joi.string()
-        .trim()
-        .required()
-        .valid('Male', 'Female'),
-      dob: Joi.date().messages({
-        'date.base': 'dob must be a date'
-      }),
       origin: Joi.string()
         .trim()
         .regex(/^[a-zA-Z]+,\s[a-zA-Z]+$/)

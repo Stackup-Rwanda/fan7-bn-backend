@@ -158,6 +158,20 @@ class AuthUtils {
       throw new Error(error);
     }
   }
+
+  /**
+   *
+   * @param {obj}  data
+   * @returns {dataValues} returns the matching room
+   */
+  static async isRequest(data) {
+    try {
+      const isRequest = await UserRepository.findRequestById(data);
+      return isRequest;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthUtils;

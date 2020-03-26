@@ -250,6 +250,23 @@ class UserRepository {
       throw new Error(error);
     }
   }
+
+  /**
+   *
+   * @param {obj} data
+   * @returns {obj} record is object if requests found or null if not
+   */
+  async findRequestById(data) {
+    try {
+      const record = await this.Request.findOne({
+        where: { id: data.request_id }
+      });
+
+      return record;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new UserRepository();
