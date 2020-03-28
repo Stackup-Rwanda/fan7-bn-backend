@@ -19,10 +19,8 @@ it('Should successfully send a successful return request', done => {
       travelDate: '2020-10-02',
       reason: 'business',
       returnDate: '2020-11-03',
-      dob: '2020-10-01',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
       accommodationId: 1,
       rememberMe: true
     })
@@ -50,10 +48,8 @@ it('Should return an error about no returnDate', done => {
       destination: 'burundi, bujumbura',
       travelDate: '2020-10-01',
       reason: 'business',
-      dob: '2020-10-01',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
       accommodationId: 1,
       rememberMe: true
     })
@@ -81,10 +77,8 @@ it('Should return error about inputs', done => {
       destination: 'burundi, bujumbura',
       travelDate: '2020-1h-01',
       reason: 'business',
-      dob: '2020-10-01',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
       accommodationId: 1,
       rememberMe: true
     })

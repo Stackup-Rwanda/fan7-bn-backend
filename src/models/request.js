@@ -36,14 +36,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      gender: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      dob: {
-        allowNull: true,
-        type: DataTypes.DATE
-      },
       origin: {
         type: DataTypes.STRING,
         allowNull: true

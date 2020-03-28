@@ -35,29 +35,6 @@ class ReqestMiddleware {
    * @param {next} next forwards request to the next middleware function
    * @returns {obj} returns a response object
   */
-
-  static async validate(req, res, next) {
-    const requestData = trimmer(req.body);
-    const { error } = RequestSchema.updateSchema(requestData);
-    try {
-      if (error) {
-        const response = new Response(res, 422, error.message);
-        return response.sendErrorMessage();
-      }
-      req.requestData = requestData;
-      return next();
-    } catch (err) {
-      const response = new Response(res, 500, err);
-      return response.sendErrorMessage();
-    }
-  }
-
-  /**
-   * @param {req} req object
-   * @param {res} res object
-   * @param {next} next forwards request to the next middleware function
-   * @returns {obj} returns a response object
-  */
   static async tripStatistics(req, res, next) {
     const searchDates = trimmer(req.body);
     const { error } = RequestSchema.tripStatistics(searchDates);

@@ -101,25 +101,20 @@ class RequestController {
         travelDates,
         returnDate,
         reason,
-        // eslint-disable-next-line camelcase
-        accommodation_id,
-        dob,
+        accommodationId,
         passportName,
-        passportNumber,
-        gender
+        passportNumber
       } = req.value;
       const info = {
         user_id: userData.id,
         origin,
-        accommodation_id,
+        accommodation_id: accommodationId,
         destination: Array.isArray(destination) ? destination : [destination],
         travel_date: Array.isArray(travelDates) ? travelDates : [travelDates],
         return_date: returnDate,
         reason,
-        dob,
         passportName,
-        passportNumber,
-        gender
+        passportNumber
       };
       const { dataValues } = await Request.create(info);
 
@@ -272,7 +267,7 @@ class RequestController {
         response = new Response(res, 404, 'No requests found');
         return response.sendErrorMessage();
       }
-      response = new Response(res, 200, 'All requests', request);
+      response = new Response(res, 200, 'Request data', request);
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
@@ -364,65 +359,6 @@ class RequestController {
       response = new Response(res, 500, `Internal Server Error: ${error}`);
       return response.sendErrorMessage();
     }
-  }
-
-  /**
-   * @description This methods helps users edit requests that are still pending
-   * @param  {object} req - The request object
-   * @param  {object} res - The response object
-   * @returns  {object} The response object
-   */
-  static async editRequest(req, res) {
-    const { requestData } = req;
-    const requestId = req.params.id;
-    const userEmail = req.userData.email;
-    const request = await Request.findOne({
-      where: {
-        id: requestId
-      }
-    });
-    const user = await User.findOne({
-      where: {
-        email: userEmail
-      }
-    });
-    if (!request) {
-      return res.status(404).json({
-        status: 404,
-        error: 'Request not found',
-      });
-    }
-    if (request.user_id === user.id) {
-      if (request.status === 'Pending') {
-        const updated = await RequestRepository.update({ id: requestId }, requestData);
-        if (!updated) {
-          return res.status(500).json({
-            status: 500,
-            error: 'Internal server error'
-          });
-        }
-
-        const notification = {
-          eventType: 'edited_request',
-          requestId
-        };
-
-        eventEmitter.emit('notification', notification);
-
-        return res.status(200).json({
-          status: 200,
-          message: 'Request edited successfully'
-        });
-      }
-      return res.status(412).json({
-        status: 412,
-        error: 'Precondition failed',
-      });
-    }
-    return res.status(401).json({
-      status: 401,
-      error: 'Unauthorized access',
-    });
   }
 
   /**

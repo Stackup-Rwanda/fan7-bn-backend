@@ -19,7 +19,11 @@ class RequestRepository {
   static async findAll(options = {}, limit, offset) {
     try {
       const requests = await Request.findAll({
-        where: options, limit: limit || null, offset: offset || 0, order: [['createdAt', 'DESC']]
+        where: options,
+        limit: limit || null,
+        offset: offset || 0,
+        order: [['createdAt', 'DESC']],
+        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
       });
       return requests;
     } catch (error) {
@@ -37,11 +41,12 @@ class RequestRepository {
    */
   static async findByIds(arrayIds, options, limit, offset) {
     try {
-      const requests = await Request.findAll({
-        where: { user_id: { [Op.in]: arrayIds }, ...options || { [Op.in]: ['Pending', 'Approved', 'Rejected'] } },
+      const requests = await Request.findAndCountAll({
+        where: { user_id: { [Op.in]: arrayIds }, ...options },
         limit: limit || null,
         offset: offset || 0,
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']],
+        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
       });
 
       return requests;
@@ -83,7 +88,8 @@ class RequestRepository {
   static async findByIdsAndId(arrayIds, id) {
     try {
       const requests = await Request.findOne({
-        where: { user_id: { [Op.in]: arrayIds }, id }
+        where: { user_id: { [Op.in]: arrayIds }, id },
+        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
       });
 
       return requests;
@@ -159,7 +165,10 @@ class RequestRepository {
      */
   static async findOne(options) {
     try {
-      const record = await Request.findOne({ where: { ...options } });
+      const record = await Request.findOne({
+        where: { ...options },
+        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
+      });
 
       return record;
     } catch (error) {

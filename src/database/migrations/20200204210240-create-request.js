@@ -24,14 +24,6 @@ export default {
       type: Sequelize.STRING,
       allowNull: true
     },
-    gender: {
-      type: Sequelize.STRING,
-      allowNull: true
-    },
-    dob: {
-      allowNull: true,
-      type: Sequelize.DATE
-    },
     origin: {
       type: Sequelize.STRING,
       allowNull: true
