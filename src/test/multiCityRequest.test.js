@@ -19,11 +19,9 @@ it('Should successfully send a multi city request', done => {
       travelDates: ['2021-10-01'],
       reason: 'business',
       returnDate: '2022-11-01',
-      dob: '2020-10-01',
       accommodationId: 1,
       passportName: 'bihire jules boris',
-      passportNumber: '896723',
-      gender: 'Male'
+      passportNumber: '896723'
     })
     .end((err, res) => {
       if (err) {
@@ -50,11 +48,9 @@ it('Should send an error about travelDates length not eqaul to destination lengt
       travelDates: ['2021-10-01', '2021-10-01'],
       reason: 'business',
       returnDate: '2022-11-01',
-      dob: '2020-10-01',
       accommodationId: 1,
       passportName: 'bihire jules boris',
-      passportNumber: '896723',
-      gender: 'Male'
+      passportNumber: '896723'
     })
     .end((err, res) => {
       if (err) {
@@ -62,7 +58,7 @@ it('Should send an error about travelDates length not eqaul to destination lengt
       }
       expect(res).to.have.status(422);
       expect(res.body).to.be.an('object');
-      expect(res.body.status).to.be.equal(422);
+      expect(res.body).to.have.a.property('error');
       return done();
     });
 });

@@ -62,6 +62,22 @@ describe('Manager request', () => {
       });
   });
 
+  it('Should return error of request already appoved', (done) => {
+    request(server)
+      .patch('/api/requests/2/approve')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('error');
+        return done();
+      });
+  });
+
   it('Should not approve other\'s direct reports request', (done) => {
     request(server)
       .patch('/api/requests/3/approve')

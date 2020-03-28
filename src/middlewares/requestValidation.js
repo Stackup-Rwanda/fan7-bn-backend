@@ -20,11 +20,9 @@ class AuthMiddleware {
       destination,
       travelDate,
       reason,
-      dob,
       accommodationId,
       passportName,
       passportNumber,
-      gender,
       rememberMe
     } = req.body;
     const request = {
@@ -32,11 +30,9 @@ class AuthMiddleware {
       destination,
       travelDates: travelDate,
       reason,
-      dob,
       accommodationId,
       passportName,
       passportNumber,
-      gender,
       rememberMe
     };
     const { error, value } = requestShema.destinationSchema(request);
@@ -62,6 +58,7 @@ class AuthMiddleware {
           return response.sendErrorMessage();
         }
         value.travelDates = travelDate;
+        value.type = 'oneway';
         req.value = value;
         next();
       }
@@ -93,6 +90,10 @@ class AuthMiddleware {
         );
         return response.sendErrorMessage();
       }
+      req.value.returnDate = returnDate;
+      req.value.type = 'returnTrip';
+
+
       next();
     } catch (err) {
       const response = new Response(res, 500, 'Internal Server Error');
@@ -135,6 +136,7 @@ class AuthMiddleware {
         }
         value.returnDate = req.body.returnDate;
         value.travelDates = req.body.travelDates;
+        value.type = 'multiCity';
         req.value = value;
         next();
       }
@@ -163,15 +165,13 @@ class AuthMiddleware {
         response.sendErrorMessage();
       }
       if (isRequest.dataValues.user_id !== userData.id) {
-        const response = new Response(res, 403, 'you have no access credintials');
+        const response = new Response(res, 401, 'Unauthorized access');
         response.sendErrorMessage();
       }
       const {
         accommodationId,
         passportName,
         passportNumber,
-        gender,
-        dob,
         origin,
         destination,
         travelDates,
@@ -183,8 +183,6 @@ class AuthMiddleware {
         accommodationId: accommodationId || isRequest.dataValues.accommodation_id,
         passportName: passportName || isRequest.dataValues.passportName,
         passportNumber: passportNumber || isRequest.dataValues.passportNumber,
-        gender: gender || isRequest.dataValues.gender,
-        dob: dob || isRequest.dataValues.dob,
         origin: origin || isRequest.dataValues.origin,
         destination: destination || isRequest.dataValues.destination,
         travelDates: travelDates || isRequest.dataValues.travel_date,

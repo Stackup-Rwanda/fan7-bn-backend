@@ -11,6 +11,5 @@ router.get('/:id', RequestMiddleware.param, AuthMiddleware.verifyToken, RequestC
 router.get('/status/:value', AuthMiddleware.verifyToken, RequestController.getByStatus);
 router.patch('/:id/approve', RequestMiddleware.param, AuthMiddleware.verifyToken, AuthMiddleware.isManager, RequestController.approve);
 router.patch('/:id/reject', AuthMiddleware.verifyToken, RequestController.rejectRequest);
-router.patch('/:id/edit', RequestMiddleware.param, AuthMiddleware.verifyToken, RequestMiddleware.validate, RequestController.editRequest);
 
 export default router;

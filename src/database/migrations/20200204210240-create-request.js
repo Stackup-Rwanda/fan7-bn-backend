@@ -24,14 +24,6 @@ export default {
       type: Sequelize.STRING,
       allowNull: true
     },
-    gender: {
-      type: Sequelize.STRING,
-      allowNull: true
-    },
-    dob: {
-      allowNull: true,
-      type: Sequelize.DATE
-    },
     origin: {
       type: Sequelize.STRING,
       allowNull: true
@@ -71,6 +63,16 @@ export default {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: 'Pending'
+    },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        isIn: {
+          args: [['oneway', 'multiCity', 'returnTrip']],
+          msg: 'Invalid option'
+        }
+      }
     },
     createdAt: {
       allowNull: false,

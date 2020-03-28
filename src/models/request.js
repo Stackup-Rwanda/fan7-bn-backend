@@ -36,14 +36,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      gender: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      dob: {
-        allowNull: true,
-        type: DataTypes.DATE
-      },
       origin: {
         type: DataTypes.STRING,
         allowNull: true
@@ -83,6 +75,16 @@ export default (sequelize, DataTypes) => {
           isIn: {
             args: [['Pending', 'Approved', 'Rejected']],
             msg: 'Invalid Status, uses Pending, Approved or Rejected only'
+          }
+        }
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isIn: {
+            args: [['oneway', 'multiCity', 'returnTrip']],
+            msg: 'Invalid option'
           }
         }
       },

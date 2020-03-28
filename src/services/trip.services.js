@@ -10,7 +10,7 @@ class RequestServices {
    */
   static async search(searching) {
     const searchArray = await sequelize.query(
-      'SELECT "Users".*,"Requests".* FROM "Requests" JOIN "Users" ON ("Requests".user_id = "Users".id) WHERE origin LIKE :searching OR status LIKE :searching OR EXISTS(SELECT 1 FROM unnest(destination) AS ip WHERE ip LIKE :searching) OR EXISTS(SELECT 1 FROM unnest(travel_date) AS ip WHERE ip LIKE :searching);',
+      'SELECT "Users".*,"Requests".*, "Accommodation".* FROM "Requests" JOIN "Users" ON ("Requests".user_id = "Users".id) JOIN "Accommodation" ON ("Requests".accommodation_id = "Accommodation".id) WHERE origin LIKE :searching OR "Requests".status LIKE :searching OR reason LIKE :searching OR EXISTS(SELECT 1 FROM unnest(destination) AS ip WHERE ip LIKE :searching) OR EXISTS(SELECT 1 FROM unnest(travel_date) AS ip WHERE ip LIKE :searching) OR return_date LIKE :searching OR "Users".email LIKE :searching OR "Accommodation".name LIKE :searching;',
       {
         replacements: { searching: `%${searching}%` }
       }
