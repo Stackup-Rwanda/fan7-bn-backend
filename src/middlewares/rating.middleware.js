@@ -3,7 +3,7 @@ import models from '../models';
 import Response, { onError } from '../utils/response';
 import RatingSchema from '../modules/rating.schema';
 
-const { Request } = models;
+const { Booking } = models;
 /**
  * @description RatingMiddleware checks if rating input is valid
  */
@@ -37,7 +37,7 @@ class RatingMiddleware {
   static async UserValidate(req, res, next) {
     const accommodationId = req.params.id;
     const userId = req.userData.id;
-    const grantUser = await Request.findOne({
+    const grantUser = await Booking.findOne({
       where: {
         user_id: userId,
         accommodation_id: accommodationId

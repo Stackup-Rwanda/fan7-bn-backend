@@ -51,7 +51,7 @@ export default {
   {
     email: 'elvisrugamba@gmail.com',
     user_name: 'great',
-    role: 'manager',
+    role: 'host-supplier',
     password: await hashPassword('Kemmy123'),
     isVerified: true,
     emailNotification: true

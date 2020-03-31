@@ -32,6 +32,17 @@ class AuthMiddleware {
         );
         return response.sendErrorMessage();
       }
+      const isAccommodation = await AuthUtils.isAccommodation(
+        value.accommodation_id
+      );
+      if (isAccommodation.dataValues.status !== 'Approved') {
+        const response = new Response(
+          res,
+          405,
+          'The following accommodation is not availble for bookings yet'
+        );
+        return response.sendErrorMessage();
+      }
       const isRoom = await AuthUtils
         .isRoom({ accommodation_id: value.accommodation_id, id: value.room_id });
       if (isRoom === null) {

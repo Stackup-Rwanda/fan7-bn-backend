@@ -22,8 +22,10 @@ class AccommodationController {
         }
         accommodationData.image = imageUrl;
       }
-      const { dataValues } = await Accommodation
-        .create({ ...accommodationData, user_id: userData.id });
+      const { dataValues } = await Accommodation.create(
+        { ...accommodationData, user_id: userData.id },
+        { include: [{ model: Room, as: 'rooms' }] }
+      ).then((newAccommodation) => newAccommodation.reload());
       if (dataValues) {
         response = new Response(
           res,

@@ -48,6 +48,7 @@ export default (sequelize, DataTypes) => {
   }, {});
   Accommodation.associate = models => {
     Accommodation.hasMany(models.Feedback, { foreignKey: 'accommodation_id', as: 'feedbacks' });
+    Accommodation.hasMany(models.Room, { foreignKey: 'accommodation_id', as: 'rooms' });
     Accommodation.belongsTo(models.User, { foreignKey: 'user_id' });
     Accommodation.hasMany(models.Like, {
       foreignKey: 'accommodation_id',

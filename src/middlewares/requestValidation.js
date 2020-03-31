@@ -156,15 +156,15 @@ class AuthMiddleware {
     try {
       if (isRequest === null) {
         const response = new Response(res, 404, 'Request not found');
-        response.sendErrorMessage();
+        return response.sendErrorMessage();
       }
       if (isRequest.dataValues.status !== 'Pending') {
         const response = new Response(res, 403, `you can not update a ${isRequest.dataValues.status} request`);
-        response.sendErrorMessage();
+        return response.sendErrorMessage();
       }
       if (isRequest.dataValues.user_id !== userData.id) {
         const response = new Response(res, 401, 'Unauthorized access');
-        response.sendErrorMessage();
+        return response.sendErrorMessage();
       }
       const {
         passportName,

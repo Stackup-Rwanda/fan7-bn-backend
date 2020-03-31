@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import model from '../models';
 
 const { Request, User } = model;
-const { Accommodation } = model;
+const { Accommodation, Booking } = model;
 const { Location } = model;
 
 /**
@@ -23,7 +23,7 @@ class RequestRepository {
         limit: limit || null,
         offset: offset || 0,
         order: [['createdAt', 'DESC']],
-        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
+        include: [{ model: User, as: 'user' }]
       });
       return requests;
     } catch (error) {
@@ -46,7 +46,7 @@ class RequestRepository {
         limit: limit || null,
         offset: offset || 0,
         order: [['createdAt', 'DESC']],
-        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
+        include: [{ model: User, as: 'user' }]
       });
 
       return requests;
@@ -89,7 +89,7 @@ class RequestRepository {
     try {
       const requests = await Request.findOne({
         where: { user_id: { [Op.in]: arrayIds }, id },
-        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
+        include: [{ model: User, as: 'user' }]
       });
 
       return requests;
@@ -167,7 +167,7 @@ class RequestRepository {
     try {
       const record = await Request.findOne({
         where: { ...options },
-        include: [{ model: User, as: 'user' }, { model: Accommodation, as: 'accommodation' }]
+        include: [{ model: User, as: 'user' }]
       });
 
       return record;
@@ -199,7 +199,9 @@ class RequestRepository {
    */
   static async checkIfUserCheckedInAccommodation(userId, accommodationId) {
     try {
-      const result = await Request.findOne({ where: { user_id: userId, accommodation_id: accommodationId, status: 'Approved' } });
+      const result = await Booking.findOne({
+        where: { user_id: userId, accommodation_id: accommodationId }
+      });
       return result;
     } catch (error) {
       throw new Error(error);

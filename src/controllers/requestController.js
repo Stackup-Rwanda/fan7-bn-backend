@@ -168,7 +168,7 @@ class RequestController {
           .retrieveAllRequests({ user_id: userData.id }, limit, offset);
       }
 
-      if (requests.length === 0) {
+      if (requests.count === 0) {
         response = new Response(res, 404, 'No requests found');
         return response.sendErrorMessage();
       }
@@ -220,7 +220,7 @@ class RequestController {
           .retrieveAllRequests({ user_id: userData.id, status }, limit, offset);
       }
 
-      if (requests.length === 0) {
+      if (requests.count === 0) {
         response = new Response(res, 404, 'No requests found');
         return response.sendErrorMessage();
       }

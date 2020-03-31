@@ -44,7 +44,7 @@ describe('Accommodations', () => {
       .field('services', 'Sharon')
       .field('amenities', 'Sharon')
       .field('amenities', 'Sharon')
-      .field('address', 'kigali, Rwanda')
+      .field('address', 'Rwanda, kigali')
       .field('description', 'uegwfuiwfegwui')
       .attach('image', 'src/test/assets/image.png', 'image.png')
       .end((err, res) => {
@@ -54,6 +54,32 @@ describe('Accommodations', () => {
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.a.property('data');
+        return done();
+      });
+  });
+
+  it('Should error on lcation not supported', done => {
+    request(server)
+      .post('/api/accommodations')
+      .set('Accept', 'application/json')
+      .set('token', `Bearer ${token1}`)
+      .field('name', 'Sharon')
+      .field('geoLocation', '10.7972979, 20.7593249')
+      .field('rooms', 20)
+      .field('services', 'Sharon')
+      .field('services', 'Sharon')
+      .field('amenities', 'Sharon')
+      .field('amenities', 'Sharon')
+      .field('address', 'Rwand, kigali')
+      .field('description', 'uegwfuiwfegwui')
+      .attach('image', 'src/test/assets/image.png', 'image.png')
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res).to.have.status(400);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.a.property('error');
         return done();
       });
   });
@@ -70,7 +96,7 @@ describe('Accommodations', () => {
       .field('services', 'Sharon')
       .field('amenities', 'Sharon')
       .field('amenities', 'Sharon')
-      .field('address', 'kigali, Rwanda')
+      .field('address', 'Rwanda, kigali')
       .field('description', 'uegwfuiwfegwui')
       .attach('image', 'src/test/assets/image.png', 'image.png')
       .end((err, res) => {
@@ -96,7 +122,7 @@ describe('Accommodations', () => {
       .field('services', 'Sharon')
       .field('amenities', 'Sharon')
       .field('amenities', 'Sharon')
-      .field('address', 'kigali, Rwanda')
+      .field('address', 'Rwanda, kigali')
       .field('description', 'uegwfuiwfegwui')
       .attach('image', 'src/test/assets/invalid.pdf', 'invalid.pdf')
       .end((err, res) => {
