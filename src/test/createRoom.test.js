@@ -163,29 +163,6 @@ describe('Accommodations Rooms', () => {
       });
   });
 
-  it('Should return error about not Approved accommodation on create room', done => {
-    request(server)
-      .post('/api/accommodations/4/room')
-      .set('Accept', 'application/json')
-      .set('token', `Bearer ${token1}`)
-      .field('area', '3')
-      .field('cost', '67.4')
-      .field('totalBedrooms', '3')
-      .field('roomNumber', '3969')
-      .field('amenities', 'Sharon')
-      .field('amenities', 'Sharon')
-      .field('type', 'standard')
-      .attach('image', 'src/test/assets/image.png', 'image.png')
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res).to.have.status(405);
-        expect(res.body).to.be.an('object');
-        expect(res.body).to.have.a.property('error');
-        return done();
-      });
-  });
 
   it('Should return error about room number exist already on create room', done => {
     request(server)

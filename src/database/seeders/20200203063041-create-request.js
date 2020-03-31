@@ -1,7 +1,7 @@
 export default {
   up: queryInterface => queryInterface.bulkInsert('Requests', [{
     user_id: 7,
-    passportName: 'Rugamba Elvis',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -12,7 +12,7 @@ export default {
   },
   {
     user_id: 8,
-    passportName: 'Mutesi Sharon',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -23,7 +23,7 @@ export default {
   },
   {
     user_id: 9,
-    passportName: 'Karangwa Emmy',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -35,7 +35,7 @@ export default {
   },
   {
     user_id: 14,
-    passportName: 'Karekezi Eric',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -46,7 +46,7 @@ export default {
   },
   {
     user_id: 6,
-    passportName: 'Mistico Clement',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -57,7 +57,7 @@ export default {
   },
   {
     user_id: 7,
-    passportName: 'Alexanda Prince',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],
@@ -88,7 +88,7 @@ export default {
   },
   {
     user_id: 7,
-    passportName: 'Niwemugisha Denis',
+    passportName: 'Boris Bihire',
     passportNumber: 198700,
     origin: 'Rwanda, Kigali',
     destination: ['Kenya, Nairobi'],

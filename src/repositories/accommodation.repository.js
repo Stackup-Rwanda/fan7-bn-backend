@@ -1,6 +1,6 @@
 import models from '../models';
 
-const { Accommodation, Room } = models;
+const { Accommodation, Room, Location } = models;
 
 /**
  * @description AccommodationRepository contains Accommodation Request repository
@@ -54,7 +54,9 @@ class AccommodationRepository {
   static async accommodationApprove(field, changes) {
     try {
       const record = await Accommodation.update(changes, {
-        returning: true, plain: true, where: field
+        returning: true,
+        plain: true,
+        where: field
       });
 
       return record;
@@ -64,10 +66,10 @@ class AccommodationRepository {
   }
 
   /**
-     *
-     * @param {integer} id
-     * @returns {obj} record is object of id found or null
-     */
+   *
+   * @param {integer} id
+   * @returns {obj} record is object of id found or null
+   */
   static async findById(id) {
     try {
       const record = await Accommodation.findByPk(id);
@@ -79,10 +81,10 @@ class AccommodationRepository {
   }
 
   /**
-     *
-     * @param {obj} options
-     * @returns {obj} record is object the that matches options
-     */
+   *
+   * @param {obj} options
+   * @returns {obj} record is object the that matches options
+   */
   static async findOne(options) {
     try {
       const record = await Accommodation.findOne({ where: { ...options } });
@@ -94,10 +96,10 @@ class AccommodationRepository {
   }
 
   /**
-     *
-     * @param {obj} id
-     * @returns {obj} record is object the that matches options
-     */
+   *
+   * @param {obj} id
+   * @returns {obj} record is object the that matches options
+   */
   static async findRequestById(id) {
     try {
       const record = await Accommodation.findOne({ where: { id } });
@@ -166,6 +168,18 @@ class AccommodationRepository {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  /**
+   * Returns one location
+   * @param {String} location location
+   * @returns {object} one location.
+   */
+  static async findOneLoc(location) {
+    const result = await Location.findOne({
+      where: { destination: location }
+    });
+    return result;
   }
 }
 
