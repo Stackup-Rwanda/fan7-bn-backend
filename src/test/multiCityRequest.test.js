@@ -19,7 +19,6 @@ it('Should successfully send a multi city request', done => {
       travelDates: ['2021-10-01'],
       reason: 'business',
       returnDate: '2022-11-01',
-      accommodationId: 1,
       passportName: 'bihire jules boris',
       passportNumber: '896723'
     })
@@ -48,7 +47,6 @@ it('Should send an error about travelDates length not eqaul to destination lengt
       travelDates: ['2021-10-01', '2021-10-01'],
       reason: 'business',
       returnDate: '2022-11-01',
-      accommodationId: 1,
       passportName: 'bihire jules boris',
       passportNumber: '896723'
     })
@@ -75,7 +73,6 @@ it('Should return error about multi city inputs', done => {
       origin: 'nigeria',
       destination: ['kenya, nairobi'],
       travelDates: ['2022-11-05'],
-      accommodationId: 1,
       reason: 'business'
     })
     .end((err, res) => {

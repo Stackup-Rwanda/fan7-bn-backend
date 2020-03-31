@@ -104,6 +104,7 @@ class AuthMiddleware {
   static async autoFill(req, res, next) {
     const { dataValues } = await userRepository.findByUserId(req.userData.id);
     const data = await userRepository.findRequestByUserId(dataValues.id);
+
     if (!data) return next();
     if (dataValues.rememberMe !== false) {
       const {
@@ -115,6 +116,7 @@ class AuthMiddleware {
       };
       return next();
     }
+
     next();
   }
 

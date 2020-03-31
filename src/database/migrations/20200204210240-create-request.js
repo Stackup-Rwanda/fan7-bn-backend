@@ -28,16 +28,6 @@ export default {
       type: Sequelize.STRING,
       allowNull: true
     },
-    accommodation_id: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-      onDelete: 'CASCADE',
-      references: {
-        model: 'Accommodation',
-        key: 'id',
-        as: 'accommodation_id',
-      },
-    },
     destination: {
       type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: false
@@ -63,6 +53,16 @@ export default {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: 'Pending'
+    },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        isIn: {
+          args: [['oneway', 'multiCity', 'returnTrip']],
+          msg: 'Invalid option'
+        }
+      }
     },
     createdAt: {
       allowNull: false,

@@ -20,7 +20,6 @@ class AuthMiddleware {
       destination,
       travelDate,
       reason,
-      accommodationId,
       passportName,
       passportNumber,
       rememberMe
@@ -30,7 +29,6 @@ class AuthMiddleware {
       destination,
       travelDates: travelDate,
       reason,
-      accommodationId,
       passportName,
       passportNumber,
       rememberMe
@@ -58,6 +56,7 @@ class AuthMiddleware {
           return response.sendErrorMessage();
         }
         value.travelDates = travelDate;
+        value.type = 'oneway';
         req.value = value;
         next();
       }
@@ -89,6 +88,10 @@ class AuthMiddleware {
         );
         return response.sendErrorMessage();
       }
+      req.value.returnDate = returnDate;
+      req.value.type = 'returnTrip';
+
+
       next();
     } catch (err) {
       const response = new Response(res, 500, 'Internal Server Error');
@@ -131,6 +134,7 @@ class AuthMiddleware {
         }
         value.returnDate = req.body.returnDate;
         value.travelDates = req.body.travelDates;
+        value.type = 'multiCity';
         req.value = value;
         next();
       }
@@ -163,7 +167,6 @@ class AuthMiddleware {
         response.sendErrorMessage();
       }
       const {
-        accommodationId,
         passportName,
         passportNumber,
         origin,
@@ -174,7 +177,6 @@ class AuthMiddleware {
         rememberMe
       } = req.body;
       const value = {
-        accommodationId: accommodationId || isRequest.dataValues.accommodation_id,
         passportName: passportName || isRequest.dataValues.passportName,
         passportNumber: passportNumber || isRequest.dataValues.passportNumber,
         origin: origin || isRequest.dataValues.origin,

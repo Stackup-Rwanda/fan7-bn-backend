@@ -18,16 +18,6 @@ export default (sequelize, DataTypes) => {
           as: 'user_id',
         },
       },
-      accommodation_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Accommodation',
-          key: 'id',
-          as: 'accommodation_id'
-        }
-      },
       passportName: {
         type: DataTypes.STRING,
         allowNull: true
@@ -78,6 +68,16 @@ export default (sequelize, DataTypes) => {
           }
         }
       },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isIn: {
+            args: [['oneway', 'multiCity', 'returnTrip']],
+            msg: 'Invalid option'
+          }
+        }
+      },
       createdAt: {
         allowNull: true,
         type: DataTypes.DATE
@@ -89,7 +89,6 @@ export default (sequelize, DataTypes) => {
     }, {}
   );
   Request.associate = models => {
-    Request.belongsTo(models.Accommodation, { foreignKey: 'accommodation_id', as: 'accommodation' });
     Request.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     Request.hasMany(models.Notification, { foreignKey: 'request_id', as: 'notifications' });
   };

@@ -64,9 +64,6 @@ class RequestSchema {
           'any.required': 'reason is required',
           'string.pattern.base': 'reason must be at least 3 characters long letter'
         }),
-      accommodationId: Joi.number()
-        .integer()
-        .required(),
       rememberMe: Joi.optional()
     });
     return schema.validate(data);
@@ -159,9 +156,6 @@ class RequestSchema {
           'date.min': 'date of travel can not be earlier than today',
 
         }),
-      accommodationId: Joi.number()
-        .integer()
-        .required(),
       returnDate: Joi
         .date()
         .messages({

@@ -21,7 +21,6 @@ it('Should successfully send a successful return request', done => {
       returnDate: '2020-11-03',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      accommodationId: 1,
       rememberMe: true
     })
     .end((err, res) => {
@@ -50,7 +49,6 @@ it('Should return an error about no returnDate', done => {
       reason: 'business',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      accommodationId: 1,
       rememberMe: true
     })
     .end((err, res) => {
@@ -79,7 +77,6 @@ it('Should return error about inputs', done => {
       reason: 'business',
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      accommodationId: 1,
       rememberMe: true
     })
     .end((err, res) => {
