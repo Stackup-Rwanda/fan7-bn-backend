@@ -103,7 +103,9 @@ class RequestController {
         reason,
         accommodationId,
         passportName,
-        passportNumber
+        passportNumber,
+        type
+
       } = req.value;
       const info = {
         user_id: userData.id,
@@ -114,6 +116,7 @@ class RequestController {
         return_date: returnDate,
         reason,
         passportName,
+        type,
         passportNumber
       };
       const { dataValues } = await Request.create(info);
@@ -345,10 +348,19 @@ class RequestController {
           id: obj.id,
           first_nameorigin: obj.first_name,
           last_name: obj.last_name,
+          email: obj.email,
+          reason: obj.reason,
           origin: obj.origin,
           destination: obj.destination,
-          travelDate: obj.travel_date,
-          returnDate: obj.return_date,
+          travel_date: obj.travel_date,
+          return_date: obj.return_date,
+          user: {
+            first_name: obj.first_name,
+            last_name: obj.last_name,
+            user_name: obj.user_name,
+            email: obj.email,
+          },
+          accommodation: { name: obj.name },
           status: obj.status
         };
         data.push(objData);

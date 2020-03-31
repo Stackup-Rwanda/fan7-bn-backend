@@ -64,6 +64,16 @@ export default {
       allowNull: false,
       defaultValue: 'Pending'
     },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        isIn: {
+          args: [['oneway', 'multiCity', 'returnTrip']],
+          msg: 'Invalid option'
+        }
+      }
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

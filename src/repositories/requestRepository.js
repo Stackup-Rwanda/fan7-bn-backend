@@ -18,7 +18,7 @@ class RequestRepository {
    */
   static async findAll(options = {}, limit, offset) {
     try {
-      const requests = await Request.findAll({
+      const requests = await Request.findAndCountAll({
         where: options,
         limit: limit || null,
         offset: offset || 0,

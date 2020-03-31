@@ -33,8 +33,7 @@ class UserServices {
           data: {
             user: {
               email: userToVerify.email,
-              userName: userToVerify.user_name,
-              image_url: userToVerify.image_url,
+              userName: userToVerify.user_name
             },
             token,
           }

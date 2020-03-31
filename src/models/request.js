@@ -78,6 +78,16 @@ export default (sequelize, DataTypes) => {
           }
         }
       },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isIn: {
+            args: [['oneway', 'multiCity', 'returnTrip']],
+            msg: 'Invalid option'
+          }
+        }
+      },
       createdAt: {
         allowNull: true,
         type: DataTypes.DATE
