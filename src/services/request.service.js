@@ -133,6 +133,21 @@ class RequestService {
       throw new Error(error);
     }
   }
+
+  /**
+   * @description rejectRequest helps to find requests by id
+   * @param {*} id
+   * @returns {*} requestst
+   */
+  static async rejectRequest(id) {
+    try {
+      const request = await RequestRepository.update({ id }, { status: 'Rejected' });
+
+      return request;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default RequestService;

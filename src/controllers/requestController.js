@@ -18,74 +18,6 @@ const { Request, User, sequelize } = models;
 
 class RequestController {
   /**
-     * @description This helps Manager to reject trip request
-     * @param  {object} req - The request object
-     * @param  {object} res - The response object
-     * @returns {object} The response object
-     */
-  static async rejectRequest(req, res) {
-    const requestId = req.params.id;
-    const { userData } = req;
-    const Useremail = req.userData.email;
-
-    const lineManager = await User.findOne({
-      where: {
-        email: Useremail
-      }
-    });
-
-    if (lineManager.role === 'manager') {
-      const directReportIds = await RequestService.retrieveDirectReports(userData);
-      const { user_id: userId, status } = await RequestRepository.findById(requestId);
-
-      if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
-        return res.status(404).json({
-          status: 404,
-          error: 'Sorry, Request is not found in your report',
-        });
-      }
-      if (status === 'Rejected') {
-        return res.status(400).json({
-          status: 400,
-          error: 'Request is already rejected',
-        });
-      }
-      const update = await Request.update(
-        {
-          status: 'Rejected'
-        },
-        {
-          where: {
-            id: requestId
-          },
-          returning: false
-        }
-      );
-      if (!update) {
-        return res.status(500).json({
-          status: 500,
-          error: 'Internal server error',
-        });
-      }
-      const notification = {
-        eventType: 'rejected_request',
-        requestId
-      };
-
-      eventEmitter.emit('notification', notification);
-
-      return res.status(200).json({
-        status: 200,
-        message: 'Request rejected successfully',
-      });
-    }
-    return res.status(401).json({
-      status: 401,
-      error: 'Unauthorized access',
-    });
-  }
-
-  /**
    * @description This helps requester to create trip request
    * @param  {object} req - The request object
    * @param  {object} res - The response object
@@ -326,6 +258,57 @@ class RequestController {
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
     }
+  }
+
+  /**
+     * @description This helps Manager to reject trip request
+     * @param  {object} req - The request object
+     * @param  {object} res - The response object
+     * @returns {object} The response object
+     */
+  static async rejectRequest(req, res) {
+    const requestId = req.params.id;
+    const id = parseInt(req.params.id, 10);
+    const { userData } = req;
+    const Useremail = req.userData.email;
+
+    const lineManager = await User.findOne({
+      where: {
+        email: Useremail
+      }
+    });
+
+    if (lineManager.role === 'manager') {
+      const directReportIds = await RequestService.retrieveDirectReports(userData);
+      const { user_id: userId, status } = await RequestRepository.findById(requestId);
+
+      if (directReportIds.length === 0 || !userId || !directReportIds.includes(userId)) {
+        return res.status(404).json({
+          status: 404,
+          error: 'Sorry, Request is not found in your report',
+        });
+      }
+      if (status === 'Rejected') {
+        return res.status(400).json({
+          status: 400,
+          error: 'Request is already rejected',
+        });
+      }
+      const request = await RequestService.rejectRequest(id);
+      const notification = {
+        eventType: 'rejected_request',
+        requestId
+      };
+
+      eventEmitter.emit('notification', notification);
+
+      const response = new Response(res, 200, 'Request is sucessfully rejected', request[1]);
+      return response.sendSuccessResponse();
+    }
+    return res.status(401).json({
+      status: 401,
+      error: 'Unauthorized access',
+    });
   }
 
   /** Function to search in the trip requests table according to what the user is typing
