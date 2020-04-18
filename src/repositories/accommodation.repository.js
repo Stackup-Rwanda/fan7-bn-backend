@@ -15,8 +15,10 @@ class AccommodationRepository {
    */
   static async findAll(options = {}, limit, offset) {
     try {
-      const accommodations = await Accommodation.findAll({
+      const accommodations = await Accommodation.findAndCountAll({
         where: options,
+        attributes: ['id', 'name', 'address', 'amenities', 'services', 'status', 'image', 'geo_location', 'status', 'description',
+          [models.sequelize.literal('(SELECT COUNT(*) FROM "Rooms" WHERE "Rooms".accommodation_id = "Accommodation"."id")'), 'room_count']],
         limit: limit || null,
         offset: offset || 0,
         order: [['createdAt', 'DESC']]
@@ -119,7 +121,7 @@ class AccommodationRepository {
    */
   static async findAllRooms(accommodationId, limit, offset) {
     try {
-      const rooms = await Room.findAll({
+      const rooms = await Room.findAndCountAll({
         where: { accommodation_id: accommodationId },
         limit: limit || null,
         offset: offset || 0,
