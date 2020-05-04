@@ -50,7 +50,7 @@ export default class TripValues {
       const { dataValues } = await location
         .checkTravevalDateExist(userData.id, Array.isArray(travelDates)
           ? travelDates[0] : travelDates);
-      if (dataValues && dataValues.status !== 'Rejected') {
+      if (req.method === 'POST' && dataValues && dataValues.status !== 'Rejected') {
         const response = new Response(res, 403, `A ${dataValues.status} request with the provided initial time exist already`);
         return response.sendErrorMessage();
       }

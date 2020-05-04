@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import 'dotenv';
 import Response from '../utils/response';
 import requestShema from '../modules/requestSchema';
@@ -19,11 +20,8 @@ class AuthMiddleware {
       destination,
       travelDate,
       reason,
-      dob,
-      accommodationId,
       passportName,
       passportNumber,
-      gender,
       rememberMe
     } = req.body;
     const request = {
@@ -31,11 +29,8 @@ class AuthMiddleware {
       destination,
       travelDates: travelDate,
       reason,
-      dob,
-      accommodationId,
       passportName,
       passportNumber,
-      gender,
       rememberMe
     };
     const { error, value } = requestShema.destinationSchema(request);
@@ -61,6 +56,7 @@ class AuthMiddleware {
           return response.sendErrorMessage();
         }
         value.travelDates = travelDate;
+        value.type = 'oneway';
         req.value = value;
         next();
       }
@@ -92,6 +88,10 @@ class AuthMiddleware {
         );
         return response.sendErrorMessage();
       }
+      req.value.returnDate = returnDate;
+      req.value.type = 'returnTrip';
+
+
       next();
     } catch (err) {
       const response = new Response(res, 500, 'Internal Server Error');
@@ -134,9 +134,61 @@ class AuthMiddleware {
         }
         value.returnDate = req.body.returnDate;
         value.travelDates = req.body.travelDates;
+        value.type = 'multiCity';
         req.value = value;
         next();
       }
+    } catch (err) {
+      const response = new Response(res, 500, 'Internal Server Error');
+      return response.sendErrorMessage();
+    }
+  }
+
+  /**
+   * @param {req} req object
+   * @param {res} res object
+   * @param {next} next forwards request to the next middleware function
+   * @returns {obj} returns a response object
+   */
+  static async ExistingData(req, res, next) {
+    const { userData } = req;
+    const isRequest = await AuthUtils.isRequest(req.params);
+    try {
+      if (isRequest === null) {
+        const response = new Response(res, 404, 'Request not found');
+        return response.sendErrorMessage();
+      }
+      if (isRequest.dataValues.status !== 'Pending') {
+        const response = new Response(res, 403, `you can not update a ${isRequest.dataValues.status} request`);
+        return response.sendErrorMessage();
+      }
+      if (isRequest.dataValues.user_id !== userData.id) {
+        const response = new Response(res, 401, 'Unauthorized access');
+        return response.sendErrorMessage();
+      }
+      const {
+        passportName,
+        passportNumber,
+        origin,
+        destination,
+        travelDates,
+        returnDate,
+        reason,
+        rememberMe
+      } = req.body;
+      const value = {
+        passportName: passportName || isRequest.dataValues.passportName,
+        passportNumber: passportNumber || isRequest.dataValues.passportNumber,
+        origin: origin || isRequest.dataValues.origin,
+        destination: destination || isRequest.dataValues.destination,
+        travelDates: travelDates || isRequest.dataValues.travel_date,
+        returnDate: returnDate || isRequest.dataValues.return_date === null
+          ? undefined : isRequest.dataValues.return_date,
+        reason: reason || isRequest.dataValues.reason,
+        rememberMe: rememberMe || false,
+      };
+      req.body = value;
+      next();
     } catch (err) {
       const response = new Response(res, 500, 'Internal Server Error');
       return response.sendErrorMessage();

@@ -50,7 +50,7 @@ class NotificationService {
 
       if (receiver.emailNotification) {
         const mail = new Mailer({
-          to: receiver,
+          to: receiver.email,
           header: 'Notification',
           messageHeader: 'Hi,',
           messageBody: notification.message,

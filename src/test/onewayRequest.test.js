@@ -18,11 +18,8 @@ it('Should successfully send a request', done => {
       destination: 'rwanda, kigali',
       travelDate: '2020-10-01',
       reason: 'business',
-      dob: '2020-10-01',
-      accommodationId: 1,
       passportName: 'bihire jules boris',
       passportNumber: '896723',
-      gender: 'Male',
       rememberMe: true
     })
     .end((err, res) => {
@@ -47,7 +44,6 @@ it('Should return error about inputs', done => {
     .send({
       origin: 'nigeria',
       destination: 2,
-      accommodationId: 1,
       travelDate: '2020-10-01',
       reason: 'business'
     })

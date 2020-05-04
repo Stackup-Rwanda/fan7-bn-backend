@@ -2,6 +2,7 @@ import 'dotenv';
 import Response from '../utils/response';
 import AccommodationSchema from '../modules/accommodation.schema';
 import AuthUtils from '../utils/auth.utils';
+import AccommodationRepository from '../repositories/accommodation.repository';
 
 class AccommodationMiddleware {
   static async validate(req, res, next) {
@@ -41,6 +42,25 @@ class AccommodationMiddleware {
         return response.sendErrorMessage();
       }
       req.accommodationData = value;
+      return next();
+    } catch (err) {
+      response = new Response(res, 500, err);
+      return response.sendErrorMessage();
+    }
+  }
+
+  static async IsLocationValid(req, res, next) {
+    let response;
+    try {
+      const { accommodationData } = req;
+      const isLocation = await AccommodationRepository.findOneLoc(
+        (accommodationData.address).toLowerCase()
+      );
+      if (!isLocation) {
+        response = new Response(res, 400, 'Barefoot does not operate in that region');
+        return response.sendErrorMessage();
+      }
+
       return next();
     } catch (err) {
       response = new Response(res, 500, err);
@@ -89,10 +109,6 @@ class AccommodationMiddleware {
       }
       if (isAccommodation.dataValues.user_id !== userData.id) {
         response = new Response(res, 401, 'You have no rights over the following accommodation');
-        return response.sendErrorMessage();
-      }
-      if (isAccommodation.dataValues.status !== 'Approved') {
-        response = new Response(res, 405, 'The following accommodation must be approved to have rooms');
         return response.sendErrorMessage();
       }
       const roomExist = await AuthUtils

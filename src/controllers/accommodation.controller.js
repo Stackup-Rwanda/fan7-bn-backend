@@ -22,8 +22,10 @@ class AccommodationController {
         }
         accommodationData.image = imageUrl;
       }
-      const { dataValues } = await Accommodation
-        .create({ ...accommodationData, user_id: userData.id });
+      const { dataValues } = await Accommodation.create(
+        { ...accommodationData, user_id: userData.id },
+        { include: [{ model: Room, as: 'rooms' }] }
+      ).then((newAccommodation) => newAccommodation.reload());
       if (dataValues) {
         response = new Response(
           res,
@@ -235,10 +237,10 @@ class AccommodationController {
       accommodationId = parseInt(accommodationId, 10);
       const rooms = await AccommodationRepository.findAllRooms(accommodationId, limit, offset);
 
-      if (rooms.length === 0) {
-        response = new Response(res, 404, 'No rooms found');
-        return response.sendErrorMessage();
-      }
+      // if (rooms.length === 0) {
+      //   response = new Response(res, 404, 'No rooms found');
+      //   return response.sendErrorMessage();
+      // }
 
       response = new Response(res, 200, 'All rooms data', rooms);
       return response.sendSuccessResponse();

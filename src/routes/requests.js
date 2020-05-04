@@ -3,6 +3,7 @@ import AuthMiddleware from '../middlewares/auth.middleware';
 import requestController from '../controllers/requestController';
 import requestValidation from '../middlewares/requestValidation';
 import tripValues from '../middlewares/tripValues';
+import AccommodationMiddleware from '../middlewares/accommodation.middleware';
 
 const router = express.Router();
 
@@ -54,4 +55,16 @@ router.post(
   AuthMiddleware.rememberMe
 );
 
+router.patch(
+  '/:request_id/update',
+  AuthMiddleware.verifyToken,
+  AccommodationMiddleware.param,
+  requestValidation.ExistingData,
+  requestValidation.multiCity,
+  tripValues.validOrigin,
+  tripValues.areValidDates,
+  tripValues.locationExist,
+  requestController.update,
+  AuthMiddleware.rememberMe
+);
 export default router;

@@ -9,7 +9,7 @@ import roomBookingValidation from '../middlewares/roomBookingValidation';
 const router = express.Router();
 const connection = connect();
 
-router.post('/', AuthMiddleware.verifyToken, AccommodationMiddleware.isHost, connection, AccommodationMiddleware.validate, Accommodation.createAccommodation);
+router.post('/', AuthMiddleware.verifyToken, AccommodationMiddleware.isHost, connection, AccommodationMiddleware.validate, AccommodationMiddleware.IsLocationValid, Accommodation.createAccommodation);
 router.patch('/:id/approve', AuthMiddleware.verifyToken, AuthMiddleware.isSuperAdmin, AccommodationMiddleware.param, Accommodation.accommodationApprove);
 router.get('/', AuthMiddleware.verifyToken, Accommodation.getAllAccommodation);
 router.get('/:id', AuthMiddleware.verifyToken, AccommodationMiddleware.param, Accommodation.getSpecificAccommodation);

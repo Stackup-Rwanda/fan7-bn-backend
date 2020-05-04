@@ -60,7 +60,7 @@ export default async (eventType, requestId, role) => {
       break;
     case 'commented_request':
       notification = {
-        user_id: user.id,
+        user_id: receiver.id,
         request_id: requestId,
         type: 'Commented',
         message: 'Request has been commented on',
