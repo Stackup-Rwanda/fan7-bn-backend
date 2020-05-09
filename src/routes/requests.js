@@ -3,6 +3,7 @@ import AuthMiddleware from '../middlewares/auth.middleware';
 import requestController from '../controllers/requestController';
 import requestValidation from '../middlewares/requestValidation';
 import tripValues from '../middlewares/tripValues';
+import RequestMiddleware from '../middlewares/request.middleware';
 
 const router = express.Router();
 

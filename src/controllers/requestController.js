@@ -437,7 +437,7 @@ class RequestController {
     let response;
     try {
       const { userData } = req;
-      const { startDate, endDate } = req.searchDates;
+      const { startDate, endDate } = req.params;
       const minDate = new Date(startDate);
       const maxDate = new Date(endDate);
       maxDate.setHours(
@@ -450,8 +450,12 @@ class RequestController {
       const isManager = await AuthUtils.isManager(userData);
       const isTraveler = await AuthUtils.isRequester(userData);
 
+      console.log(userData);
+
       if (isManager) {
         const directReportIds = await RequestService.retrieveDirectReports(userData);
+        
+        
         if (directReportIds.length === 0) {
           response = new Response(res, 404, 'No direct report found for you');
           return response.sendErrorMessage();
@@ -460,7 +464,8 @@ class RequestController {
         tripStatistics = await RequestService
           .retrieveManagerStatistics(directReportIds, minDate, maxDate);
       }
-
+      
+      
       if (isTraveler) {
         tripStatistics = await RequestService
           .retrieveTravelerStatistics(userData, minDate, maxDate);
@@ -471,7 +476,7 @@ class RequestController {
         return response.sendErrorMessage();
       }
 
-      response = new Response(res, 200, `Trip requests statistics from: ${startDate} to: ${endDate}`, { count: tripStatistics });
+      response = new Response(res, 200, `Trip requests statistics from: ${startDate} to: ${endDate}`, { totalTrips: tripStatistics });
       return response.sendSuccessResponse();
     } catch (error) {
       return DbErrorHandler.handleSignupError(res, error);
@@ -485,18 +490,13 @@ class RequestController {
  * @returns  {object} The response object
  */
   static async MostTravelledDestination(req, res) {
-    const Destinations = await DestinationService.FetchAllDestinations();
+    const data = await DestinationService.FetchAllDestinations();
     const Requests = await DestinationService.AllRequests();
 
     return res.status(200).json({
       status: 200,
-      message: 'Destinations info',
-      Requaests: `Total trip requests are ${Requests} requests`,
-      most_travelled_destinations: Destinations,
-      data: {
-        Requests: `Total trip requests are ${Requests} requests`,
-        Destinations
-      }
+      message: `Total trip requests are ${Requests} requests`,
+      data: data[0]
     });
   }
 }
