@@ -59,7 +59,7 @@ class ReqestMiddleware {
    * @returns {obj} returns a response object
   */
   static async tripStatistics(req, res, next) {
-    const searchDates = trimmer(req.body);
+    const searchDates = trimmer(req.params);
     const { error } = RequestSchema.tripStatistics(searchDates);
     try {
       if (error) {
